@@ -1,0 +1,49 @@
+[text]
+start = """
+✨ Hello! [{{ .Username }}](tg://user?id={{ .ID }}) ✨
+
+🤖 [SearchX](https://github.com/iyear/searchx) *is the Bot* focused on enhanced search experiences
+
+⚡ *Send a keyword to start an enhanced search experience! *
+
+The Bot has indexed the following groups or channels.
+{{ range .Chats }}
+- *{{ . }} *{{ end }}
+
+* Announcements: *
+{{ .Notice }}
+"""
+
+[text.search]
+keywords_too_long = "⚠ The keywords are too long, please shorten them appropriately"
+results = """
+👉 Search: *{{ .Keyword }}* 👈
+{{ range .Results }}
+*{{ .Seq }}. * [{{ .Sender }}]({{ .SenderLink }}) - {{ .Date }} [→]({{ .Link }})
+  | {{ .Content }}
+{{ end }}
+
+⏳ Time spent on this search: `{{ .Took }}ms`
+"""
+
+[text.settings]
+desc = "👇 Please select your settings item"
+language = """
+🌏 Current language is: *{{ . }}*
+
+👇 Please select the language you want to set
+"""
+
+[button]
+back = "⬅ Back to home page"
+
+[button.start]
+settings = "⚙ Settings"
+
+[button.search]
+next = "👉 next page"
+prev = "👈 Previous"
+
+[button.settings]
+language = "🌏 Language"
+language_plain = "📊"
