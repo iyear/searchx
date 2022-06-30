@@ -7,6 +7,7 @@ import (
 	"github.com/blevesearch/bleve/v2/analysis/token/lowercase"
 	"github.com/blevesearch/bleve/v2/registry"
 	"github.com/iyear/searchx/pkg/utils"
+	"github.com/iyear/searchx/pkg/validator"
 	"github.com/mitchellh/mapstructure"
 	"path"
 )
@@ -16,8 +17,8 @@ type Bleve struct {
 }
 
 type Options struct {
-	Path string `mapstructure:"path"`
-	Dict string `mapstructure:"dict"`
+	Path string `mapstructure:"path" validate:"required"`
+	Dict string `mapstructure:"dict" validate:"required"`
 }
 
 const (
@@ -31,6 +32,10 @@ func New(options map[string]interface{}) (*Bleve, error) {
 	var ops Options
 
 	if err := mapstructure.WeakDecode(options, &ops); err != nil {
+		return nil, err
+	}
+
+	if err := validator.Struct(&ops); err != nil {
 		return nil, err
 	}
 
