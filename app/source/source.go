@@ -19,8 +19,8 @@ import (
 const (
 	keyID       = "id"
 	keyType     = "type"
-	supergroup  = "private_supergroup"
-	channel     = "private_channel"
+	supergroup  = "supergroup"
+	channel     = "channel"
 	typeMessage = "message"
 )
 
@@ -172,7 +172,7 @@ func getChatInfo(src string) (string, int64, error) {
 
 		if kv.Key == keyType {
 			chatType = kv.Value.(string)
-			if chatType != supergroup && chatType != channel {
+			if !strings.HasSuffix(chatType, supergroup) && !strings.HasSuffix(chatType, channel) {
 				return "", 0, errors.New("chat type should be supergroup or channel")
 			}
 		}
