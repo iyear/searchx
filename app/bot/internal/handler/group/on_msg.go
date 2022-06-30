@@ -1,9 +1,9 @@
 package group
 
 import (
-	"github.com/iyear/searchx/app/bot/internal/key"
-	"github.com/iyear/searchx/app/bot/internal/model"
 	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/pkg/keygen"
+	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage"
 	tele "gopkg.in/telebot.v3"
 	"strconv"
@@ -16,8 +16,8 @@ func Index(c tele.Context) error {
 	sp := util.GetScope(c)
 
 	return sp.Storage.Search.Index([]*storage.SearchItem{{
-		ID: key.SearchMsgID(m.Chat.ID, m.ID),
-		Data: &model.SearchMsg{
+		ID: keygen.SearchMsgID(m.Chat.ID, m.ID),
+		Data: &models.SearchMsg{
 			ID:     strconv.Itoa(m.ID),
 			Chat:   strconv.FormatInt(m.Chat.ID, 10),
 			Text:   m.Text,

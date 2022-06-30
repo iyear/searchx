@@ -4,6 +4,7 @@ import (
 	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/app/bot/internal/model"
 	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/utils"
 	"github.com/mitchellh/mapstructure"
 	"github.com/thinkeridea/go-extend/exunicode/exutf8"
@@ -58,7 +59,7 @@ func Search(c tele.Context) error {
 	// 如果没有下页,len<=ps,则都要,即只取到len个
 	num := utils.MinInt(len(searchResults), ps)
 	results := make([]*model.TSearchResult, 0, num)
-	msg := model.SearchMsg{}
+	msg := models.SearchMsg{}
 	for i := 0; i < num; i++ {
 		result := searchResults[i]
 		if err := mapstructure.Decode(result.Fields, &msg); err != nil {
@@ -69,7 +70,7 @@ func Search(c tele.Context) error {
 		count := 0
 		contents := []string{""} // 在两边也添加省略号
 		for _, loc := range result.Location["text"] {
-			contents = append(contents, util.Highlight(msg.Text, int(loc.Start), int(loc.End), 5, 5, "*"))
+			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End), 5, 5, "*"))
 			count++
 			if count == maxHighlight {
 				break
@@ -83,7 +84,7 @@ func Search(c tele.Context) error {
 			Seq:        pn*ps + i + 1,
 			Sender:     msg.Sender,
 			SenderLink: "tg://user?id=" + msg.Sender,
-			Date:       util.MustGetDate(msg.Date).Format("2006.01.02"),
+			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    strings.Join(append(contents, ""), "..."),
 			Link:       util.GetMsgLink(msg.Chat, msg.ID),
 		})

@@ -1,4 +1,4 @@
-package model
+package models
 
 type SearchMsg struct {
 	ID     string `json:"id"`     // message id

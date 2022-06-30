@@ -2,6 +2,7 @@ package keygen
 
 import (
 	"bytes"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -22,4 +23,8 @@ func New(indexes ...string) string {
 	buf.Reset()
 	keyPool.Put(buf)
 	return t
+}
+
+func SearchMsgID(chat int64, id int) string {
+	return New(strconv.FormatInt(chat, 10), strconv.Itoa(id))
 }
