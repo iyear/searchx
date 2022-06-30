@@ -30,7 +30,7 @@ func New(options map[string]interface{}) (*Bleve, error) {
 
 	var ops Options
 
-	if err := mapstructure.Decode(options, &ops); err != nil {
+	if err := mapstructure.WeakDecode(options, &ops); err != nil {
 		return nil, err
 	}
 
