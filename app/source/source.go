@@ -2,7 +2,6 @@ package source
 
 import (
 	"errors"
-	"fmt"
 	"github.com/bcicen/jstream"
 	"github.com/fatih/color"
 	"github.com/iyear/searchx/pkg/keygen"
@@ -30,13 +29,15 @@ type message struct {
 	Type string      `mapstructure:"type"`
 	Time string      `mapstructure:"date_unixtime"`
 	From string      `mapstructure:"from_id"`
-	Text interface{} `mapstructure:"-"`
+	Text interface{} `mapstructure:"text"`
 }
 
 func Start(src, searchDriver string, searchOptions map[string]string) error {
 	if searchDriver == "" {
 		return errors.New("search driver can not be empty")
 	}
+
+	start := time.Now()
 
 	options := make(map[string]interface{})
 	if err := mapstructure.Decode(searchOptions, &options); err != nil {
@@ -55,7 +56,6 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 
 	color.Blue("Type: %s, ID: %d\n", chatType, chatID)
 
-	start := time.Now()
 	if err = index(src, chatID, _search); err != nil {
 		return err
 	}
@@ -79,19 +79,17 @@ func index(src string, chatID int64, search storage.Search) error {
 
 	d := jstream.NewDecoder(f, 2)
 
-	msg := message{}
 	batchSize := 50
 	items := make([]*storage.SearchItem, 0, batchSize)
 
 	for mv := range d.Stream() {
+		msg := message{}
+
 		if mv.ValueType != jstream.Object {
 			continue
 		}
 
-		if err = mapstructure.Decode(mv.Value, &msg); err != nil {
-			for k, v := range mv.Value.(map[string]interface{}) {
-				fmt.Println(k, v)
-			}
+		if err = mapstructure.WeakDecode(mv.Value, &msg); err != nil {
 			return err
 		}
 
@@ -99,9 +97,6 @@ func index(src string, chatID int64, search storage.Search) error {
 			continue
 		}
 
-		//fmt.Printf("%T, %v\n", msg.Text, msg.Text)
-
-		msg.Text = mv.Value.(map[string]interface{})["text"]
 		text := ""
 
 		switch r := msg.Text.(type) {
