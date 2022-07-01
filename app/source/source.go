@@ -40,7 +40,7 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 	start := time.Now()
 
 	options := make(map[string]interface{})
-	if err := mapstructure.Decode(searchOptions, &options); err != nil {
+	if err := mapstructure.WeakDecode(searchOptions, &options); err != nil {
 		return err
 	}
 
