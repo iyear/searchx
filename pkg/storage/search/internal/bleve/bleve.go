@@ -9,7 +9,6 @@ import (
 	"github.com/iyear/searchx/pkg/utils"
 	"github.com/iyear/searchx/pkg/validator"
 	"github.com/mitchellh/mapstructure"
-	"path"
 )
 
 type Bleve struct {
@@ -61,9 +60,8 @@ func New(options map[string]interface{}) (*Bleve, error) {
 
 	var index bleve.Index
 
-	indexPath := path.Join(ops.Path)
-	if !utils.PathExist(indexPath) {
-		index, err = bleve.New(indexPath, mapping)
+	if !utils.PathExist(ops.Path) {
+		index, err = bleve.New(ops.Path, mapping)
 		if err != nil {
 			return nil, err
 		}
@@ -72,7 +70,7 @@ func New(options map[string]interface{}) (*Bleve, error) {
 		}
 	}
 
-	if index, err = bleve.Open(indexPath); err != nil {
+	if index, err = bleve.Open(ops.Path); err != nil {
 		return nil, err
 	}
 
