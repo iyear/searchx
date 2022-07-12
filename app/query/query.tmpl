@@ -1,0 +1,8 @@
+{{ range . }}
+{{ .Seq }}
+    Score: {{ .Score }}
+    Fields:
+        {{ range $key, $value := .Fields }}
+        {{ $key }}: {{ $value }}
+        {{ end }}
+{{ end }}

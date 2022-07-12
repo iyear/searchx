@@ -1,11 +1,23 @@
 package query
 
 import (
+	_ "embed"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/iyear/searchx/pkg/i18n"
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/mitchellh/mapstructure"
 )
+
+type tmplData struct {
+	Seq    int
+	Score  float64
+	Fields map[string]interface{}
+}
+
+//go:embed query.tmpl
+var tmpl string
 
 func Query(driver string, searchOptions map[string]string, query string, pn, ps int, jsonFormat bool) error {
 	if driver == "" {
@@ -24,6 +36,28 @@ func Query(driver string, searchOptions map[string]string, query string, pn, ps 
 
 	results := _search.Search(query, pn*ps, ps)
 
-	fmt.Printf("%+v", results)
+	if jsonFormat {
+		b, err := json.MarshalIndent(results, "", "\t")
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(b))
+		return nil
+	}
+
+	data := make([]*tmplData, 0)
+	for i, r := range results {
+		data = append(data, &tmplData{
+			Seq:    i + 1,
+			Score:  r.Score,
+			Fields: r.Fields,
+		})
+	}
+
+	t, err := i18n.NewText(tmpl)
+	if err != nil {
+		return err
+	}
+	fmt.Println(t.T(data))
 	return nil
 }
