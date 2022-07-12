@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/fatih/color"
+	"github.com/iyear/searchx/cmd/query"
 	"github.com/iyear/searchx/cmd/run"
 	"github.com/iyear/searchx/cmd/source"
 	"github.com/iyear/searchx/global"
@@ -25,6 +26,7 @@ var cmd = &cobra.Command{
 func init() {
 	cmd.AddCommand(run.Cmd)
 	cmd.AddCommand(source.Cmd)
+	cmd.AddCommand(query.Cmd)
 
 	cmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "check the version of pure-live")
 
