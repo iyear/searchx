@@ -30,8 +30,14 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	}
 
 	bot.Handle(tele.OnText, handler.OnText)
+	bot.Handle(tele.OnPhoto, group.Index)
+	bot.Handle(tele.OnVideo, group.Index)
+	bot.Handle(tele.OnDocument, group.Index)
+	bot.Handle(tele.OnAudio, group.Index)
+	bot.Handle(tele.OnAnimation, group.Index)
 	bot.Handle(tele.OnEdited, group.Index)
-	bot.Handle(tele.OnUserJoined, group.Index)
+
+	bot.Handle(tele.OnUserJoined, group.OnUserJoined)
 	bot.Handle(tele.OnAddedToGroup, group.OnAdded)
 
 }
