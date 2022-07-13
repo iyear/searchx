@@ -6,10 +6,6 @@ start = """
 
 ⚡ *Send a keyword to start an enhanced search experience! *
 
-The Bot has indexed the following groups or channels.
-{{ range .Chats }}
-- *{{ . }} *{{ end }}
-
 * Announcements: *
 {{ .Notice }}
 """
