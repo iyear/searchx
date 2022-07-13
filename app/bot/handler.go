@@ -3,7 +3,7 @@ package bot
 import (
 	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/app/bot/internal/handler"
-	"github.com/iyear/searchx/app/bot/internal/handler/group"
+	"github.com/iyear/searchx/app/bot/internal/handler/grchan"
 	"github.com/iyear/searchx/app/bot/internal/handler/private"
 	"github.com/iyear/searchx/app/bot/internal/i18n"
 	"github.com/iyear/searchx/app/bot/internal/middleware"
@@ -30,14 +30,14 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	}
 
 	bot.Handle(tele.OnText, handler.OnText)
-	bot.Handle(tele.OnPhoto, group.Index)
-	bot.Handle(tele.OnVideo, group.Index)
-	bot.Handle(tele.OnDocument, group.Index)
-	bot.Handle(tele.OnAudio, group.Index)
-	bot.Handle(tele.OnAnimation, group.Index)
-	bot.Handle(tele.OnEdited, group.Index)
+	bot.Handle(tele.OnPhoto, grchan.Index)
+	bot.Handle(tele.OnVideo, grchan.Index)
+	bot.Handle(tele.OnDocument, grchan.Index)
+	bot.Handle(tele.OnAudio, grchan.Index)
+	bot.Handle(tele.OnAnimation, grchan.Index)
+	bot.Handle(tele.OnEdited, grchan.Index)
 
-	bot.Handle(tele.OnUserJoined, group.OnUserJoined)
-	bot.Handle(tele.OnAddedToGroup, group.OnAdded)
+	bot.Handle(tele.OnUserJoined, grchan.OnUserJoined)
+	bot.Handle(tele.OnAddedToGroup, grchan.OnAdded)
 
 }

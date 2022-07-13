@@ -1,4 +1,4 @@
-package group
+package grchan
 
 import (
 	"github.com/iyear/searchx/app/bot/internal/util"

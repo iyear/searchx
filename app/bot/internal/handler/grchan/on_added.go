@@ -1,4 +1,4 @@
-package group
+package grchan
 
 import (
 	tele "gopkg.in/telebot.v3"
