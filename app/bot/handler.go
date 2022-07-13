@@ -29,6 +29,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 		p.Handle(&button.Settings.LanguagePlain, private.SettingsSwitchLanguage)
 	}
 
+	// group handlers
 	bot.Handle(tele.OnText, handler.OnText)
 	bot.Handle(tele.OnPhoto, grchan.Index)
 	bot.Handle(tele.OnVideo, grchan.Index)
@@ -36,6 +37,10 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	bot.Handle(tele.OnAudio, grchan.Index)
 	bot.Handle(tele.OnAnimation, grchan.Index)
 	bot.Handle(tele.OnEdited, grchan.Index)
+
+	// channel handlers
+	bot.Handle(tele.OnChannelPost, grchan.Index)
+	bot.Handle(tele.OnEditedChannelPost, grchan.Index)
 
 	bot.Handle(tele.OnUserJoined, grchan.OnUserJoined)
 	bot.Handle(tele.OnAddedToGroup, grchan.OnAdded)
