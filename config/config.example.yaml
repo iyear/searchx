@@ -1,0 +1,34 @@
+bot:
+  token: YOUR_BOT_TOKEN
+  admin:
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+  socks5:
+    enable: false
+    host: localhost
+    port: 1080
+    user:
+    password:
+ctrl:
+  # support markdown style: https://core.telegram.org/bots/api#markdown-style
+  notice: |
+    YOUR_NOTICE_MESSAGE
+    YOUR_NOTICE_MESSAGE
+    YOUR_NOTICE_MESSAGE
+  i18n: ./config/i18n
+  default_language: zh-cn
+  search:
+    page_size: 10
+storage:
+  cache:
+    driver: gocache # gocache
+  kv:
+    driver: bolt # bolt
+    options:
+      path: ./data/data.kv
+  search:
+    driver: bleve # bleve
+    options:
+      path: ./data/msg.index
+      dict: ./config/dict.txt
