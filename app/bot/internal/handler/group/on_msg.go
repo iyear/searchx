@@ -1,4 +1,4 @@
-package grchan
+package group
 
 import (
 	"github.com/iyear/searchx/app/bot/internal/util"
@@ -17,9 +17,9 @@ func Index(c tele.Context) error {
 		ID: keygen.SearchMsgID(m.Chat.ID, m.ID),
 		Data: &models.SearchMsg{
 			ID:     strconv.Itoa(m.ID),
-			Chat:   strconv.FormatInt(m.Chat.ID, 10),
+			Chat:   m.Chat.Recipient(),
 			Text:   c.Text(),
-			Sender: strconv.FormatInt(m.Sender.ID, 10),
+			Sender: m.Sender.Recipient(),
 			Date:   strconv.FormatInt(time.Now().Unix(), 10),
 		}},
 	})
