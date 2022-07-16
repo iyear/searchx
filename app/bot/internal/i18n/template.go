@@ -19,6 +19,10 @@ type TemplateText struct {
 		KeywordsTooLong i18n.Text `mapstructure:"keywords_too_long"`
 		Results         i18n.Text `mapstructure:"results"`
 	} `mapstructure:"search"`
+	AddedToGroup struct {
+		Fail    i18n.Text `mapstructure:"fail"`
+		Success i18n.Text `mapstructure:"success"`
+	} `mapstructure:"added_to_group"`
 	Start i18n.Text `mapstructure:"start"`
 }
 
