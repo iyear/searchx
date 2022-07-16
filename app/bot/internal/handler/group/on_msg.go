@@ -11,10 +11,6 @@ import (
 )
 
 func Index(c tele.Context) error {
-	if c.Chat().Type == tele.ChatGroup {
-		return nil
-	}
-
 	m := c.Message()
 
 	return util.GetScope(c).Storage.Search.Index([]*storage.SearchItem{{

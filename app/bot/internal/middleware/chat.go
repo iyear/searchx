@@ -13,10 +13,10 @@ func Private() tele.MiddlewareFunc {
 	}
 }
 
-func Group() tele.MiddlewareFunc {
+func SuperGroup() tele.MiddlewareFunc {
 	return func(next tele.HandlerFunc) tele.HandlerFunc {
 		return func(c tele.Context) error {
-			if c.Chat() != nil && c.Chat().Type != tele.ChatSuperGroup && c.Chat().Type != tele.ChatGroup {
+			if c.Chat() != nil && c.Chat().Type != tele.ChatSuperGroup {
 				return nil
 			}
 			return next(c)
