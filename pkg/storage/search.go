@@ -2,12 +2,23 @@ package storage
 
 type Search interface {
 	Index(items []*SearchItem) error
-	Search(query string, from, size int) []*SearchResult
+	Search(query string, options *SearchOptions) []*SearchResult
 }
 
 type SearchItem struct {
 	ID   string      `json:"id"`
 	Data interface{} `json:"data"`
+}
+
+type SearchOptions struct {
+	From   int                      `json:"from"`
+	Size   int                      `json:"size"`
+	SortBy []SearchOptionSortByItem `json:"sort_by"`
+}
+
+type SearchOptionSortByItem struct {
+	Field   string `json:"field"`
+	Reverse bool   `json:"reverse"`
 }
 
 type SearchResult struct {

@@ -5,6 +5,7 @@ import (
 	"github.com/iyear/searchx/app/bot/internal/model"
 	"github.com/iyear/searchx/app/bot/internal/util"
 	"github.com/iyear/searchx/pkg/models"
+	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/utils"
 	"github.com/mitchellh/mapstructure"
 	"github.com/thinkeridea/go-extend/exunicode/exutf8"
@@ -42,7 +43,15 @@ func Search(c tele.Context) error {
 	prevBtn.Data = searchSetData(keyword, pn-1)
 
 	// 每次多查一个判断 total%ps==0 的情况
-	searchResults := sp.Storage.Search.Search(keyword, pn*ps, ps+1)
+	//pn*ps, ps+1, []string{"-date"}
+	searchResults := sp.Storage.Search.Search(keyword, &storage.SearchOptions{
+		From: pn * ps,
+		Size: ps + 1,
+		SortBy: []storage.SearchOptionSortByItem{{
+			Field:   "date",
+			Reverse: true,
+		}},
+	})
 	if pn == 0 {
 		if len(searchResults) > ps {
 			btns = append(btns, []tele.InlineButton{nextBtn})

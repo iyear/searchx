@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/iyear/searchx/pkg/i18n"
+	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/mitchellh/mapstructure"
 )
@@ -34,7 +35,14 @@ func Query(driver string, searchOptions map[string]string, query string, pn, ps 
 		return err
 	}
 
-	results := _search.Search(query, pn*ps, ps)
+	results := _search.Search(query, &storage.SearchOptions{
+		From: pn * ps,
+		Size: ps,
+		SortBy: []storage.SearchOptionSortByItem{{
+			Field:   "date",
+			Reverse: true,
+		}},
+	})
 
 	if jsonFormat {
 		b, err := json.MarshalIndent(results, "", "\t")

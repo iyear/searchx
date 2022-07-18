@@ -5,22 +5,33 @@ import (
 	"github.com/iyear/searchx/pkg/storage"
 )
 
-func (b *Bleve) Search(query string, from, size int) []*storage.SearchResult {
+func (b *Bleve) Search(query string, options *storage.SearchOptions) []*storage.SearchResult {
 	// try query string query
 	// if not have results, try wildcard query
-	search := bleve.NewSearchRequestOptions(bleve.NewQueryStringQuery(query), size, from, false)
-	results := b.searchReq(search)
+	search := bleve.NewSearchRequestOptions(bleve.NewQueryStringQuery(query), options.Size, options.From, false)
+	results := b.searchReq(search, options)
 	if len(results) > 0 {
 		return results
 	}
 
-	search = bleve.NewSearchRequestOptions(bleve.NewWildcardQuery("*"+query+"*"), size, from, false)
-	return b.searchReq(search)
+	search = bleve.NewSearchRequestOptions(bleve.NewWildcardQuery("*"+query+"*"), options.Size, options.Size, false)
+	return b.searchReq(search, options)
 }
 
-func (b *Bleve) searchReq(req *bleve.SearchRequest) []*storage.SearchResult {
+func (b *Bleve) searchReq(req *bleve.SearchRequest, options *storage.SearchOptions) []*storage.SearchResult {
 	req.IncludeLocations = true
 	req.Fields = []string{"*"}
+
+	sortby := make([]string, 0, len(options.SortBy))
+	for _, item := range options.SortBy {
+		if item.Reverse {
+			sortby = append(sortby, "-"+item.Field)
+			continue
+		}
+		sortby = append(sortby, item.Field)
+	}
+	sortby = append(sortby, "-_score")
+	req.SortBy(sortby)
 
 	results := make([]*storage.SearchResult, 0)
 
