@@ -1,6 +1,7 @@
 package query
 
 import (
+	"github.com/fatih/color"
 	"github.com/iyear/searchx/app/query"
 	"github.com/spf13/cobra"
 )
@@ -19,7 +20,10 @@ var Cmd = &cobra.Command{
 	Short: "",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		query.Query(searchDriver, searchOptions, _query, pn, ps, json)
+		if err := query.Query(searchDriver, searchOptions, _query, pn, ps, json); err != nil {
+			color.Red("error happens: %v", err)
+			return
+		}
 	},
 }
 
