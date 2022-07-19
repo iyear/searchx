@@ -15,6 +15,8 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	g := bot.Group()
 	g.Use(middleware.SuperGroup())
 	{
+		bot.Handle(config.CmdPing, group.Ping)
+
 		bot.Handle(tele.OnPhoto, group.Index)
 		bot.Handle(tele.OnVideo, group.Index)
 		bot.Handle(tele.OnDocument, group.Index)
@@ -27,6 +29,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	p.Use(middleware.Private())
 	{
 		p.Handle(config.CmdStart, private.Start)
+
 		p.Handle(&button.Start.Settings, private.SettingsBtn)
 		p.Handle(&button.Back, private.Start)
 		p.Handle(&button.Search.Next, private.SearchNext)

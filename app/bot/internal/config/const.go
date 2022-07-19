@@ -9,6 +9,7 @@ const (
 
 const (
 	CmdStart = "/start"
+	CmdPing  = "/ping"
 )
 
 type SearchOrder struct {
