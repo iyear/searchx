@@ -33,6 +33,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 		p.Handle(&button.Search.Prev, private.SearchPrev)
 		p.Handle(&button.Settings.Language, private.SettingsLanguage)
 		p.Handle(&button.Settings.LanguagePlain, private.SettingsSwitchLanguage)
+		p.Handle(&button.Search.SwitchOrder, private.SearchSwitchOrder)
 	}
 
 	bot.Handle(tele.OnText, handler.OnText)

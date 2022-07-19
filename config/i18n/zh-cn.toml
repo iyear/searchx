@@ -48,6 +48,7 @@ settings = "⚙ 设置"
 [button.search]
 next = "👉 下一页"
 prev = "👈 上一页"
+switch_order = "🔀"
 
 [button.settings]
 language = "🌏 语言"

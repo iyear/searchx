@@ -16,10 +16,8 @@ import (
 )
 
 func Search(c tele.Context) error {
-	var pn int
-	var keyword string
 	var btns [][]tele.InlineButton
-	ps := config.C.Ctrl.Search.PageSize
+	pn, order, keyword, ps := 0, 0, "", config.C.Ctrl.Search.PageSize
 
 	sp := util.GetScope(c)
 
@@ -27,30 +25,30 @@ func Search(c tele.Context) error {
 
 	keyword = strings.ReplaceAll(c.Message().Text, "|", "")
 	if c.Callback() == nil { // 初始
-		pn = 0
 		// 由于c.Data长度限制，关键词长度也限制
 		if len(keyword) > 55 {
 			return util.EditOrSendWithBack(c, sp.Template.Text.Search.KeywordsTooLong.T(nil))
 		}
 	} else {
-		keyword, pn = searchGetData(c.Data())
+		keyword, pn, order = searchGetData(c.Data())
 	}
 
 	nextBtn := sp.Template.Button.Search.Next
-	nextBtn.Data = searchSetData(keyword, pn+1)
+	nextBtn.Data = searchSetData(keyword, pn+1, order)
+
+	orderBtn := sp.Template.Button.Search.SwitchOrder
+	orderBtn.Text = config.SearchOrders[order].Text
+	nextOrder := (order + 1) % len(config.SearchOrders)
+	orderBtn.Data = searchSetData(keyword, pn, nextOrder)
 
 	prevBtn := sp.Template.Button.Search.Prev
-	prevBtn.Data = searchSetData(keyword, pn-1)
+	prevBtn.Data = searchSetData(keyword, pn-1, order)
 
 	// 每次多查一个判断 total%ps==0 的情况
-	//pn*ps, ps+1, []string{"-date"}
 	searchResults := sp.Storage.Search.Search(keyword, &storage.SearchOptions{
-		From: pn * ps,
-		Size: ps + 1,
-		SortBy: []storage.SearchOptionSortByItem{{
-			Field:   "date",
-			Reverse: true,
-		}},
+		From:   pn * ps,
+		Size:   ps + 1,
+		SortBy: config.SearchOrders[order].SortBy,
 	})
 	if pn == 0 {
 		if len(searchResults) > ps {
@@ -63,6 +61,8 @@ func Search(c tele.Context) error {
 			btns = append(btns, []tele.InlineButton{prevBtn})
 		}
 	}
+
+	btns = append(btns, []tele.InlineButton{orderBtn})
 
 	// 如果还有下页,len>ps,则最后一个不要,即只取到ps个
 	// 如果没有下页,len<=ps,则都要,即只取到len个
@@ -118,12 +118,17 @@ func SearchPrev(c tele.Context) error {
 	return Search(c)
 }
 
-func searchGetData(data string) (string, int) {
-	v := strings.Split(data, "|")
-	pn, _ := strconv.Atoi(v[1])
-	return v[0], pn
+func SearchSwitchOrder(c tele.Context) error {
+	return Search(c)
 }
 
-func searchSetData(keywords string, pn int) string {
-	return keywords + "|" + strconv.Itoa(pn)
+func searchGetData(data string) (string, int, int) {
+	v := strings.Split(data, "|")
+	pn, _ := strconv.Atoi(v[1])
+	order, _ := strconv.Atoi(v[2])
+	return v[0], pn, order
+}
+
+func searchSetData(keywords string, pn int, order int) string {
+	return keywords + "|" + strconv.Itoa(pn) + "|" + strconv.Itoa(order)
 }

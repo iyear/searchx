@@ -29,8 +29,9 @@ type TemplateText struct {
 type TemplateButton struct {
 	Back   tele.InlineButton `mapstructure:"back"`
 	Search struct {
-		Next tele.InlineButton `mapstructure:"next"`
-		Prev tele.InlineButton `mapstructure:"prev"`
+		Next        tele.InlineButton `mapstructure:"next"`
+		Prev        tele.InlineButton `mapstructure:"prev"`
+		SwitchOrder tele.InlineButton `mapstructure:"switch_order"`
 	} `mapstructure:"search"`
 	Start struct {
 		Settings tele.InlineButton `mapstructure:"settings"`
