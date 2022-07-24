@@ -34,11 +34,11 @@ func textHook() mapstructure.DecodeHookFunc {
 
 func Walk(dir string) ([]string, error) {
 	paths := make([]string, 0)
-	err := filepath.Walk(dir, func(path string, info fs.FileInfo, err error) error {
+	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("unable to walk template path: %s, err:%v", path, err)
 		}
-		if info.IsDir() {
+		if entry.IsDir() {
 			return nil
 		}
 
