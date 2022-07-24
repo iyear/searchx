@@ -2,16 +2,16 @@
 start = """
 ✨ Hello! [{{ .Username }}](tg://user?id={{ .ID }}) ✨
 
-🤖 [SearchX](https://github.com/iyear/searchx) *is the Bot* focused on enhanced search experiences
+🤖 [SearchX](https://github.com/iyear/searchx) *is the bot that focuses on enhancing search*
 
-⚡ *Send a keyword to start an enhanced search experience! *
+⚡ *Send the keyword to start search! *
 
-* Announcements: *
+*Notice:*
 {{ .Notice }}
 """
 
 [text.search]
-keywords_too_long = "⚠ The keywords are too long, please shorten them appropriately"
+keywords_too_long = "⚠ Keywords are too long, please shorten them"
 results = """
 👉 Search: *{{ .Keyword }}* 👈
 {{ range .Results }}
@@ -19,26 +19,36 @@ results = """
   | {{ .Content }}
 {{ end }}
 
-⏳ Time spent on this search: `{{ .Took }}ms`
+⏳ Time: `{{ .Took }}ms`
 """
 
 [text.settings]
-desc = "👇 Please select your settings item"
+desc = "👇 Select your settings item"
 language = """
-🌏 Current language is: *{{ . }}*
+🌏 Current: *{{ . }}*
 
-👇 Please select the language you want to set
+👇 Select the language you want to set
 """
 
+[text.added_to_group]
+fail = """
+⚠ Please upgrade the group to `Supergroup` | [Tutorial](https://teleme.io/articles/turn_a_telegram_group_into_a_supergroup)
+
+⚠ Please invite [SearchX Bot](https://github.com/iyear/searchx) again after upgrading
+"""
+
+success = "✅ [SearchX Bot](https://github.com/iyear/searchx) is enabled and will index the text messages of the conversation. To index historical messages, use the `source` command."
+
 [button]
-back = "⬅ Back to home page"
+back = "⬅ Back"
 
 [button.start]
 settings = "⚙ Settings"
 
 [button.search]
-next = "👉 next page"
-prev = "👈 Previous"
+next = "👉 Next"
+prev = "👈 Prev"
+switch_order = "🔀"
 
 [button.settings]
 language = "🌏 Language"
