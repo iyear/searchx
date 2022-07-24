@@ -19,6 +19,7 @@ English | [简体中文](README_zh.md)
 
 - Minimal configuration & single file one-click launch
 - Component-based scalable design & multiple storage engine options
+- Chinese optimization of search engine
 - Large number of historical messages to import
 - Customizable i18n message templates
 - ......
