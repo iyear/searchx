@@ -11,3 +11,9 @@ build:
 	@echo "Version: $(VERSION)"
 	go build -ldflags "$(GO_LDFLAGS)" -o "$(BUILD_DIR)/searchx-${GOOS}-${GOARCH}"
 	@echo "'searchx' has been built in the '.searchx' directory)!"
+
+.PHONY: packaging
+packaging:
+	goreleaser release --skip-publish --snapshot --rm-dist
+	@echo "go to '.searchx/dist' directory to see the packages!"
+

@@ -1,0 +1,49 @@
+project_name: searchx
+dist: .searchx/dist
+env:
+  - GO111MODULE=on
+builds:
+  - env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X {{ .ModulePath }}/global.Version={{ .RawVersion }}
+      - -X {{ .ModulePath }}/global.Commit={{ .ShortCommit }}
+      - -X {{ .ModulePath }}/global.CommitDate={{ .CommitDate }}
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 5
+      - 6
+      - 7
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    replacements:
+      darwin: MacOS
+      linux: Linux
+      windows: Windows
+      386: 32bit
+      amd64: 64bit
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE
+      - config/i18n/*
+      - config/dict.txt
+      - config/config.example.yaml
+changelog:
+  sort: asc
