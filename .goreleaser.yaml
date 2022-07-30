@@ -9,7 +9,7 @@ builds:
       - -trimpath
     ldflags:
       - -s -w
-      - -X {{ .ModulePath }}/global.Version={{ .RawVersion }}
+      - -X {{ .ModulePath }}/global.Version={{ .Version }}
       - -X {{ .ModulePath }}/global.Commit={{ .ShortCommit }}
       - -X {{ .ModulePath }}/global.CommitDate={{ .CommitDate }}
     mod_timestamp: '{{ .CommitTimestamp }}'
