@@ -1,16 +1,32 @@
 package search
 
-import (
-	"fmt"
-	"github.com/iyear/searchx/pkg/storage"
-	"github.com/iyear/searchx/pkg/storage/search/bleve"
-)
+type Item struct {
+	ID   string      `json:"id"`
+	Data interface{} `json:"data"`
+}
 
-func New(name string, options map[string]interface{}) (storage.Search, error) {
-	switch name {
-	case "bleve":
-		return bleve.New(options)
-	default:
-		panic(fmt.Sprintf("%s is a search engine that has not yet been implemented", name))
-	}
+type Options struct {
+	From   int                `json:"from"`
+	Size   int                `json:"size"`
+	SortBy []OptionSortByItem `json:"sort_by"`
+}
+
+type OptionSortByItem struct {
+	Field   string `json:"field"`
+	Reverse bool   `json:"reverse"`
+}
+
+type Result struct {
+	Score    float64                `json:"score"`
+	Fields   map[string]interface{} `json:"fields"`
+	Location LocationMap            `json:"location"`
+}
+
+type Field = string
+type Term = string
+type LocationMap map[Field]map[Term]Location
+
+type Location struct {
+	Start uint64 `json:"start"`
+	End   uint64 `json:"end"`
 }

@@ -30,16 +30,16 @@ func Query(driver string, searchOptions map[string]string, query string, pn, ps 
 		return err
 	}
 
-	_search, err := search.New(driver, options)
+	_search, err := storage.NewSearch(driver, options)
 	if err != nil {
 		return err
 	}
 
 	// todo(iyear): add sortBy options
-	results := _search.Search(query, &storage.SearchOptions{
+	results := _search.Search(query, &search.Options{
 		From: pn * ps,
 		Size: ps,
-		SortBy: []storage.SearchOptionSortByItem{{
+		SortBy: []search.OptionSortByItem{{
 			Field:   "date",
 			Reverse: true,
 		}},

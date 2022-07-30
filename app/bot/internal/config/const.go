@@ -1,6 +1,8 @@
 package config
 
-import "github.com/iyear/searchx/pkg/storage"
+import (
+	"github.com/iyear/searchx/pkg/storage/search"
+)
 
 const (
 	ContextScope    = "scope"
@@ -13,7 +15,7 @@ const (
 )
 
 type SearchOrder struct {
-	SortBy []storage.SearchOptionSortByItem
+	SortBy []search.OptionSortByItem
 	Text   string
 }
 
@@ -23,14 +25,14 @@ var SearchOrders = []SearchOrder{
 		Text: "🔀 Normal",
 	},
 	{
-		SortBy: []storage.SearchOptionSortByItem{{
+		SortBy: []search.OptionSortByItem{{
 			Field:   "date",
 			Reverse: false,
 		}},
 		Text: "🔀 Date",
 	},
 	{
-		SortBy: []storage.SearchOptionSortByItem{{
+		SortBy: []search.OptionSortByItem{{
 			Field:   "date",
 			Reverse: true,
 		}},

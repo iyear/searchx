@@ -2,10 +2,10 @@ package bleve
 
 import (
 	"github.com/blevesearch/bleve/v2"
-	"github.com/iyear/searchx/pkg/storage"
+	"github.com/iyear/searchx/pkg/storage/search"
 )
 
-func (b *Bleve) Search(query string, options *storage.SearchOptions) []*storage.SearchResult {
+func (b *Bleve) Search(query string, options *search.Options) []*search.Result {
 	// try query string query
 	// if not have results, try wildcard query
 	search := bleve.NewSearchRequestOptions(bleve.NewQueryStringQuery(query), options.Size, options.From, false)
@@ -18,7 +18,7 @@ func (b *Bleve) Search(query string, options *storage.SearchOptions) []*storage.
 	return b.searchReq(search, options)
 }
 
-func (b *Bleve) searchReq(req *bleve.SearchRequest, options *storage.SearchOptions) []*storage.SearchResult {
+func (b *Bleve) searchReq(req *bleve.SearchRequest, options *search.Options) []*search.Result {
 	req.IncludeLocations = true
 	req.Fields = []string{"*"}
 
@@ -33,7 +33,7 @@ func (b *Bleve) searchReq(req *bleve.SearchRequest, options *storage.SearchOptio
 	sortby = append(sortby, "-_score")
 	req.SortBy(sortby)
 
-	results := make([]*storage.SearchResult, 0)
+	results := make([]*search.Result, 0)
 
 	result, err := b.index.Search(req)
 	if err != nil {
@@ -41,18 +41,18 @@ func (b *Bleve) searchReq(req *bleve.SearchRequest, options *storage.SearchOptio
 	}
 
 	for _, hit := range result.Hits {
-		locmap := make(storage.SearchLocationMap)
+		locmap := make(search.LocationMap)
 		// copy location map
 		for field, locs := range hit.Locations {
-			termloc := make(map[storage.SearchTerm]storage.SearchLocation)
+			termloc := make(map[search.Term]search.Location)
 			for term, loc := range locs {
 				for _, l := range loc {
-					termloc[term] = storage.SearchLocation{Start: l.Start, End: l.End}
+					termloc[term] = search.Location{Start: l.Start, End: l.End}
 				}
 			}
 			locmap[field] = termloc
 		}
-		results = append(results, &storage.SearchResult{
+		results = append(results, &search.Result{
 			Score:    hit.Score,
 			Fields:   hit.Fields,
 			Location: locmap,

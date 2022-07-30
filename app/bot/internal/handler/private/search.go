@@ -5,7 +5,7 @@ import (
 	"github.com/iyear/searchx/app/bot/internal/model"
 	"github.com/iyear/searchx/app/bot/internal/util"
 	"github.com/iyear/searchx/pkg/models"
-	"github.com/iyear/searchx/pkg/storage"
+	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/iyear/searchx/pkg/utils"
 	"github.com/mitchellh/mapstructure"
 	"github.com/thinkeridea/go-extend/exunicode/exutf8"
@@ -45,7 +45,7 @@ func Search(c tele.Context) error {
 	prevBtn.Data = searchSetData(keyword, pn-1, order)
 
 	// 每次多查一个判断 total%ps==0 的情况
-	searchResults := sp.Storage.Search.Search(keyword, &storage.SearchOptions{
+	searchResults := sp.Storage.Search.Search(keyword, &search.Options{
 		From:   pn * ps,
 		Size:   ps + 1,
 		SortBy: config.SearchOrders[order].SortBy,

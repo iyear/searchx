@@ -1,8 +1,10 @@
 package bleve
 
-import "github.com/iyear/searchx/pkg/storage"
+import (
+	"github.com/iyear/searchx/pkg/storage/search"
+)
 
-func (b *Bleve) Index(items []*storage.SearchItem) error {
+func (b *Bleve) Index(items []*search.Item) error {
 	batch := b.index.NewBatch()
 	for _, item := range items {
 		if err := batch.Index(item.ID, item.Data); err != nil {

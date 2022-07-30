@@ -44,7 +44,7 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 		return err
 	}
 
-	_search, err := search.New(searchDriver, options)
+	_search, err := storage.NewSearch(searchDriver, options)
 	if err != nil {
 		return err
 	}
@@ -65,7 +65,7 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 
 }
 
-func index(src string, chatID int64, search storage.Search) error {
+func index(src string, chatID int64, _search storage.Search) error {
 	f, err := os.Open(src)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func index(src string, chatID int64, search storage.Search) error {
 	d := jstream.NewDecoder(f, 2)
 
 	batchSize := 50
-	items := make([]*storage.SearchItem, 0, batchSize)
+	items := make([]*search.Item, 0, batchSize)
 
 	for mv := range d.Stream() {
 		msg := message{}
@@ -118,7 +118,7 @@ func index(src string, chatID int64, search storage.Search) error {
 		}
 
 		if text != "" {
-			items = append(items, &storage.SearchItem{
+			items = append(items, &search.Item{
 				ID: keygen.SearchMsgID(chatID, msg.ID),
 				Data: &models.SearchMsg{
 					ID:     strconv.Itoa(msg.ID),
@@ -131,15 +131,15 @@ func index(src string, chatID int64, search storage.Search) error {
 		}
 
 		if len(items) == batchSize {
-			if err = search.Index(items); err != nil {
+			if err = _search.Index(items); err != nil {
 				return err
 			}
-			items = make([]*storage.SearchItem, 0, batchSize)
+			items = make([]*search.Item, 0, batchSize)
 		}
 	}
 
 	if len(items) > 0 {
-		if err = search.Index(items); err != nil {
+		if err = _search.Index(items); err != nil {
 			return err
 		}
 	}

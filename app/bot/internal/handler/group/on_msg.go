@@ -4,7 +4,7 @@ import (
 	"github.com/iyear/searchx/app/bot/internal/util"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
-	"github.com/iyear/searchx/pkg/storage"
+	"github.com/iyear/searchx/pkg/storage/search"
 	tele "gopkg.in/telebot.v3"
 	"strconv"
 	"time"
@@ -13,7 +13,7 @@ import (
 func Index(c tele.Context) error {
 	m := c.Message()
 
-	return util.GetScope(c).Storage.Search.Index([]*storage.SearchItem{{
+	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
 		ID: keygen.SearchMsgID(m.Chat.ID, m.ID),
 		Data: &models.SearchMsg{
 			ID:     strconv.Itoa(m.ID),
@@ -26,6 +26,6 @@ func Index(c tele.Context) error {
 }
 
 func OnUserJoined(c tele.Context) error {
-	//u := c.ChatMember().NewChatMember.User
+	// u := c.ChatMember().NewChatMember.User
 	return nil
 }

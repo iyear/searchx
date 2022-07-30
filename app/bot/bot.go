@@ -8,9 +8,7 @@ import (
 	"github.com/iyear/searchx/app/bot/internal/model"
 	"github.com/iyear/searchx/global"
 	"github.com/iyear/searchx/pkg/logger"
-	"github.com/iyear/searchx/pkg/storage/cache"
-	"github.com/iyear/searchx/pkg/storage/kv"
-	"github.com/iyear/searchx/pkg/storage/search"
+	"github.com/iyear/searchx/pkg/storage"
 	tele "gopkg.in/telebot.v3"
 	"time"
 )
@@ -26,17 +24,17 @@ func Run(cfg string) {
 		log.Fatalw("init i18n templates failed", "err", err)
 	}
 
-	_kv, err := kv.New(config.C.Storage.KV.Driver, config.C.Storage.KV.Options)
+	_kv, err := storage.NewKV(config.C.Storage.KV.Driver, config.C.Storage.KV.Options)
 	if err != nil {
 		log.Fatalw("init kv database failed", "err", err, "options", config.C.Storage.KV.Options)
 	}
 
-	_search, err := search.New(config.C.Storage.Search.Driver, config.C.Storage.Search.Options)
+	_search, err := storage.NewSearch(config.C.Storage.Search.Driver, config.C.Storage.Search.Options)
 	if err != nil {
 		log.Fatalw("init search engine database failed", "err", err, "options", config.C.Storage.Search.Options)
 	}
 
-	_cache, err := cache.New(config.C.Storage.Cache.Driver, config.C.Storage.Cache.Options)
+	_cache, err := storage.New(config.C.Storage.Cache.Driver, config.C.Storage.Cache.Options)
 	if err != nil {
 		log.Fatalw("init cache failed", "err", err, "options", config.C.Storage.Cache.Options)
 	}
