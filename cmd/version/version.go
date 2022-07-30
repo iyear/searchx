@@ -15,8 +15,7 @@ var version string
 
 var Cmd = &cobra.Command{
 	Use:   "version",
-	Short: "",
-	Long:  ``,
+	Short: "Check the version info",
 	Run: func(cmd *cobra.Command, args []string) {
 		buf := &bytes.Buffer{}
 		_ = template.Must(template.New("version").Parse(version)).Execute(buf, map[string]interface{}{

@@ -14,8 +14,7 @@ var (
 
 var Cmd = &cobra.Command{
 	Use:   "source",
-	Short: "",
-	Long:  ``,
+	Short: "Import history messages",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := source.Start(src, searchDriver, searchOptions); err != nil {
 			color.Red("error happens: %v", err)
@@ -25,7 +24,7 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.PersistentFlags().StringVarP(&src, "file", "f", "result.json", "The path to the JSON file exported by Telegram")
-	Cmd.PersistentFlags().StringVarP(&searchDriver, "driver", "d", "", "Used search driver")
-	Cmd.PersistentFlags().StringToStringVarP(&searchOptions, "options", "o", make(map[string]string), "")
+	Cmd.PersistentFlags().StringVarP(&src, "file", "f", "result.json", "the path to the JSON file exported by Telegram")
+	Cmd.PersistentFlags().StringVarP(&searchDriver, "driver", "d", "", "used search engine driver")
+	Cmd.PersistentFlags().StringToStringVarP(&searchOptions, "options", "o", make(map[string]string), "search engine options")
 }

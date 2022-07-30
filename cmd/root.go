@@ -11,8 +11,7 @@ import (
 // TODO
 var cmd = &cobra.Command{
 	Use:   "searchx",
-	Short: "",
-	Long:  ``,
+	Short: "Enhance Telegram Group/Channel Search In 5 Minutes",
 }
 
 func init() {
