@@ -2,13 +2,15 @@ package bolt
 
 import (
 	"fmt"
+	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/validator"
 	"github.com/mitchellh/mapstructure"
 	"go.etcd.io/bbolt"
 	"os"
 )
 
 type Options struct {
-	Path string `mapstructure:"path"`
+	Path string `mapstructure:"path" default:"data.kv"`
 }
 
 type Bolt struct {
@@ -21,6 +23,14 @@ func New(options map[string]interface{}) (*Bolt, error) {
 	var ops Options
 
 	if err := mapstructure.Decode(options, &ops); err != nil {
+		return nil, err
+	}
+
+	if err := defaults.Set(&ops); err != nil {
+		return nil, err
+	}
+
+	if err := validator.Struct(&ops); err != nil {
 		return nil, err
 	}
 

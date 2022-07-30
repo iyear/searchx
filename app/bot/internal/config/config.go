@@ -1,6 +1,10 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/validator"
+	"github.com/spf13/viper"
+)
 
 var C config
 
@@ -15,41 +19,49 @@ func Init(path string) error {
 		return err
 	}
 
+	if err := defaults.Set(&C); err != nil {
+		return err
+	}
+
+	if err := validator.Struct(&C); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 type config struct {
 	Bot struct {
-		Token  string `mapstructure:"token"`
+		Token  string `mapstructure:"token" validate:"required"`
 		Socks5 struct {
 			Enable   bool   `mapstructure:"enable"`
-			Host     string `mapstructure:"host"`
-			Port     int    `mapstructure:"port"`
+			Host     string `mapstructure:"host" validate:"hostname" default:"localhost"`
+			Port     int    `mapstructure:"port" default:"1080"`
 			User     string `mapstructure:"user"`
 			Password string `mapstructure:"password"`
 		} `mapstructure:"socks5"`
-		Admin []int64 `mapstructure:"admin"`
+		Admin []int64 `mapstructure:"admin" validate:"required"`
 	} `mapstructure:"bot"`
 	Storage struct {
 		KV struct {
-			Driver  string                 `mapstructure:"driver"`
+			Driver  string                 `mapstructure:"driver" validate:"oneof=bolt" default:"bolt"`
 			Options map[string]interface{} `mapstructure:"options"`
 		} `mapstructure:"kv"`
 		Search struct {
-			Driver  string                 `mapstructure:"driver"`
+			Driver  string                 `mapstructure:"driver" validate:"oneof=bleve" default:"bleve"`
 			Options map[string]interface{} `mapstructure:"options"`
 		} `mapstructure:"search"`
 		Cache struct {
-			Driver  string                 `mapstructure:"driver"`
+			Driver  string                 `mapstructure:"driver" validate:"oneof=gocache" default:"gocache"`
 			Options map[string]interface{} `mapstructure:"options"`
 		} `mapstructure:"cache"`
 	}
 	Ctrl struct {
-		Notice          string `mapstructure:"notice"`
-		I18N            string `mapstructure:"i18n"`
-		DefaultLanguage string `mapstructure:"default_language"`
+		Notice          string `mapstructure:"notice" default:"NO NOTICE"`
+		I18N            string `mapstructure:"i18n" validate:"dir" default:"config/i18n"`
+		DefaultLanguage string `mapstructure:"default_language" validate:"iso6391" default:"zh-cn"`
 		Search          struct {
-			PageSize int `mapstructure:"page_size"`
+			PageSize int `mapstructure:"page_size" validate:"gte=1,lte=20" default:"10"`
 		} `mapstructure:"search"`
 	} `mapstructure:"ctrl"`
 }
