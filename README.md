@@ -19,15 +19,15 @@ English | [简体中文](README_zh.md)
 
 ## Deployment
 
-1. Prepare `Telegram Bot`
+1. **Prepare `Telegram Bot`**
     1. Get `Bot Token`: [How to create a Bot](https://core.telegram.org/bots#6-botfather)
     2. **Disable** `Group Privacy`: send `/setprivacy` to [@BotFather](https://t.me/BotFather)
-2. Get `Telegram User ID`: [@userinfobot](https://t.me/userinfobot)
-3. Prepare `searchx`
+2. **Get `Telegram User ID`: [@userinfobot](https://t.me/userinfobot)**
+3. **Prepare `searchx`**
     1. Download `searchx`: go to [GitHub Releases](https://github.com/iyear/searchx/releases) and uncompress it.
     2. Change `YOUR_BOT_TOKEN` `YOUR_ADMIN_ID` in `config/config.min.yaml` to `Bot Token` `Telegram User ID`
-4. Start: `. /searchx run -c config/config.min.yaml`
-5. Invite `Bot` to groups/channels
+4. **Start: `./searchx run -c config/config.min.yaml`**
+5. **Invite `Bot` to groups/channels**
 
 ## Customization
 For the vast majority of users, the default minimal configuration is sufficient. 
@@ -94,7 +94,7 @@ A: Same as above
 
 **Q: Why do I need to disable `Group Privacy`? Does it cause security issues?**
 
-A: When `Group Privacy` is turned on, it will cause `Bot` to not receive all messages in the group, resulting in missing indexes. Please refer to: https://core.telegram.org/bots#privacy-mode
+A: When `Group Privacy` is enabled, it will cause `Bot` to not receive all messages in the group, resulting in missing indexes. Please refer to: https://core.telegram.org/bots#privacy-mode
 At the same time, it does not create security issues. The project is self-deployed and the data is stored locally, so it will not lead to data leakage.
 
 ## LICENSE

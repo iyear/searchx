@@ -19,15 +19,15 @@
 
 ## 部署
 
-1. 准备 `Telegram Bot`
+1. **准备 `Telegram Bot`**
     1. 获取 `Bot Token`: [如何创建 Bot](https://core.telegram.org/bots#6-botfather)
     2. **禁用** `Group Privacy`: 向 [@BotFather](https://t.me/BotFather) 发送 `/setprivacy`
-2. 获取“我”的 `Telegram User ID`: [@userinfobot](https://t.me/userinfobot)
-3. 准备 `searchx`
+2. **获取“我”的 `Telegram User ID`: [@userinfobot](https://t.me/userinfobot)**
+3. **准备 `searchx`**
    1. 下载 `searchx`：前往 [GitHub Releases](https://github.com/iyear/searchx/releases) 并解压
    2. 修改 `config/config.min.yaml` 中 `YOUR_BOT_TOKEN` `YOUR_ADMIN_ID` 为 `Bot Token` `Telegram User ID`
-4. 启动: `./searchx run -c config/config.min.yaml`
-5. 邀请 `Bot` 至群组/频道
+4. **启动: `./searchx run -c config/config.min.yaml`**
+5. **邀请 `Bot` 至群组/频道**
 
 ## 自定义
 对于绝大部分用户，默认的最小化配置即可满足使用需求。
