@@ -3,7 +3,7 @@ package search
 import (
 	"fmt"
 	"github.com/iyear/searchx/pkg/storage"
-	"github.com/iyear/searchx/pkg/storage/search/internal/bleve"
+	"github.com/iyear/searchx/pkg/storage/search/bleve"
 )
 
 func New(name string, options map[string]interface{}) (storage.Search, error) {

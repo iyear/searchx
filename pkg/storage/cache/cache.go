@@ -3,7 +3,7 @@ package cache
 import (
 	"fmt"
 	"github.com/iyear/searchx/pkg/storage"
-	"github.com/iyear/searchx/pkg/storage/cache/internal/gocache"
+	"github.com/iyear/searchx/pkg/storage/cache/gocache"
 )
 
 func New(name string, options map[string]interface{}) (storage.Cache, error) {
