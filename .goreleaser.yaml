@@ -44,7 +44,8 @@ archives:
       - LICENSE
       - config/i18n/*
       - config/dict.txt
-      - config/config.example.yaml
+      - config/config.full.yaml
+      - config/config.min.yaml
 changelog:
   use: github
   sort: asc

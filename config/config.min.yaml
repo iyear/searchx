@@ -1,0 +1,6 @@
+bot:
+  token: YOUR_BOT_TOKEN # telegram bot token
+  admin: # telegram id of the admins
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
