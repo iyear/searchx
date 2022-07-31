@@ -52,6 +52,16 @@ Date: 2022-07-30T07:58:05Z
 go1.17.3 windows/amd64
 ```
 
+### run
+启动 Bot
+
+- `-c`: 配置文件路径
+
+```shell
+# 使用最小化配置启动
+./searchx run -c config/config.min.yaml
+```
+
 ### source
 Bot仅索引加入期间的含文本消息，如需索引历史消息请使用该命令。支持群组/频道，支持超大文件导入。
 

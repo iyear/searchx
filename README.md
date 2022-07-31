@@ -52,6 +52,16 @@ Date: 2022-07-30T07:58:05Z
 go1.17.3 windows/amd64
 ```
 
+### run
+Start Bot
+
+- `-c`: path to config file
+
+```shell
+# start with the minimal config
+./searchx run -c config/config.min.yaml
+```
+
 ### source
 Bot only indexes messages during the join period, use this command if you want to index history messages. 
 
