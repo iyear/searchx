@@ -14,6 +14,7 @@ English | [简体中文](README_zh.md)
 
 - Minimal configuration & single file one-click launch
 - Component-based scalable design & multiple storage engine options
+- Cross-platform support macOS/Windows/Linux
 - Chinese optimization of search engine
 - Large number of historical messages to import
 - Customizable i18n message templates
