@@ -4,7 +4,7 @@
 ![](https://img.shields.io/github/v/release/iyear/searchx?color=red&style=flat-square)
 ![](https://img.shields.io/github/last-commit/iyear/searchx?style=flat-square)
 
-English | [简体中文](README_zh.md) | [DEMO](https://t.me/e5subs_bot)
+English | [简体中文](README_zh.md)
 
 🔍 Enhance Telegram Group/Channel Search In 5 Minutes 🚀
 
@@ -84,6 +84,10 @@ Command line query
 ```
 
 ## FAQ
+**Q: Why don't I use the search that comes with Telegram?**
+
+A: As we all know, the search function that comes with Telegram is not very useful. The purpose of this project is to solve these problems.
+
 **Q: I'm having problems using it?**
 
 A: If you still can't solve the problem after searching, give feedback by [SUBMIT ISSUE](https://github.com/iyear/searchx/issues/new).
@@ -98,6 +102,10 @@ A: Same as above
 
 A: When `Group Privacy` is enabled, it will cause `Bot` to not receive all messages in the group, resulting in missing indexes. Please refer to: https://core.telegram.org/bots#privacy-mode
 At the same time, it does not create security issues. The project is self-deployed and the data is stored locally, so it will not lead to data leakage.
+
+**Q: Can I use it for my personal account? Will it be supported in the future?**
+
+A: Not currently, it may be supported in the future, but the use of `userbot` has the risk of blocking. The current target group of this project is group/channel owners, self-built to provide convenience to members.
 
 ## LICENSE
 Apache License 2.0
