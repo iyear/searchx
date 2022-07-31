@@ -78,15 +78,16 @@ func Search(c tele.Context) error {
 		maxHighlight := 3
 		count := 0
 		contents := []string{""} // 在两边也添加省略号
+		text := escape(msg.Text)
 		for _, loc := range result.Location["text"] {
-			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End), 5, 5, "*"))
+			contents = append(contents, utils.Highlight(text, int(loc.Start), int(loc.End), 5, 5, "*"))
 			count++
 			if count == maxHighlight {
 				break
 			}
 		}
 		if count == 0 {
-			contents = append(contents, exutf8.RuneSubString(msg.Text, 0, 10))
+			contents = append(contents, exutf8.RuneSubString(text, 0, 10))
 		}
 
 		results = append(results, &model.TSearchResult{
@@ -131,4 +132,8 @@ func searchGetData(data string) (string, int, int) {
 
 func searchSetData(keywords string, pn int, order int) string {
 	return keywords + "|" + strconv.Itoa(pn) + "|" + strconv.Itoa(order)
+}
+
+func escape(s string) string {
+	return strings.NewReplacer("_", "\\_", "*", "\\*", "`", "\\`", "[", "\\[").Replace(s)
 }
