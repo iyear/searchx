@@ -8,6 +8,8 @@
 
 🔎 五分钟强化 Telegram 群组/频道搜索 🚀
 
+[DEMO](https://t.me/e5subs_bot) (需先加入[E5SubBot交流群](https://t.me/e5subbot))
+
 ## 特性
 
 - 最小化配置 & 单文件一键启动

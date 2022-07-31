@@ -4,9 +4,11 @@
 ![](https://img.shields.io/github/v/release/iyear/searchx?color=red&style=flat-square)
 ![](https://img.shields.io/github/last-commit/iyear/searchx?style=flat-square)
 
-English | [简体中文](README_zh.md)
+English | [简体中文](README_zh.md) | [DEMO](https://t.me/e5subs_bot)
 
 🔍 Enhance Telegram Group/Channel Search In 5 Minutes 🚀
+
+[DEMO](https://t.me/e5subs_bot) (Join [E5SubBot Group](https://t.me/e5subbot) in advance)
 
 ## Features
 
