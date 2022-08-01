@@ -113,9 +113,13 @@ func index(src string, chatID int64, _search storage.Search) error {
 			}
 		}
 
-		if !strings.HasPrefix(msg.From, "user") {
+		// user: real user, channel: anonymous user
+		if !strings.HasPrefix(msg.From, "user") && !strings.HasPrefix(msg.From, "channel") {
 			continue
 		}
+
+		sender := strings.TrimPrefix(msg.From, "user")
+		sender = strings.TrimPrefix(sender, "channel")
 
 		if text != "" {
 			items = append(items, &search.Item{
@@ -124,7 +128,7 @@ func index(src string, chatID int64, _search storage.Search) error {
 					ID:     strconv.Itoa(msg.ID),
 					Chat:   strconv.FormatInt(chatID, 10),
 					Text:   strings.ReplaceAll(text, "\n", " "),
-					Sender: strings.TrimPrefix(msg.From, "user"),
+					Sender: sender,
 					Date:   msg.Time,
 				},
 			})
