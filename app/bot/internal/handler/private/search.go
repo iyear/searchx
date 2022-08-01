@@ -78,24 +78,28 @@ func Search(c tele.Context) error {
 		maxHighlight := 3
 		count := 0
 		contents := []string{""} // 在两边也添加省略号
-		text := escape(msg.Text)
+
 		for _, loc := range result.Location["text"] {
-			contents = append(contents, utils.Highlight(text, int(loc.Start), int(loc.End), 5, 5, "*"))
+			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End), 5, 5, "\a"))
 			count++
 			if count == maxHighlight {
 				break
 			}
 		}
 		if count == 0 {
-			contents = append(contents, exutf8.RuneSubString(text, 0, 10))
+			contents = append(contents, exutf8.RuneSubString(msg.Text, 0, 10))
 		}
 
+		// escape:
+		// 1. escape *,[,`,_
+		// 2. highlight \a
+		// 3. replace \a -> *
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
 			Sender:     msg.Sender,
 			SenderLink: "tg://user?id=" + msg.Sender,
 			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
-			Content:    strings.Join(append(contents, ""), "..."),
+			Content:    strings.ReplaceAll(escape(strings.Join(append(contents, ""), "...")), "\a", "*"),
 			Link:       util.GetMsgLink(msg.Chat, msg.ID),
 		})
 	}
