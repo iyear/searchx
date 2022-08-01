@@ -7,6 +7,7 @@ import (
 	"github.com/iyear/searchx/pkg/storage/search"
 	tele "gopkg.in/telebot.v3"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -41,7 +42,7 @@ func index(c tele.Context, text string) error {
 		Data: &models.SearchMsg{
 			ID:     strconv.Itoa(msg.ID),
 			Chat:   msg.Chat.Recipient(),
-			Text:   text,
+			Text:   strings.ReplaceAll(text, "\n", " "),
 			Sender: msg.Sender.Recipient(),
 			Date:   strconv.FormatInt(time.Now().Unix(), 10),
 		},

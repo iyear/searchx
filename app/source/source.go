@@ -123,7 +123,7 @@ func index(src string, chatID int64, _search storage.Search) error {
 				Data: &models.SearchMsg{
 					ID:     strconv.Itoa(msg.ID),
 					Chat:   strconv.FormatInt(chatID, 10),
-					Text:   text,
+					Text:   strings.ReplaceAll(text, "\n", " "),
 					Sender: strings.TrimPrefix(msg.From, "user"),
 					Date:   msg.Time,
 				},
