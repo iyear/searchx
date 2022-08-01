@@ -17,12 +17,12 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	{
 		bot.Handle(config.CmdPing, group.Ping)
 
-		bot.Handle(tele.OnPhoto, group.Index)
-		bot.Handle(tele.OnVideo, group.Index)
-		bot.Handle(tele.OnDocument, group.Index)
-		bot.Handle(tele.OnAudio, group.Index)
-		bot.Handle(tele.OnAnimation, group.Index)
-		bot.Handle(tele.OnEdited, group.Index)
+		bot.Handle(tele.OnPhoto, group.OnPhoto)
+		bot.Handle(tele.OnVideo, group.OnVideo)
+		bot.Handle(tele.OnDocument, group.OnDocument)
+		bot.Handle(tele.OnAudio, group.OnAudio)
+		bot.Handle(tele.OnAnimation, group.OnAnimation)
+		bot.Handle(tele.OnEdited, group.OnText)
 	}
 
 	p := bot.Group()

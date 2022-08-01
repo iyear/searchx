@@ -8,7 +8,7 @@ import (
 
 func OnText(c tele.Context) error {
 	if c.Chat().Type == tele.ChatSuperGroup {
-		return group.Index(c)
+		return group.OnText(c)
 	}
 	return private.Search(c)
 }
