@@ -5,6 +5,7 @@ type TStart struct {
 	Username string
 	Notice   string
 	Chats    []string
+	Version  string
 }
 
 type TSearchResults struct {

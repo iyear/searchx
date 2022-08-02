@@ -4,6 +4,7 @@ import (
 	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/app/bot/internal/model"
 	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/global"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -18,7 +19,8 @@ func Start(c tele.Context) error {
 			ID:       chat.ID,
 			Username: chat.Username,
 			Notice:   config.C.Ctrl.Notice,
-			Chats:    []string{"chat1", "chat2", "chat3"},
+			// Chats:    []string{"chat1", "chat2", "chat3"},
+			Version: global.Version,
 		}), &tele.SendOptions{
 			DisableWebPagePreview: true,
 			ReplyMarkup: &tele.ReplyMarkup{

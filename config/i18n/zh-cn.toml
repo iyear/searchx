@@ -8,6 +8,8 @@ start = """
 
 *公告：*
 {{ .Notice }}
+
+ver: `{{ .Version }}`
 """
 
 [text.search]
