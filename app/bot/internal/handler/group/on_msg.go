@@ -23,6 +23,10 @@ func OnDocument(c tele.Context) error {
 	return index(c, c.Message().Document.FileName+" "+c.Message().Caption)
 }
 
+func OnVoice(c tele.Context) error {
+	return index(c, c.Message().Voice.Caption)
+}
+
 func OnVideo(c tele.Context) error {
 	return index(c, c.Message().Video.FileName+" "+c.Message().Caption)
 }

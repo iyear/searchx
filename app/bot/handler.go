@@ -19,6 +19,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 
 		bot.Handle(tele.OnPhoto, group.OnPhoto)
 		bot.Handle(tele.OnVideo, group.OnVideo)
+		bot.Handle(tele.OnVoice, group.OnVoice)
 		bot.Handle(tele.OnDocument, group.OnDocument)
 		bot.Handle(tele.OnAudio, group.OnAudio)
 		bot.Handle(tele.OnAnimation, group.OnAnimation)
