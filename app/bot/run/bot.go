@@ -4,7 +4,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/iyear/searchx/app/bot/run/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
-	middleware2 "github.com/iyear/searchx/app/bot/run/internal/middleware"
+	"github.com/iyear/searchx/app/bot/run/internal/middleware"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/global"
 	"github.com/iyear/searchx/pkg/logger"
@@ -51,7 +51,7 @@ func Run(cfg string) {
 		Token:     config.C.Bot.Token,
 		Poller:    &tele.LongPoller{Timeout: 5 * time.Second},
 		Client:    getClient(),
-		OnError:   middleware2.OnError(),
+		OnError:   middleware.OnError(),
 		ParseMode: tele.ModeMarkdown,
 	}
 
@@ -71,7 +71,7 @@ func Run(cfg string) {
 		Log: log.Named("bot"),
 	}
 
-	bot.Use(middleware2.SetScope(scope), middleware2.AutoResponder())
+	bot.Use(middleware.SetScope(scope), middleware.AutoResponder())
 
 	makeHandlers(bot, i18n.Templates[config.C.Ctrl.DefaultLanguage].Button)
 

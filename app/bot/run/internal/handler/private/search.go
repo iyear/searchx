@@ -1,9 +1,9 @@
 package private
 
 import (
-	config2 "github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
-	util2 "github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/iyear/searchx/pkg/utils"
@@ -17,9 +17,9 @@ import (
 
 func Search(c tele.Context) error {
 	var btns [][]tele.InlineButton
-	pn, order, keyword, ps := 0, 0, "", config2.C.Ctrl.Search.PageSize
+	pn, order, keyword, ps := 0, 0, "", config.C.Ctrl.Search.PageSize
 
-	sp := util2.GetScope(c)
+	sp := util.GetScope(c)
 
 	start := time.Now()
 
@@ -27,7 +27,7 @@ func Search(c tele.Context) error {
 	if c.Callback() == nil { // 初始
 		// 由于c.Data长度限制，关键词长度也限制
 		if len(keyword) > 55 {
-			return util2.EditOrSendWithBack(c, sp.Template.Text.Search.KeywordsTooLong.T(nil))
+			return util.EditOrSendWithBack(c, sp.Template.Text.Search.KeywordsTooLong.T(nil))
 		}
 	} else {
 		keyword, pn, order = searchGetData(c.Data())
@@ -37,8 +37,8 @@ func Search(c tele.Context) error {
 	nextBtn.Data = searchSetData(keyword, pn+1, order)
 
 	orderBtn := sp.Template.Button.Search.SwitchOrder
-	orderBtn.Text = config2.SearchOrders[order].Text
-	nextOrder := (order + 1) % len(config2.SearchOrders)
+	orderBtn.Text = config.SearchOrders[order].Text
+	nextOrder := (order + 1) % len(config.SearchOrders)
 	orderBtn.Data = searchSetData(keyword, pn, nextOrder)
 
 	prevBtn := sp.Template.Button.Search.Prev
@@ -48,7 +48,7 @@ func Search(c tele.Context) error {
 	searchResults := sp.Storage.Search.Search(keyword, &search.Options{
 		From:   pn * ps,
 		Size:   ps + 1,
-		SortBy: config2.SearchOrders[order].SortBy,
+		SortBy: config.SearchOrders[order].SortBy,
 	})
 	if pn == 0 {
 		if len(searchResults) > ps {
@@ -100,11 +100,11 @@ func Search(c tele.Context) error {
 			SenderLink: "tg://user?id=" + msg.Sender,
 			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    strings.ReplaceAll(escape(strings.Join(append(contents, ""), "...")), "\a", "*"),
-			Link:       util2.GetMsgLink(msg.Chat, msg.ID),
+			Link:       util.GetMsgLink(msg.Chat, msg.ID),
 		})
 	}
 
-	return util2.EditOrSendWithBack(c, sp.Template.Text.Search.Results.T(&model.TSearchResults{
+	return util.EditOrSendWithBack(c, sp.Template.Text.Search.Results.T(&model.TSearchResults{
 		Results: results,
 		Keyword: keyword,
 		Took:    time.Since(start).Milliseconds(),

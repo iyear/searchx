@@ -6,24 +6,24 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
 	"github.com/iyear/searchx/app/bot/run/internal/key"
 	"github.com/iyear/searchx/app/bot/run/internal/middleware"
-	util2 "github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
 )
 
 func SettingsBtn(c tele.Context) error {
-	sp := util2.GetScope(c)
+	sp := util.GetScope(c)
 
-	return util2.EditOrSendWithBack(c, sp.Template.Text.Settings.Desc.T(nil),
+	return util.EditOrSendWithBack(c, sp.Template.Text.Settings.Desc.T(nil),
 		&tele.ReplyMarkup{InlineKeyboard: [][]tele.InlineButton{{sp.Template.Button.Settings.Language}}})
 }
 
 func SettingsLanguage(c tele.Context) error {
-	sp := util2.GetScope(c)
+	sp := util.GetScope(c)
 
 	langBtns := make([][]tele.InlineButton, 0)
 
-	nowLang := util2.GetUserLanguage(sp.Storage, c.Chat().ID)
+	nowLang := util.GetUserLanguage(sp.Storage, c.Chat().ID)
 
 	for _, code := range i18n.Languages {
 		langBtn := sp.Template.Button.Settings.LanguagePlain
@@ -34,15 +34,15 @@ func SettingsLanguage(c tele.Context) error {
 		langBtns = append(langBtns, []tele.InlineButton{langBtn})
 	}
 
-	return util2.EditOrSendWithBack(c, sp.Template.Text.Settings.Language.T(iso6391.FromCode(nowLang).NativeName),
+	return util.EditOrSendWithBack(c, sp.Template.Text.Settings.Language.T(iso6391.FromCode(nowLang).NativeName),
 		&tele.ReplyMarkup{InlineKeyboard: langBtns})
 }
 
 func SettingsSwitchLanguage(c tele.Context) error {
-	sp := util2.GetScope(c)
+	sp := util.GetScope(c)
 
 	// 相同则不做任何事
-	if util2.GetUserLanguage(sp.Storage, c.Chat().ID) == c.Data() {
+	if util.GetUserLanguage(sp.Storage, c.Chat().ID) == c.Data() {
 		return nil
 	}
 
