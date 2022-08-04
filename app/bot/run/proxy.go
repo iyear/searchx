@@ -31,5 +31,5 @@ func getClient() *http.Client {
 			"user", user,
 			"password", password)
 	}
-	return &http.Client{Transport: &http.Transport{Dial: dialer.Dial}}
+	return &http.Client{Transport: &http.Transport{DialContext: dialer.(proxy.ContextDialer).DialContext}}
 }
