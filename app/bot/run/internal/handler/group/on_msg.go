@@ -1,7 +1,7 @@
 package group
 
 import (
-	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"

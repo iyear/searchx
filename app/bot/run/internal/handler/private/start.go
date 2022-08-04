@@ -1,9 +1,9 @@
 package private
 
 import (
-	"github.com/iyear/searchx/app/bot/internal/config"
-	"github.com/iyear/searchx/app/bot/internal/model"
-	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/model"
+	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/global"
 	tele "gopkg.in/telebot.v3"
 )

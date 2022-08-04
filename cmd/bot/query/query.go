@@ -2,7 +2,7 @@ package query
 
 import (
 	"github.com/fatih/color"
-	"github.com/iyear/searchx/app/query"
+	"github.com/iyear/searchx/app/bot/query"
 	"github.com/spf13/cobra"
 )
 

@@ -2,7 +2,7 @@ package source
 
 import (
 	"github.com/fatih/color"
-	"github.com/iyear/searchx/app/source"
+	"github.com/iyear/searchx/app/bot/source"
 	"github.com/spf13/cobra"
 )
 

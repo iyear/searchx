@@ -1,7 +1,7 @@
 package group
 
 import (
-	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/app/bot/run/internal/util"
 	tele "gopkg.in/telebot.v3"
 )
 

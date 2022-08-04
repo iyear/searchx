@@ -1,8 +1,8 @@
-package bot
+package run
 
 import (
 	"fmt"
-	"github.com/iyear/searchx/app/bot/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/config"
 	"go.uber.org/zap"
 	"golang.org/x/net/proxy"
 	"net/http"

@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"github.com/iyear/searchx/app/bot/internal/config"
-	"github.com/iyear/searchx/app/bot/internal/i18n"
-	"github.com/iyear/searchx/app/bot/internal/model"
-	"github.com/iyear/searchx/app/bot/internal/util"
+	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/i18n"
+	"github.com/iyear/searchx/app/bot/run/internal/model"
+	"github.com/iyear/searchx/app/bot/run/internal/util"
 	tele "gopkg.in/telebot.v3"
 )
 
