@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/validator"
 	"github.com/spf13/viper"
 )
@@ -42,21 +43,8 @@ type config struct {
 		} `mapstructure:"socks5"`
 		Admin []int64 `mapstructure:"admin" validate:"required"`
 	} `mapstructure:"bot"`
-	Storage struct {
-		KV struct {
-			Driver  string                 `mapstructure:"driver" validate:"oneof=bolt" default:"bolt"`
-			Options map[string]interface{} `mapstructure:"options"`
-		} `mapstructure:"kv"`
-		Search struct {
-			Driver  string                 `mapstructure:"driver" validate:"oneof=bleve" default:"bleve"`
-			Options map[string]interface{} `mapstructure:"options"`
-		} `mapstructure:"search"`
-		Cache struct {
-			Driver  string                 `mapstructure:"driver" validate:"oneof=gocache" default:"gocache"`
-			Options map[string]interface{} `mapstructure:"options"`
-		} `mapstructure:"cache"`
-	}
-	Ctrl struct {
+	Storage storage.Config `mapstructure:"storage"`
+	Ctrl    struct {
 		Notice          string `mapstructure:"notice" default:"NO NOTICE"`
 		I18N            string `mapstructure:"i18n" validate:"dir" default:"config/i18n"`
 		DefaultLanguage string `mapstructure:"default_language" validate:"iso6391" default:"zh-cn"`
