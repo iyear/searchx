@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/iyear/searchx/cmd/bot"
+	"github.com/iyear/searchx/cmd/usr"
 	"github.com/iyear/searchx/cmd/version"
 	"github.com/spf13/cobra"
 )
@@ -12,7 +13,7 @@ var cmd = &cobra.Command{
 }
 
 func init() {
-	cmd.AddCommand(bot.Cmd, version.Cmd)
+	cmd.AddCommand(bot.Cmd, usr.Cmd, version.Cmd)
 }
 
 func Execute() {

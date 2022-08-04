@@ -9,7 +9,7 @@ import (
 
 var Cmd = &cobra.Command{
 	Use:   "bot",
-	Short: "Official telegram bot for group/channel owner",
+	Short: "Official Telegram bot for group/channel owner",
 }
 
 func init() {
