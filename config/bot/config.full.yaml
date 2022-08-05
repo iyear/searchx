@@ -19,6 +19,12 @@ ctrl:
     [YOUR_NOTICE_MESSAGE](https://www.google.com)
   i18n: config/bot/i18n # i18n files directory, default: config/bot/i18n
   default_language: zh-cn # default language, default: zh-cn
+  log:
+    enable: true # enable log, default: true
+    # log level
+    # one of: debug, info, warn, error, fatal
+    # default: info
+    level: info
   search:
     page_size: 10 # number of results per page(1-20), default: 10
 storage:

@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/validator"
 	"github.com/spf13/viper"
@@ -51,5 +52,6 @@ type config struct {
 		Search          struct {
 			PageSize int `mapstructure:"page_size" validate:"gte=1,lte=20" default:"10"`
 		} `mapstructure:"search"`
+		Log logger.Config `mapstructure:"log"`
 	} `mapstructure:"ctrl"`
 }

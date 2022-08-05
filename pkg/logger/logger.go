@@ -7,9 +7,9 @@ import (
 	"os"
 )
 
-func getLogWriter() zapcore.WriteSyncer {
+func getLogWriter(filename string) zapcore.WriteSyncer {
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   "./log/latest.log",
+		Filename:   filename,
 		MaxSize:    5,
 		MaxBackups: 5,
 		MaxAge:     30,
@@ -25,9 +25,20 @@ func getEncoder() zapcore.Encoder {
 	return zapcore.NewConsoleEncoder(encoderConfig)
 }
 
-func Init() *zap.SugaredLogger {
-	writeSyncer := getLogWriter()
+func New(enable bool, filename, level string) *zap.SugaredLogger {
+	if !enable {
+		return zap.NewNop().Sugar()
+	}
+	writeSyncer := getLogWriter(filename)
 	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writeSyncer, zap.DebugLevel)
+
+	levels := map[string]zapcore.Level{
+		"debug": zapcore.DebugLevel,
+		"info":  zapcore.InfoLevel,
+		"warn":  zapcore.WarnLevel,
+		"error": zapcore.ErrorLevel,
+		"fatal": zapcore.FatalLevel,
+	}
+	core := zapcore.NewCore(encoder, writeSyncer, levels[level])
 	return zap.New(core, zap.AddCaller()).Sugar()
 }
