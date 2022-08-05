@@ -9,8 +9,10 @@ import (
 	"github.com/iyear/searchx/global"
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
+	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -23,7 +25,7 @@ func Run(cfg string) {
 	}
 	color.Blue("Config loaded")
 
-	slog := logger.New(config.C.Ctrl.Log.Enable, "log/bot/latest.log", config.C.Ctrl.Log.Level)
+	slog := logger.New(config.C.Log.Enable, "log/bot/latest.log", config.C.Log.Level)
 
 	if err := i18n.Init(config.C.Ctrl.I18N); err != nil {
 		slog.Fatalw("init i18n templates failed", "err", err)
@@ -48,10 +50,15 @@ func Run(cfg string) {
 	}
 	color.Blue("Cache initialized")
 
+	dialer, err := utils.ProxyFromURL(config.C.Proxy)
+	if err != nil {
+		slog.Fatalw("init proxy failed", "err", err, "proxy", config.C.Proxy)
+	}
+
 	settings := tele.Settings{
 		Token:     config.C.Bot.Token,
 		Poller:    &tele.LongPoller{Timeout: 5 * time.Second},
-		Client:    getClient(),
+		Client:    &http.Client{Transport: &http.Transport{DialContext: dialer.DialContext}},
 		OnError:   middleware.OnError(),
 		ParseMode: tele.ModeMarkdown,
 	}

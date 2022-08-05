@@ -34,17 +34,12 @@ func Init(path string) error {
 
 type config struct {
 	Bot struct {
-		Token  string `mapstructure:"token" validate:"required"`
-		Socks5 struct {
-			Enable   bool   `mapstructure:"enable"`
-			Host     string `mapstructure:"host" validate:"hostname" default:"localhost"`
-			Port     int    `mapstructure:"port" default:"1080"`
-			User     string `mapstructure:"user"`
-			Password string `mapstructure:"password"`
-		} `mapstructure:"socks5"`
+		Token string  `mapstructure:"token" validate:"required"`
 		Admin []int64 `mapstructure:"admin" validate:"required"`
 	} `mapstructure:"bot"`
+	Proxy   string         `mapstructure:"proxy" validate:"omitempty,url"`
 	Storage storage.Config `mapstructure:"storage"`
+	Log     logger.Config  `mapstructure:"log"`
 	Ctrl    struct {
 		Notice          string `mapstructure:"notice" default:"NO NOTICE"`
 		I18N            string `mapstructure:"i18n" validate:"dir" default:"config/bot/i18n"`
@@ -52,6 +47,5 @@ type config struct {
 		Search          struct {
 			PageSize int `mapstructure:"page_size" validate:"gte=1,lte=20" default:"10"`
 		} `mapstructure:"search"`
-		Log logger.Config `mapstructure:"log"`
 	} `mapstructure:"ctrl"`
 }
