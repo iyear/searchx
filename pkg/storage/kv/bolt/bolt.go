@@ -10,7 +10,7 @@ import (
 )
 
 type Options struct {
-	Path string `mapstructure:"path" default:"data.kv"`
+	Path string `mapstructure:"path" default:"data/data.kv"`
 }
 
 type Bolt struct {

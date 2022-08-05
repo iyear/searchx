@@ -18,5 +18,5 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.PersistentFlags().StringVarP(&cfg, "config", "c", "config/config.yaml", "the path to the config file")
+	Cmd.PersistentFlags().StringVarP(&cfg, "config", "c", "config/bot/config.min.yaml", "the path to the config file")
 }

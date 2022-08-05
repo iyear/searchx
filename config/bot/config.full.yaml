@@ -17,7 +17,7 @@ ctrl:
     _YOUR_NOTICE_MESSAGE_
     `YOUR_NOTICE_MESSAGE`
     [YOUR_NOTICE_MESSAGE](https://www.google.com)
-  i18n: ./config/i18n # i18n files directory, default: config/i18n
+  i18n: config/bot/i18n # i18n files directory, default: config/bot/i18n
   default_language: zh-cn # default language, default: zh-cn
   search:
     page_size: 10 # number of results per page(1-20), default: 10
@@ -27,9 +27,9 @@ storage:
   kv:
     driver: bolt # support: bolt, default: bolt
     options:
-      path: data.kv # bolt db path, default: data.kv
+      path: data/data.kv # bolt db path, default: data/data.kv
   search:
     driver: bleve # support: bleve, default: bleve
     options:
-      path: index # bleve index dir path, default: index
-      dict: config/dict.txt # dictionary file path, default: config/dict.txt
+      path: data/index # bleve index dir path, default: data/index
+      dict: data/dict.txt # dictionary file path, default: data/dict.txt

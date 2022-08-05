@@ -46,7 +46,7 @@ type config struct {
 	Storage storage.Config `mapstructure:"storage"`
 	Ctrl    struct {
 		Notice          string `mapstructure:"notice" default:"NO NOTICE"`
-		I18N            string `mapstructure:"i18n" validate:"dir" default:"config/i18n"`
+		I18N            string `mapstructure:"i18n" validate:"dir" default:"config/bot/i18n"`
 		DefaultLanguage string `mapstructure:"default_language" validate:"iso6391" default:"zh-cn"`
 		Search          struct {
 			PageSize int `mapstructure:"page_size" validate:"gte=1,lte=20" default:"10"`

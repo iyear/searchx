@@ -42,10 +42,8 @@ archives:
     files:
       - README.md
       - LICENSE
-      - config/i18n/*
-      - config/dict.txt
-      - config/config.full.yaml
-      - config/config.min.yaml
+      - config/**/*
+      - data/**/*
 changelog:
   use: github
   sort: asc

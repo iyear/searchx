@@ -17,8 +17,8 @@ type Bleve struct {
 }
 
 type Options struct {
-	Path string `mapstructure:"path" default:"index"`
-	Dict string `mapstructure:"dict" validate:"file" default:"config/dict.txt"`
+	Path string `mapstructure:"path" default:"data/index"`
+	Dict string `mapstructure:"dict" validate:"file" default:"data/dict.txt"`
 }
 
 const (
