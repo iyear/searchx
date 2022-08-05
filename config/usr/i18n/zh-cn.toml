@@ -1,0 +1,33 @@
+[text]
+start = """
+✨ 你好！[{{ .Username }}](tg://user?id={{ .ID }}) ✨
+
+🤖 [SearchX](https://github.com/iyear/searchx) *是专注于强化搜索体验的 Bot*
+
+⚡ *发送关键字开始体验强化搜索！*
+
+*公告：*
+{{ .Notice }}
+
+ver: `{{ .Version }}`
+"""
+
+[text.search]
+keywords_too_long = "⚠ 关键词过长，请适当缩短关键词"
+results = """
+👉 搜索: *{{ .Keyword }}* 👈
+{{ range .Results }}
+*{{ .Seq }}.* [{{ .Sender }}]({{ .SenderLink }}) - {{ .Date }} [→]({{ .Link }})
+  | {{ .Content }}
+{{ end }}
+
+⏳ 本次搜索花费时间: `{{ .Took }}ms`
+"""
+
+[button]
+back = "⬅ 返回"
+
+[button.search]
+next = "👉 下一页"
+prev = "👈 上一页"
+switch_order = "🔀"
