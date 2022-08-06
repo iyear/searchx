@@ -32,13 +32,10 @@ func New(enable bool, filename, level string) *zap.SugaredLogger {
 	writeSyncer := getLogWriter(filename)
 	encoder := getEncoder()
 
-	levels := map[string]zapcore.Level{
-		"debug": zapcore.DebugLevel,
-		"info":  zapcore.InfoLevel,
-		"warn":  zapcore.WarnLevel,
-		"error": zapcore.ErrorLevel,
-		"fatal": zapcore.FatalLevel,
+	l, err := zapcore.ParseLevel(level)
+	if err != nil {
+		l = zapcore.InfoLevel
 	}
-	core := zapcore.NewCore(encoder, writeSyncer, levels[level])
+	core := zapcore.NewCore(encoder, writeSyncer, l)
 	return zap.New(core, zap.AddCaller()).Sugar()
 }
