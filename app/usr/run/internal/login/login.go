@@ -51,6 +51,7 @@ func Start() error {
 		Resolver: dcs.Plain(dcs.PlainOptions{
 			Dial: dialer.DialContext,
 		}),
+		Device:         config.Device,
 		SessionStorage: sess,
 		Logger:         zap.NewNop(),
 	})
