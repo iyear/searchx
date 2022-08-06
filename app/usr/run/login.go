@@ -1,5 +1,0 @@
-package run
-
-func startLogin() {
-
-}

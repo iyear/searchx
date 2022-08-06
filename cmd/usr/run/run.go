@@ -12,7 +12,7 @@ var (
 
 var Cmd = &cobra.Command{
 	Use:   "run",
-	Short: "Run the (user)bot",
+	Short: "startLogin the (user)bot",
 	Run: func(cmd *cobra.Command, args []string) {
 		run.Run(cfg, login)
 	},
