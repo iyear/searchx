@@ -138,7 +138,7 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		}
 
 		// Notify update manager about authentication.
-		if err := gaps.Auth(ctx, c.API(), status.User.ID, status.User.Bot, true); err != nil {
+		if err := gaps.Auth(ctx, c.API(), status.User.ID, status.User.Bot, false); err != nil {
 			return err
 		}
 		defer func() { _ = gaps.Logout() }()

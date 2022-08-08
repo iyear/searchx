@@ -22,6 +22,10 @@ func (h *AccessHasher) SetChannelAccessHash(userID, channelID, accessHash int64)
 		return err
 	}
 
+	if errors.Is(err, kv.ErrNotFound) {
+		data = "{}"
+	}
+
 	m := make(map[int64]int64)
 	if err = json.Unmarshal([]byte(data), &m); err != nil {
 		return err
