@@ -13,3 +13,8 @@ var (
 		AppVersion:    global.Version,
 	}
 )
+
+const (
+	ContextScope  = "scope"
+	ContextClient = "client"
+)

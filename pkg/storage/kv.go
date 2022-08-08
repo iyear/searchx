@@ -6,6 +6,7 @@ import (
 )
 
 type KV interface {
+	// Get returns kv.ErrNotFound if the key does not exist
 	Get(key string) (string, error)
 	Set(key string, val string) error
 }

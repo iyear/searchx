@@ -1,8 +1,8 @@
 package bolt
 
 import (
-	"fmt"
 	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/storage/kv"
 	"github.com/iyear/searchx/pkg/validator"
 	"github.com/mitchellh/mapstructure"
 	"go.etcd.io/bbolt"
@@ -60,7 +60,7 @@ func (b *Bolt) Get(key string) (string, error) {
 	}
 
 	if val == nil {
-		return "", fmt.Errorf("%s is not found", key)
+		return "", kv.ErrNotFound
 	}
 
 	return string(val), nil
