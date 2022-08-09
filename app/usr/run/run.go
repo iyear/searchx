@@ -111,7 +111,7 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 	dispatcher := tg.NewUpdateDispatcher()
 	gaps := updates.New(updates.Config{
 		Handler:      dispatcher,
-		Logger:       slog.Named("usr").Desugar(),
+		Logger:       zap.NewNop(),
 		Storage:      sto.NewState(kv),
 		AccessHasher: sto.NewAccessHasher(kv),
 	})
@@ -138,7 +138,7 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		}
 
 		// Notify update manager about authentication.
-		if err := gaps.Auth(ctx, c.API(), status.User.ID, status.User.Bot, false); err != nil {
+		if err := gaps.Auth(ctx, c.API(), status.User.ID, true, false); err != nil {
 			return err
 		}
 		defer func() { _ = gaps.Logout() }()
