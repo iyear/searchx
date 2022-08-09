@@ -17,18 +17,31 @@ func NewState(kv storage.KV) *State {
 	return &State{kv: kv}
 }
 
+func (s *State) Get(key string, v interface{}) error {
+	data, err := s.kv.Get(key)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal([]byte(data), v)
+}
+
+func (s *State) Set(key string, v interface{}) error {
+	data, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	return s.kv.Set(key, string(data))
+}
+
 func (s *State) GetState(userID int64) (updates.State, bool, error) {
 	state := updates.State{}
 
-	data, err := s.kv.Get(key.State(userID))
-	if err != nil {
+	if err := s.Get(key.State(userID), &state); err != nil {
 		if errors.Is(err, kv.ErrNotFound) {
 			return state, false, nil
 		}
-		return state, false, err
-	}
-
-	if err = json.Unmarshal([]byte(data), &state); err != nil {
 		return state, false, err
 	}
 
@@ -36,125 +49,71 @@ func (s *State) GetState(userID int64) (updates.State, bool, error) {
 }
 
 func (s *State) SetState(userID int64, state updates.State) error {
-	data, err := json.Marshal(state)
-	if err != nil {
+	if err := s.Set(key.State(userID), state); err != nil {
 		return err
 	}
 
-	if err = s.kv.Set(key.State(userID), string(data)); err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.StateChannel(userID), "{}")
+	return s.Set(key.StateChannel(userID), struct{}{})
 }
 
 func (s *State) SetPts(userID int64, pts int) error {
-	state, found, err := s.GetState(userID)
-	if err != nil {
+	state, k := updates.State{}, key.State(userID)
+
+	if err := s.Get(k, &state); err != nil {
 		return err
 	}
-	if !found {
-		return kv.ErrNotFound
-	}
-
 	state.Pts = pts
-
-	data, err := json.Marshal(state)
-	if err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.State(userID), string(data))
+	return s.Set(k, state)
 }
 
 func (s *State) SetQts(userID int64, qts int) error {
-	state, found, err := s.GetState(userID)
-	if err != nil {
+	state, k := updates.State{}, key.State(userID)
+
+	if err := s.Get(k, &state); err != nil {
 		return err
 	}
-	if !found {
-		return kv.ErrNotFound
-	}
-
 	state.Qts = qts
-
-	data, err := json.Marshal(state)
-	if err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.State(userID), string(data))
+	return s.Set(k, state)
 }
 
 func (s *State) SetDate(userID int64, date int) error {
-	state, found, err := s.GetState(userID)
-	if err != nil {
+	state, k := updates.State{}, key.State(userID)
+
+	if err := s.Get(k, &state); err != nil {
 		return err
 	}
-	if !found {
-		return kv.ErrNotFound
-	}
-
 	state.Date = date
-
-	data, err := json.Marshal(state)
-	if err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.State(userID), string(data))
+	return s.Set(k, state)
 }
 
 func (s *State) SetSeq(userID int64, seq int) error {
-	state, found, err := s.GetState(userID)
-	if err != nil {
+	state, k := updates.State{}, key.State(userID)
+
+	if err := s.Get(k, &state); err != nil {
 		return err
 	}
-	if !found {
-		return kv.ErrNotFound
-	}
-
 	state.Seq = seq
-
-	data, err := json.Marshal(state)
-	if err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.State(userID), string(data))
+	return s.Set(k, state)
 }
 
 func (s *State) SetDateSeq(userID int64, date, seq int) error {
-	state, found, err := s.GetState(userID)
-	if err != nil {
+	state, k := updates.State{}, key.State(userID)
+
+	if err := s.Get(k, &state); err != nil {
 		return err
 	}
-	if !found {
-		return kv.ErrNotFound
-	}
-
 	state.Date = date
 	state.Seq = seq
-
-	data, err := json.Marshal(state)
-	if err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.State(userID), string(data))
+	return s.Set(k, state)
 }
 
 func (s *State) GetChannelPts(userID, channelID int64) (int, bool, error) {
-	data, err := s.kv.Get(key.StateChannel(userID))
-	if err != nil {
+	c := make(map[int64]int)
+
+	if err := s.Get(key.StateChannel(userID), &c); err != nil {
 		if errors.Is(err, kv.ErrNotFound) {
 			return 0, false, nil
 		}
-		return 0, false, err
-	}
-
-	c := make(map[int64]int)
-	if err = json.Unmarshal([]byte(data), &c); err != nil {
 		return 0, false, err
 	}
 
@@ -167,38 +126,24 @@ func (s *State) GetChannelPts(userID, channelID int64) (int, bool, error) {
 }
 
 func (s *State) SetChannelPts(userID, channelID int64, pts int) error {
-	data, err := s.kv.Get(key.StateChannel(userID))
-	if err != nil {
+	c, k := make(map[int64]int), key.StateChannel(userID)
+
+	if err := s.Get(k, &c); err != nil {
 		return err
 	}
-
-	c := make(map[int64]int)
-	if err = json.Unmarshal([]byte(data), &c); err != nil {
-		return err
-	}
-
 	c[channelID] = pts
-	b, err := json.Marshal(c)
-	if err != nil {
-		return err
-	}
-
-	return s.kv.Set(key.StateChannel(userID), string(b))
+	return s.Set(k, c)
 }
 
 func (s *State) ForEachChannels(userID int64, f func(channelID int64, pts int) error) error {
-	data, err := s.kv.Get(key.StateChannel(userID))
-	if err != nil {
-		return err
-	}
-
 	c := make(map[int64]int)
-	if err = json.Unmarshal([]byte(data), &c); err != nil {
+
+	if err := s.Get(key.StateChannel(userID), &c); err != nil {
 		return err
 	}
 
 	for channelID, pts := range c {
-		if err = f(channelID, pts); err != nil {
+		if err := f(channelID, pts); err != nil {
 			return err
 		}
 	}
