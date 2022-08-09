@@ -25,11 +25,12 @@ const (
 )
 
 type message struct {
-	ID   int         `mapstructure:"id"`
-	Type string      `mapstructure:"type"`
-	Time string      `mapstructure:"date_unixtime"`
-	From string      `mapstructure:"from_id"`
-	Text interface{} `mapstructure:"text"`
+	ID     int         `mapstructure:"id"`
+	Type   string      `mapstructure:"type"`
+	Time   string      `mapstructure:"date_unixtime"`
+	FromID string      `mapstructure:"from_id"`
+	From   string      `mapstructure:"from"`
+	Text   interface{} `mapstructure:"text"`
 }
 
 func Start(src, searchDriver string, searchOptions map[string]string) error {
@@ -114,22 +115,23 @@ func index(src string, chatID int64, _search storage.Search) error {
 		}
 
 		// user: real user, channel: anonymous user
-		if !strings.HasPrefix(msg.From, "user") && !strings.HasPrefix(msg.From, "channel") {
+		if !strings.HasPrefix(msg.FromID, "user") && !strings.HasPrefix(msg.FromID, "channel") {
 			continue
 		}
 
-		sender := strings.TrimPrefix(msg.From, "user")
+		sender := strings.TrimPrefix(msg.FromID, "user")
 		sender = strings.TrimPrefix(sender, "channel")
 
 		if text != "" {
 			items = append(items, &search.Item{
 				ID: keygen.SearchMsgID(chatID, msg.ID),
 				Data: &models.SearchMsg{
-					ID:     strconv.Itoa(msg.ID),
-					Chat:   strconv.FormatInt(chatID, 10),
-					Text:   strings.ReplaceAll(text, "\n", " "),
-					Sender: sender,
-					Date:   msg.Time,
+					ID:         strconv.Itoa(msg.ID),
+					Chat:       strconv.FormatInt(chatID, 10),
+					Text:       strings.ReplaceAll(text, "\n", " "),
+					Sender:     sender,
+					SenderName: msg.From,
+					Date:       msg.Time,
 				},
 			})
 		}

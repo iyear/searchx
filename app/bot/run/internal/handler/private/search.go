@@ -80,7 +80,7 @@ func Search(c tele.Context) error {
 		contents := []string{""} // 在两边也添加省略号
 
 		for _, loc := range result.Location["text"] {
-			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End), 5, 5, "\a"))
+			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End), config.HighlightSpace, config.HighlightSpace, "\a"))
 			count++
 			if count == maxHighlight {
 				break
@@ -94,9 +94,15 @@ func Search(c tele.Context) error {
 		// 1. escape *,[,`,_
 		// 2. highlight \a
 		// 3. replace \a -> *
+
+		sender := exutf8.RuneSubString(msg.SenderName, 0, config.SenderNameMax)
+		if sender == "" {
+			sender = msg.Sender
+		}
+
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
-			Sender:     msg.Sender,
+			SenderName: strings.TrimSpace(sender),
 			SenderLink: "tg://user?id=" + msg.Sender,
 			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    strings.ReplaceAll(escape(strings.Join(append(contents, ""), "...")), "\a", "*"),

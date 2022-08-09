@@ -16,7 +16,7 @@ type TSearchResults struct {
 
 type TSearchResult struct {
 	Seq        int
-	Sender     string
+	SenderName string
 	SenderLink string
 	Date       string
 	Content    string

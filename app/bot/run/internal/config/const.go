@@ -10,6 +10,11 @@ const (
 )
 
 const (
+	HighlightSpace = 12
+	SenderNameMax  = 6
+)
+
+const (
 	CmdStart = "/start"
 	CmdPing  = "/ping"
 )

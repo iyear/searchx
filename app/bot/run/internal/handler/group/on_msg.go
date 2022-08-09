@@ -5,6 +5,7 @@ import (
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
+	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
 	"strconv"
 	"strings"
@@ -44,11 +45,12 @@ func index(c tele.Context, text string) error {
 	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
 		ID: keygen.SearchMsgID(msg.Chat.ID, msg.ID),
 		Data: &models.SearchMsg{
-			ID:     strconv.Itoa(msg.ID),
-			Chat:   msg.Chat.Recipient(),
-			Text:   strings.ReplaceAll(text, "\n", " "),
-			Sender: msg.Sender.Recipient(),
-			Date:   strconv.FormatInt(time.Now().Unix(), 10),
+			ID:         strconv.Itoa(msg.ID),
+			Chat:       msg.Chat.Recipient(),
+			Text:       strings.ReplaceAll(text, "\n", " "),
+			Sender:     msg.Sender.Recipient(),
+			SenderName: utils.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
+			Date:       strconv.FormatInt(time.Now().Unix(), 10),
 		},
 	}})
 }

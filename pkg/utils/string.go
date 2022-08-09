@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-//Highlight start,end are valid string indexes. before,after are rune length
+// Highlight start,end are valid string indexes. before,after are rune length
 func Highlight(s string, start, end, before, after int, highlight string) string {
 	if start >= end {
 		return ""
@@ -46,4 +46,15 @@ func MustGetDate(unix string) time.Time {
 	}
 
 	return time.Unix(u, 0)
+}
+
+func GetSenderName(first, last string) string {
+	if last == "" {
+		return first
+	}
+	if first == "" {
+		return last
+	}
+
+	return first + " " + last
 }
