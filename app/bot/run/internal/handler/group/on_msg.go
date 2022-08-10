@@ -9,7 +9,6 @@ import (
 	tele "gopkg.in/telebot.v3"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func OnText(c tele.Context) error {
@@ -50,7 +49,7 @@ func index(c tele.Context, text string) error {
 			Text:       strings.ReplaceAll(text, "\n", " "),
 			Sender:     msg.Sender.Recipient(),
 			SenderName: utils.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
-			Date:       strconv.FormatInt(time.Now().Unix(), 10),
+			Date:       strconv.FormatInt(msg.Unixtime, 10),
 		},
 	}})
 }
