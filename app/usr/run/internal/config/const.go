@@ -15,6 +15,5 @@ var (
 )
 
 const (
-	ContextScope  = "scope"
-	ContextClient = "client"
+	ContextScope = "scope"
 )

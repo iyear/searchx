@@ -92,17 +92,19 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 	if !ok {
 		slog.Fatalw("language is not supported", "language", config.C.Ctrl.Language)
 	}
-	scope := &model.BotScope{
-		Storage: &model.Storage{
-			KV:     kv,
-			Search: search,
-			Cache:  cache,
-		},
+	_storage := &model.Storage{
+		KV:     kv,
+		Search: search,
+		Cache:  cache,
+	}
+
+	botScope := &model.BotScope{
+		Storage:  _storage,
 		Template: template,
 		Log:      slog.Named("bot"),
 	}
 
-	bot.Use(middleware.SetScope(scope), middleware.AutoResponder())
+	bot.Use(middleware.SetScope(botScope), middleware.AutoResponder())
 
 	go bot.Start()
 	defer bot.Stop()
@@ -128,7 +130,12 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		},
 	})
 
-	return c.Run(context.WithValue(ctx, config.ContextClient, c), func(ctx context.Context) error {
+	usrScope := &model.UsrScope{
+		Storage: _storage,
+		Log:     slog.Named("usr"),
+		Client:  c,
+	}
+	return c.Run(context.WithValue(ctx, config.ContextScope, usrScope), func(ctx context.Context) error {
 		status, err := c.Auth().Status(ctx)
 		if err != nil {
 			return err

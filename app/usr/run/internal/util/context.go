@@ -1,6 +1,7 @@
 package util
 
 import (
+	"context"
 	"github.com/iyear/searchx/app/usr/run/internal/config"
 	"github.com/iyear/searchx/app/usr/run/internal/model"
 	tele "gopkg.in/telebot.v3"
@@ -8,4 +9,8 @@ import (
 
 func GetBotScope(c tele.Context) *model.BotScope {
 	return c.Get(config.ContextScope).(*model.BotScope)
+}
+
+func GetUsrScope(c context.Context) *model.UsrScope {
+	return c.Value(config.ContextScope).(*model.UsrScope)
 }
