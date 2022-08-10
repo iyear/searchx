@@ -92,7 +92,7 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 	if !ok {
 		slog.Fatalw("language is not supported", "language", config.C.Ctrl.Language)
 	}
-	scope := &model.Scope{
+	scope := &model.BotScope{
 		Storage: &model.Storage{
 			KV:     kv,
 			Search: search,

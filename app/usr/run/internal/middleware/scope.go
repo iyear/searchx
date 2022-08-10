@@ -6,7 +6,7 @@ import (
 	tele "gopkg.in/telebot.v3"
 )
 
-func SetScope(sp *model.Scope) tele.MiddlewareFunc {
+func SetScope(sp *model.BotScope) tele.MiddlewareFunc {
 	return func(next tele.HandlerFunc) tele.HandlerFunc {
 		return func(c tele.Context) error {
 			c.Set(config.ContextScope, sp)

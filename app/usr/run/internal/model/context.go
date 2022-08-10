@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 )
 
-type Scope struct {
+type BotScope struct {
 	Storage  *Storage
 	Template *i18n.Template
 	Log      *zap.SugaredLogger
