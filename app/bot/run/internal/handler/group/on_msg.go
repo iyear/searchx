@@ -41,6 +41,12 @@ func OnAnimation(c tele.Context) error {
 
 func index(c tele.Context, text string) error {
 	msg := c.Message()
+
+	date := msg.LastEdit
+	if date == 0 {
+		date = msg.Unixtime
+	}
+
 	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
 		ID: keygen.SearchMsgID(msg.Chat.ID, msg.ID),
 		Data: &models.SearchMsg{
@@ -49,7 +55,7 @@ func index(c tele.Context, text string) error {
 			Text:       strings.ReplaceAll(text, "\n", " "),
 			Sender:     msg.Sender.Recipient(),
 			SenderName: utils.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
-			Date:       strconv.FormatInt(msg.Unixtime, 10),
+			Date:       strconv.FormatInt(date, 10),
 		},
 	}})
 }
