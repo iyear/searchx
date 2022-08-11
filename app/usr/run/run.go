@@ -111,6 +111,8 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 
 	// init usr
 	dispatcher := tg.NewUpdateDispatcher()
+	handleUsr(&dispatcher)
+
 	gaps := updates.New(updates.Config{
 		Handler:      dispatcher,
 		Logger:       zap.NewNop(),

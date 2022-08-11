@@ -7,4 +7,9 @@ import (
 
 func handleUsr(dispatcher *tg.UpdateDispatcher) {
 	dispatcher.OnNewMessage(usr.OnNewMessage)
+	dispatcher.OnEditMessage(usr.OnEditMessage)
+	dispatcher.OnNewScheduledMessage(usr.OnNewScheduledMessage)
+	dispatcher.OnNewChannelMessage(usr.OnNewChannelMessage)
+	dispatcher.OnEditChannelMessage(usr.OnEditChannelMessage)
+	// TODO(iyear): handler delete event?
 }
