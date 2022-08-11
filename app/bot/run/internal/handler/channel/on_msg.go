@@ -19,6 +19,7 @@ func Index(c tele.Context) error {
 		Data: &models.SearchMsg{
 			ID:         strconv.Itoa(m.ID),
 			Chat:       strconv.FormatInt(m.Chat.ID, 10),
+			ChatName:   m.Chat.Title,
 			Text:       c.Text(),
 			Sender:     m.SenderChat.Recipient(),
 			SenderName: utils.GetSenderName(m.SenderChat.FirstName, m.SenderChat.LastName),

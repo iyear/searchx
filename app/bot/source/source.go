@@ -19,6 +19,7 @@ import (
 const (
 	keyID       = "id"
 	keyType     = "type"
+	keyName     = "name"
 	supergroup  = "supergroup"
 	channel     = "channel"
 	typeMessage = "message"
@@ -50,14 +51,14 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 		return err
 	}
 
-	chatType, chatID, err := getChatInfo(src)
+	chatType, chatID, chatName, err := getChatInfo(src)
 	if err != nil {
 		return err
 	}
 
-	color.Blue("Type: %s, ID: %d\n", chatType, chatID)
+	color.Blue("Type: %s, ID: %d, Name: %s\n", chatType, chatID, chatName)
 
-	if err = index(src, chatID, _search); err != nil {
+	if err = index(src, chatID, chatName, _search); err != nil {
 		return err
 	}
 	color.Blue("Index Succ... Time: %v", time.Since(start))
@@ -66,7 +67,7 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 
 }
 
-func index(src string, chatID int64, _search storage.Search) error {
+func index(src string, chatID int64, chatName string, _search storage.Search) error {
 	f, err := os.Open(src)
 	if err != nil {
 		return err
@@ -128,6 +129,7 @@ func index(src string, chatID int64, _search storage.Search) error {
 				Data: &models.SearchMsg{
 					ID:         strconv.Itoa(msg.ID),
 					Chat:       strconv.FormatInt(chatID, 10),
+					ChatName:   chatName,
 					Text:       strings.ReplaceAll(text, "\n", " "),
 					Sender:     sender,
 					SenderName: msg.From,
@@ -154,10 +156,11 @@ func index(src string, chatID int64, _search storage.Search) error {
 
 }
 
-func getChatInfo(src string) (string, int64, error) {
+// getChatInfo return chat type, chat id, chat name, error
+func getChatInfo(src string) (string, int64, string, error) {
 	f, err := os.Open(src)
 	if err != nil {
-		return "", 0, err
+		return "", 0, "", err
 	}
 	defer func(f *os.File) {
 		if err = f.Close(); err != nil {
@@ -167,8 +170,9 @@ func getChatInfo(src string) (string, int64, error) {
 
 	d := jstream.NewDecoder(f, 1).EmitKV()
 
-	var chatType = ""
-	var chatID int64 = 0
+	chatType, chatID, chatName := "", int64(0), ""
+	// var chatType = ""
+	// var chatID int64 = 0
 
 	for mv := range d.Stream() {
 		kv, ok := mv.Value.(jstream.KV)
@@ -179,12 +183,16 @@ func getChatInfo(src string) (string, int64, error) {
 		if kv.Key == keyType {
 			chatType = kv.Value.(string)
 			if !strings.HasSuffix(chatType, supergroup) && !strings.HasSuffix(chatType, channel) {
-				return "", 0, errors.New("chat type should be supergroup or channel")
+				return "", 0, "", errors.New("chat type should be supergroup or channel")
 			}
 		}
 
 		if kv.Key == keyID {
 			chatID = -int64(kv.Value.(float64)) - 1e12
+		}
+
+		if kv.Key == keyName {
+			chatName = kv.Value.(string)
 		}
 
 		if chatType != "" && chatID != 0 {
@@ -193,8 +201,8 @@ func getChatInfo(src string) (string, int64, error) {
 	}
 
 	if chatType == "" || chatID == 0 {
-		return "", 0, errors.New("can not get chat type or chat id")
+		return "", 0, "", errors.New("can not get chat type or chat id")
 	}
 
-	return chatType, chatID, nil
+	return chatType, chatID, chatName, nil
 }

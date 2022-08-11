@@ -19,6 +19,7 @@ func index(sp *model.UsrScope, chatID int64, chatName string, msgID int, senderI
 		Data: &models.SearchMsg{
 			ID:         strconv.Itoa(msgID),
 			Chat:       strconv.FormatInt(chatID, 10),
+			ChatName:   chatName,
 			Text:       strings.ReplaceAll(text, "\n", " "),
 			Sender:     strconv.FormatInt(senderID, 10),
 			SenderName: senderName,

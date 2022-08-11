@@ -52,6 +52,7 @@ func index(c tele.Context, text string) error {
 		Data: &models.SearchMsg{
 			ID:         strconv.Itoa(msg.ID),
 			Chat:       msg.Chat.Recipient(),
+			ChatName:   msg.Chat.Title,
 			Text:       strings.ReplaceAll(text, "\n", " "),
 			Sender:     msg.Sender.Recipient(),
 			SenderName: utils.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
