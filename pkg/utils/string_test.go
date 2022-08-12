@@ -20,3 +20,18 @@ func TestUtf8StringSection(t *testing.T) {
 		}
 	}
 }
+
+func TestSubString(t *testing.T) {
+	for _, tt := range []struct {
+		l       int
+		in, out string
+	}{
+		{3, "测试一下哈哈哈", "测试一..."},
+		{5, "测试一哈哈哈", "测试一哈哈..."},
+		{5, "test for test", "test ..."},
+	} {
+		if out := SubString(tt.in, tt.l); out != tt.out {
+			t.Errorf("SubString(%s, 0, %d) = %s, want %s", tt.in, len(tt.in), out, tt.out)
+		}
+	}
+}

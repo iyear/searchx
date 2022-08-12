@@ -95,7 +95,7 @@ func Search(c tele.Context) error {
 		// 2. highlight \a
 		// 3. replace \a -> *
 
-		sender := exutf8.RuneSubString(msg.SenderName, 0, config.SenderNameMax)
+		sender := utils.SubString(msg.SenderName, config.SenderNameMax)
 		if sender == "" {
 			sender = msg.Sender
 		}
@@ -104,6 +104,7 @@ func Search(c tele.Context) error {
 			Seq:        pn*ps + i + 1,
 			SenderName: strings.TrimSpace(sender),
 			SenderLink: "tg://user?id=" + msg.Sender,
+			ChatName:   utils.SubString(msg.ChatName, config.ChatNameMax),
 			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    strings.ReplaceAll(escape(strings.Join(append(contents, ""), "...")), "\a", "*"),
 			Link:       util.GetMsgLink(msg.Chat, msg.ID),

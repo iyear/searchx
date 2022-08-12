@@ -17,7 +17,7 @@ keywords_too_long = "⚠ Keywords are too long, please shorten them"
 results = """
 👉 Search: *{{ .Keyword }}* 👈
 {{ range .Results }}
-*{{ .Seq }}. * `{{ .SenderName }}` - `{{ .Date }}` [→]({{ .Link }})
+*{{ .Seq }}.* `{{ .ChatName }}` @`{{ .SenderName }}` - `{{ .Date }}` [→]({{ .Link }})
   | {{ .Content }}
 {{ end }}
 

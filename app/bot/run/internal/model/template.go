@@ -18,6 +18,7 @@ type TSearchResult struct {
 	Seq        int
 	SenderName string
 	SenderLink string
+	ChatName   string
 	Date       string
 	Content    string
 	Link       string

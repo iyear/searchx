@@ -58,3 +58,11 @@ func GetSenderName(first, last string) string {
 
 	return first + " " + last
 }
+
+func SubString(s string, l int) string {
+	ss := exutf8.RuneSubString(s, 0, l)
+	if len(ss) < len(s) {
+		return ss + "..."
+	}
+	return ss
+}
