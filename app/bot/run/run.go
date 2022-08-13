@@ -60,7 +60,7 @@ func Run(cfg string) {
 		Poller:    &tele.LongPoller{Timeout: 5 * time.Second},
 		Client:    &http.Client{Transport: &http.Transport{DialContext: dialer.DialContext}},
 		OnError:   middleware.OnError(),
-		ParseMode: tele.ModeMarkdown,
+		ParseMode: tele.ModeHTML,
 	}
 
 	bot, err := tele.NewBot(settings)

@@ -15,12 +15,12 @@ log:
   # default: info
   level: info
 ctrl:
-  # support markdown style: https://core.telegram.org/bots/api#markdown-style, default: NO NOTICE
+  # support html style: https://core.telegram.org/bots/api#html-style, default: NO NOTICE
   notice: |
-    *YOUR_NOTICE_MESSAGE*
-    _YOUR_NOTICE_MESSAGE_
-    `YOUR_NOTICE_MESSAGE`
-    [YOUR_NOTICE_MESSAGE](https://www.google.com)
+    <b>YOUR_NOTICE_MESSAGE</b>
+    <i>YOUR_NOTICE_MESSAGE</i>
+    <code>YOUR_NOTICE_MESSAGE</code>
+    <a href="https://google.com">YOUR_NOTICE_MESSAGE</a>
   i18n: config/bot/i18n # i18n files directory, default: config/bot/i18n
   default_language: zh-cn # default language, default: zh-cn
   search:

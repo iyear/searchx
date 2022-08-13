@@ -8,14 +8,14 @@ import (
 )
 
 // Highlight start,end are valid string indexes. before,after are rune length
-func Highlight(s string, start, end, before, after int, highlight string) string {
+func Highlight(s string, start, end, before, after int, left, right string) string {
 	if start >= end {
 		return ""
 	}
 
-	s = s[:start] + highlight + s[start:end] + highlight + s[end:]
+	s = s[:start] + left + s[start:end] + right + s[end:]
 
-	start, end, before, after = start+len(highlight), end+len(highlight), before+len([]rune(highlight)), after+len([]rune(highlight))
+	start, end, before, after = start+len(left), end+len(right), before+len([]rune(left)), after+len([]rune(right))
 
 	l, r, count := 0, 0, 0
 

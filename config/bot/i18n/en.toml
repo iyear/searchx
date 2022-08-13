@@ -1,45 +1,47 @@
 [text]
 start = """
-✨ Hello! [{{ .Username }}](tg://user?id={{ .ID }}) ✨
+✨ Hello! <a href="tg://user?id={{ .ID }}">{{ .Username }}</a> ✨
 
-🤖 [SearchX](https://github.com/iyear/searchx) *is the bot that focuses on enhancing search*
+🤖 <a href="https://github.com/iyear/searchx">SearchX</a> <b>is the bot that focuses on enhancing search</b>
 
-⚡ *Send the keyword to start search! *
+⚡ <b>Send the keyword to start search! </b>
 
-*Notice:*
+<b>Notice:</b>
 {{ .Notice }}
 
-ver: `{{ .Version }}`
+ver: <b>{{ .Version }}</b>
 """
 
 [text.search]
 keywords_too_long = "⚠ Keywords are too long, please shorten them"
 results = """
-👉 Search: *{{ .Keyword }}* 👈
+👉 Search: <b>{{ .Keyword }}</b> 👈
 {{ range .Results }}
-*{{ .Seq }}.* `{{ .ChatName }}` @`{{ .SenderName }}` - `{{ .Date }}` [→]({{ .Link }})
+<b>{{ .Seq }}.</b> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .Link }}">→</a>
   | {{ .Content }}
 {{ end }}
 
-⏳ Time: `{{ .Took }}ms`
+⏳ Time: <code>{{ .Took }}ms</code>
 """
 
 [text.settings]
 desc = "👇 Select your settings item"
 language = """
-🌏 Current: *{{ . }}*
+🌏 Current: <b>{{ . }}</b>
 
 👇 Select the language you want to set
 """
 
 [text.added_to_group]
 fail = """
-⚠ Please upgrade the group to `Supergroup` | [Tutorial](https://teleme.io/articles/turn_a_telegram_group_into_a_supergroup)
+⚠ Please upgrade the group to <code>Supergroup</code> | <a herf="https://teleme.io/articles/turn_a_telegram_group_into_a_supergroup">Tutorial</a>
 
-⚠ Please invite [SearchX Bot](https://github.com/iyear/searchx) again after upgrading
+⚠ Please invite <a href="https://github.com/iyear/searchx">SearchX</a> again after upgrading
 """
 
-success = "✅ [SearchX Bot](https://github.com/iyear/searchx) is enabled and will index the text messages of the conversation. To index historical messages, use the `source` command."
+success = """
+✅ <a href="https://github.com/iyear/searchx">SearchX</a> is enabled and will index the text messages of the conversation. To index historical messages, use the <code>source</code> command.
+"""
 
 [button]
 back = "⬅ Back"

@@ -10,6 +10,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/thinkeridea/go-extend/exunicode/exutf8"
 	tele "gopkg.in/telebot.v3"
+	"html"
 	"strconv"
 	"strings"
 	"time"
@@ -80,7 +81,8 @@ func Search(c tele.Context) error {
 		contents := []string{""} // 在两边也添加省略号
 
 		for _, loc := range result.Location["text"] {
-			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End), config.HighlightSpace, config.HighlightSpace, "\a"))
+			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End),
+				config.HighlightSpace, config.HighlightSpace, "\a", "\b"))
 			count++
 			if count == maxHighlight {
 				break
@@ -90,11 +92,6 @@ func Search(c tele.Context) error {
 			contents = append(contents, exutf8.RuneSubString(msg.Text, 0, 10))
 		}
 
-		// escape:
-		// 1. escape *,[,`,_
-		// 2. highlight \a
-		// 3. replace \a -> *
-
 		sender := utils.SubString(msg.SenderName, config.SenderNameMax)
 		if sender == "" {
 			sender = msg.Sender
@@ -102,20 +99,22 @@ func Search(c tele.Context) error {
 
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
-			SenderName: strings.TrimSpace(sender),
+			SenderName: html.EscapeString(strings.TrimSpace(sender)),
 			SenderLink: "tg://user?id=" + msg.Sender,
-			ChatName:   utils.SubString(msg.ChatName, config.ChatNameMax),
+			ChatName:   html.EscapeString(utils.SubString(msg.ChatName, config.ChatNameMax)),
 			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
-			Content:    strings.ReplaceAll(escape(strings.Join(append(contents, ""), "...")), "\a", "*"),
+			Content:    html.EscapeString(strings.Join(append(contents, ""), "...")),
 			Link:       util.GetMsgLink(msg.Chat, msg.ID),
 		})
 	}
 
-	return util.EditOrSendWithBack(c, sp.Template.Text.Search.Results.T(&model.TSearchResults{
+	text := strings.NewReplacer("\a", "<b>", "\b", "</b>").Replace(sp.Template.Text.Search.Results.T(&model.TSearchResults{
 		Results: results,
 		Keyword: keyword,
 		Took:    time.Since(start).Milliseconds(),
-	}), &tele.SendOptions{
+	}))
+
+	return util.EditOrSendWithBack(c, text, &tele.SendOptions{
 		ReplyMarkup:           &tele.ReplyMarkup{InlineKeyboard: btns},
 		DisableWebPagePreview: true,
 	})
@@ -143,8 +142,4 @@ func searchGetData(data string) (string, int, int) {
 
 func searchSetData(keywords string, pn int, order int) string {
 	return keywords + "|" + strconv.Itoa(pn) + "|" + strconv.Itoa(order)
-}
-
-func escape(s string) string {
-	return strings.NewReplacer("_", "\\_", "*", "\\*", "`", "\\`", "[", "\\[").Replace(s)
 }
