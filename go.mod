@@ -8,6 +8,7 @@ require (
 	github.com/creasty/defaults v1.6.0
 	github.com/fatih/color v1.13.0
 	github.com/go-playground/validator/v10 v10.11.0
+	github.com/google/martian v2.1.0+incompatible
 	github.com/gotd/td v0.64.0
 	github.com/iyear/iso-639-1 v1.0.3
 	github.com/mitchellh/mapstructure v1.5.0
