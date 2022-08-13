@@ -12,7 +12,7 @@ const (
 const (
 	HighlightSpace = 12
 	SenderNameMax  = 6
-	ChatNameMax    = 6
+	ChatNameMax    = 8
 )
 
 const (
