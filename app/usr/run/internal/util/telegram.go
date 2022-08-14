@@ -21,7 +21,7 @@ func GetPeerName(peer tg.PeerClass, e tg.Entities) string {
 	switch p := peer.(type) {
 	case *tg.PeerUser:
 		u := e.Users[p.UserID]
-		return utils.GetSenderName(u.FirstName, u.LastName)
+		return utils.String.GetSenderName(u.FirstName, u.LastName)
 	case *tg.PeerChat:
 		return e.Chats[p.ChatID].Title
 	case *tg.PeerChannel:

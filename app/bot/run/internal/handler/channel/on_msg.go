@@ -22,7 +22,7 @@ func Index(c tele.Context) error {
 			ChatName:   m.Chat.Title,
 			Text:       c.Text(),
 			Sender:     m.SenderChat.Recipient(),
-			SenderName: utils.GetSenderName(m.SenderChat.FirstName, m.SenderChat.LastName),
+			SenderName: utils.String.GetSenderName(m.SenderChat.FirstName, m.SenderChat.LastName),
 			Date:       strconv.FormatInt(time.Now().Unix(), 10),
 		}},
 	})

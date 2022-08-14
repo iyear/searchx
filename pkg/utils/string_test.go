@@ -15,7 +15,7 @@ func TestUtf8StringSection(t *testing.T) {
 		{6, 12, "咱俩交换一下吧。", "咱俩|交换|一下吧。"},
 		{65, 71, "工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作", "交代24口|交换|机等技术性"},
 	} {
-		if out := Highlight(tt.in, tt.start, tt.end, before, after, "|"); out != tt.out {
+		if out := String.Highlight(tt.in, tt.start, tt.end, before, after, "|", "|"); out != tt.out {
 			t.Errorf("Highlight(%s, %d, %d, %d, %d) = %s, want %s", tt.in, tt.start, tt.end, before, after, out, tt.out)
 		}
 	}
@@ -30,7 +30,7 @@ func TestSubString(t *testing.T) {
 		{5, "测试一哈哈哈", "测试一哈哈..."},
 		{5, "test for test", "test ..."},
 	} {
-		if out := SubString(tt.in, tt.l); out != tt.out {
+		if out := String.SubString(tt.in, tt.l); out != tt.out {
 			t.Errorf("SubString(%s, 0, %d) = %s, want %s", tt.in, len(tt.in), out, tt.out)
 		}
 	}

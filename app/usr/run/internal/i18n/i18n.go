@@ -25,7 +25,7 @@ func Init(dir string) error {
 		if err = i18n.Read(f, &t, readHook()); err != nil {
 			return err
 		}
-		lang := utils.GetFileName(f)
+		lang := utils.FS.GetFileName(f)
 		langs = append(langs, lang)
 		m[lang] = &t
 	}

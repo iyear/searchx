@@ -61,7 +61,7 @@ func messageView(c tele.Context) error {
 		ChatName:   msg.ChatName,
 		SenderID:   msg.Sender,
 		SenderName: msg.SenderName,
-		Date:       utils.MustGetDate(msg.Date).Format("2006-01-02 15:04:05"),
+		Date:       utils.String.MustGetDate(msg.Date).Format("2006-01-02 15:04:05"),
 		Content:    html.UnescapeString(msg.Text),
 	}))
 }

@@ -65,7 +65,7 @@ func New(options map[string]interface{}) (*Bleve, error) {
 
 	var index bleve.Index
 
-	if !utils.PathExist(ops.Path) {
+	if !utils.FS.PathExist(ops.Path) {
 		index, err = bleve.New(ops.Path, mapping)
 		if err != nil {
 			return nil, err

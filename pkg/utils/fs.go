@@ -6,7 +6,11 @@ import (
 	"strings"
 )
 
-func PathExist(path string) bool {
+type fs struct{}
+
+var FS = fs{}
+
+func (f fs) PathExist(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
 		return true
@@ -18,6 +22,6 @@ func PathExist(path string) bool {
 }
 
 // GetFileName without extension
-func GetFileName(path string) string {
+func (f fs) GetFileName(path string) string {
 	return strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 }

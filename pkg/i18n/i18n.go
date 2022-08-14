@@ -43,7 +43,7 @@ func Walk(dir string) ([]string, error) {
 		}
 
 		ext := filepath.Ext(path)
-		name := utils.GetFileName(path)
+		name := utils.FS.GetFileName(path)
 		if ext != ".toml" || !iso6391.ValidCode(name) {
 			return fmt.Errorf("invalid template file: %s.Please check extension or name of the file", path)
 		}

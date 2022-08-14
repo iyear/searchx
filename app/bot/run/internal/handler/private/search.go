@@ -69,7 +69,7 @@ func Search(c tele.Context) error {
 
 	// 如果还有下页,len>ps,则最后一个不要,即只取到ps个
 	// 如果没有下页,len<=ps,则都要,即只取到len个
-	num := utils.MinInt(len(searchResults), ps)
+	num := utils.Math.MinInt(len(searchResults), ps)
 	results := make([]*model.TSearchResult, 0, num)
 	msg := models.SearchMsg{}
 	for i := 0; i < num; i++ {
@@ -83,7 +83,7 @@ func Search(c tele.Context) error {
 		contents := []string{""} // 在两边也添加省略号
 
 		for _, loc := range result.Location["text"] {
-			contents = append(contents, utils.Highlight(msg.Text, int(loc.Start), int(loc.End),
+			contents = append(contents, utils.String.Highlight(msg.Text, int(loc.Start), int(loc.End),
 				config.HighlightSpace, config.HighlightSpace, "\a", "\b"))
 			count++
 			if count == maxHighlight {
@@ -94,18 +94,18 @@ func Search(c tele.Context) error {
 			contents = append(contents, exutf8.RuneSubString(msg.Text, 0, 10))
 		}
 
-		sender := utils.SubString(msg.SenderName, config.SenderNameMax)
+		sender := utils.String.SubString(msg.SenderName, config.SenderNameMax)
 		if sender == "" {
 			sender = msg.Sender
 		}
 
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
-			ViewLink:   utils.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
+			ViewLink:   utils.String.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
 			SenderName: html.EscapeString(strings.TrimSpace(sender)),
 			SenderLink: "tg://user?id=" + msg.Sender,
-			ChatName:   html.EscapeString(utils.SubString(msg.ChatName, config.ChatNameMax)),
-			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
+			ChatName:   html.EscapeString(utils.String.SubString(msg.ChatName, config.ChatNameMax)),
+			Date:       utils.String.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    html.EscapeString(strings.Join(append(contents, ""), "...")),
 			GoLink:     util.GetMsgLink(msg.Chat, msg.ID),
 		})

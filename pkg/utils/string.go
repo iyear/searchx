@@ -7,8 +7,12 @@ import (
 	"time"
 )
 
+type str struct{}
+
+var String = str{}
+
 // Highlight start,end are valid string indexes. before,after are rune length
-func Highlight(s string, start, end, before, after int, left, right string) string {
+func (str str) Highlight(s string, start, end, before, after int, left, right string) string {
 	if start >= end {
 		return ""
 	}
@@ -39,7 +43,7 @@ func Highlight(s string, start, end, before, after int, left, right string) stri
 	return exutf8.RuneSubString(s, l-before, (r+after)-(l-before))
 }
 
-func MustGetDate(unix string) time.Time {
+func (str str) MustGetDate(unix string) time.Time {
 	u, err := strconv.ParseInt(unix, 10, 64)
 	if err != nil {
 		panic(fmt.Errorf("parse int failed: %s", unix))
@@ -48,7 +52,7 @@ func MustGetDate(unix string) time.Time {
 	return time.Unix(u, 0)
 }
 
-func GetSenderName(first, last string) string {
+func (str str) GetSenderName(first, last string) string {
 	if last == "" {
 		return first
 	}
@@ -59,7 +63,7 @@ func GetSenderName(first, last string) string {
 	return first + " " + last
 }
 
-func SubString(s string, l int) string {
+func (str str) SubString(s string, l int) string {
 	ss := exutf8.RuneSubString(s, 0, l)
 	if len(ss) < len(s) {
 		return ss + "..."
@@ -67,6 +71,6 @@ func SubString(s string, l int) string {
 	return ss
 }
 
-func GetDeepLink(bot string, code string) string {
+func (str str) GetDeepLink(bot string, code string) string {
 	return "https://t.me/" + bot + "?start=" + code
 }

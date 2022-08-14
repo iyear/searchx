@@ -55,7 +55,7 @@ func index(c tele.Context, text string) error {
 			ChatName:   msg.Chat.Title,
 			Text:       strings.ReplaceAll(text, "\n", " "),
 			Sender:     msg.Sender.Recipient(),
-			SenderName: utils.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
+			SenderName: utils.String.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
 			Date:       strconv.FormatInt(date, 10),
 		},
 	}})
