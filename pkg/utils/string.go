@@ -52,25 +52,10 @@ func (str str) MustGetDate(unix string) time.Time {
 	return time.Unix(u, 0)
 }
 
-func (str str) GetSenderName(first, last string) string {
-	if last == "" {
-		return first
-	}
-	if first == "" {
-		return last
-	}
-
-	return first + " " + last
-}
-
 func (str str) RuneSubString(s string, l int) string {
 	ss := exutf8.RuneSubString(s, 0, l)
 	if len(ss) < len(s) {
 		return ss + "..."
 	}
 	return ss
-}
-
-func (str str) GetDeepLink(bot string, code string) string {
-	return "https://t.me/" + bot + "?start=" + code
 }

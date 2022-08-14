@@ -101,7 +101,7 @@ func Search(c tele.Context) error {
 
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
-			ViewLink:   utils.String.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
+			ViewLink:   utils.Telegram.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
 			SenderName: html.EscapeString(strings.TrimSpace(sender)),
 			SenderLink: "tg://user?id=" + msg.Sender,
 			ChatName:   html.EscapeString(utils.String.RuneSubString(msg.ChatName, config.ChatNameMax)),
