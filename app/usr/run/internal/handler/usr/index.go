@@ -12,6 +12,13 @@ import (
 )
 
 func index(sp *model.UsrScope, chatID int64, chatName string, msgID int, senderID int64, senderName string, text string, date int) error {
+	// clean text
+	if strings.TrimFunc(text, func(r rune) bool {
+		return r == ' ' || r == '\n' || r == '\t' || r == '\r' || r == '\f' || r == '\v'
+	}) == "" {
+		return nil
+	}
+
 	sp.Log.Debugw("new message", "chatID", chatID, "chatName", chatName, "msgID", msgID, "senderID", senderID, "senderName", senderName, "text", text, "date", date)
 
 	return sp.Storage.Search.Index([]*search.Item{{
