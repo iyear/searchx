@@ -30,8 +30,8 @@ func TestSubString(t *testing.T) {
 		{5, "测试一哈哈哈", "测试一哈哈..."},
 		{5, "test for test", "test ..."},
 	} {
-		if out := String.SubString(tt.in, tt.l); out != tt.out {
-			t.Errorf("SubString(%s, 0, %d) = %s, want %s", tt.in, len(tt.in), out, tt.out)
+		if out := String.RuneSubString(tt.in, tt.l); out != tt.out {
+			t.Errorf("RuneSubString(%s, 0, %d) = %s, want %s", tt.in, len(tt.in), out, tt.out)
 		}
 	}
 }

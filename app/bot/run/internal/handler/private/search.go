@@ -94,7 +94,7 @@ func Search(c tele.Context) error {
 			contents = append(contents, exutf8.RuneSubString(msg.Text, 0, 10))
 		}
 
-		sender := utils.String.SubString(msg.SenderName, config.SenderNameMax)
+		sender := utils.String.RuneSubString(msg.SenderName, config.SenderNameMax)
 		if sender == "" {
 			sender = msg.Sender
 		}
@@ -104,7 +104,7 @@ func Search(c tele.Context) error {
 			ViewLink:   utils.String.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
 			SenderName: html.EscapeString(strings.TrimSpace(sender)),
 			SenderLink: "tg://user?id=" + msg.Sender,
-			ChatName:   html.EscapeString(utils.String.SubString(msg.ChatName, config.ChatNameMax)),
+			ChatName:   html.EscapeString(utils.String.RuneSubString(msg.ChatName, config.ChatNameMax)),
 			Date:       utils.String.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    html.EscapeString(strings.Join(append(contents, ""), "...")),
 			GoLink:     util.GetMsgLink(msg.Chat, msg.ID),

@@ -63,7 +63,7 @@ func (str str) GetSenderName(first, last string) string {
 	return first + " " + last
 }
 
-func (str str) SubString(s string, l int) string {
+func (str str) RuneSubString(s string, l int) string {
 	ss := exutf8.RuneSubString(s, 0, l)
 	if len(ss) < len(s) {
 		return ss + "..."
