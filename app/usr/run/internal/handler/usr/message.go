@@ -10,13 +10,13 @@ func messageText(msg *tg.Message) string {
 
 	media, ok := msg.GetMedia()
 	if ok {
-		return strings.Join([]string{msg.Message, mediaText(media)}, " ")
+		return strings.Join(append(mediaText(media), msg.Message), " ")
 	}
 
 	return msg.Message
 }
 
-func mediaText(media tg.MessageMediaClass) string {
+func mediaText(media tg.MessageMediaClass) []string {
 	switch m := media.(type) {
 	case *tg.MessageMediaDocument:
 		return mediaDocText(m)
@@ -28,13 +28,13 @@ func mediaText(media tg.MessageMediaClass) string {
 	case *tg.MessageMediaInvoice:
 		return mediaInvoiceText(m)
 	}
-	return ""
+	return nil
 }
 
-func mediaDocText(document *tg.MessageMediaDocument) string {
+func mediaDocText(document *tg.MessageMediaDocument) []string {
 	doc, ok := document.Document.(*tg.Document)
 	if !ok {
-		return ""
+		return nil
 	}
 
 	attrs := make([]string, 0)
@@ -48,27 +48,27 @@ func mediaDocText(document *tg.MessageMediaDocument) string {
 			text = a.FileName
 		case *tg.DocumentAttributeSticker:
 			// sticker will have filename with "sticker.webp" and usr don't index sticker
-			return ""
+			return nil
 		}
 		attrs = append(attrs, text)
 	}
 
-	return strings.Join(attrs, " ")
+	return attrs
 }
 
-func mediaWebPageText(webPage *tg.MessageMediaWebPage) string {
+func mediaWebPageText(webPage *tg.MessageMediaWebPage) []string {
 	switch wp := webPage.Webpage.(type) {
 	case *tg.WebPage:
 		// TODO(iyear): index further content
-		return strings.Join([]string{wp.SiteName, wp.Title, wp.Description}, " ")
+		return []string{wp.SiteName, wp.Title, wp.Description}
 	}
-	return ""
+	return nil
 }
 
-func mediaVenueText(venue *tg.MessageMediaVenue) string {
-	return strings.Join([]string{venue.Title, venue.Address}, " ")
+func mediaVenueText(venue *tg.MessageMediaVenue) []string {
+	return []string{venue.Title, venue.Address}
 }
 
-func mediaInvoiceText(invoice *tg.MessageMediaInvoice) string {
-	return strings.Join([]string{invoice.Title, invoice.Description}, " ")
+func mediaInvoiceText(invoice *tg.MessageMediaInvoice) []string {
+	return []string{invoice.Title, invoice.Description}
 }
