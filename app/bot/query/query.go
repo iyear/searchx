@@ -36,7 +36,7 @@ func Query(driver string, searchOptions map[string]string, query string, pn, ps 
 	}
 
 	// todo(iyear): add sortBy options
-	results := _search.Search(query, &search.Options{
+	results := _search.Search(query, search.Options{
 		From: pn * ps,
 		Size: ps,
 		SortBy: []search.OptionSortByItem{{

@@ -1,9 +1,11 @@
 package private
 
 import (
+	"encoding/base64"
 	"github.com/iyear/searchx/app/bot/run/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/iyear/searchx/pkg/utils"
@@ -46,7 +48,7 @@ func Search(c tele.Context) error {
 	prevBtn.Data = searchSetData(keyword, pn-1, order)
 
 	// 每次多查一个判断 total%ps==0 的情况
-	searchResults := sp.Storage.Search.Search(keyword, &search.Options{
+	searchResults := sp.Storage.Search.Search(keyword, search.Options{
 		From:   pn * ps,
 		Size:   ps + 1,
 		SortBy: config.SearchOrders[order].SortBy,
@@ -99,12 +101,13 @@ func Search(c tele.Context) error {
 
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
+			ViewLink:   utils.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
 			SenderName: html.EscapeString(strings.TrimSpace(sender)),
 			SenderLink: "tg://user?id=" + msg.Sender,
 			ChatName:   html.EscapeString(utils.SubString(msg.ChatName, config.ChatNameMax)),
 			Date:       utils.MustGetDate(msg.Date).Format("2006.01.02"),
 			Content:    html.EscapeString(strings.Join(append(contents, ""), "...")),
-			Link:       util.GetMsgLink(msg.Chat, msg.ID),
+			GoLink:     util.GetMsgLink(msg.Chat, msg.ID),
 		})
 	}
 

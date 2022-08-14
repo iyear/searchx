@@ -16,10 +16,21 @@ type TSearchResults struct {
 
 type TSearchResult struct {
 	Seq        int
+	ViewLink   string
 	SenderName string
 	SenderLink string
 	ChatName   string
 	Date       string
 	Content    string
-	Link       string
+	GoLink     string
+}
+
+type TSearchView struct {
+	MsgID      string
+	ChatID     string
+	ChatName   string
+	SenderID   string
+	SenderName string
+	Date       string
+	Content    string
 }

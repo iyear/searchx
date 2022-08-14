@@ -18,6 +18,7 @@ type TemplateText struct {
 	Search struct {
 		KeywordsTooLong i18n.Text `mapstructure:"keywords_too_long"`
 		Results         i18n.Text `mapstructure:"results"`
+		View            i18n.Text `mapstructure:"view"`
 	} `mapstructure:"search"`
 	AddedToGroup struct {
 		Fail    i18n.Text `mapstructure:"fail"`

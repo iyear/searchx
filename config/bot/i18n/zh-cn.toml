@@ -18,11 +18,19 @@ keywords_too_long = "⚠ 关键词过长，请适当缩短关键词"
 results = """
 👉 搜索: <b>{{ .Keyword }}</b> 👈
 {{ range .Results }}
-<b>{{ .Seq }}.</b> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .Link }}">→</a>
+<a href="{{ .ViewLink }}">{{ .Seq }}</a> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .GoLink }}">→</a>
   | {{ .Content }}
 {{ end }}
 
 ⏳ 本次搜索花费时间: <code>{{ .Took }}ms</code>
+"""
+view = """
+消息ID: <code>{{ .MsgID }}</code>
+会话: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
+发送者: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
+时间: <code>{{ .Date }}</code>
+
+{{ .Content }}
 """
 
 [text.settings]

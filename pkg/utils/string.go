@@ -66,3 +66,7 @@ func SubString(s string, l int) string {
 	}
 	return ss
 }
+
+func GetDeepLink(bot string, code string) string {
+	return "https://t.me/" + bot + "?start=" + code
+}

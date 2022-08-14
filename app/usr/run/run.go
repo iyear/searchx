@@ -118,6 +118,9 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		Logger:       zap.NewNop(),
 		Storage:      sto.NewState(kv),
 		AccessHasher: sto.NewAccessHasher(kv),
+		OnChannelTooLong: func(channelID int64) {
+			slog.Errorw("channel is too long", "channelID", channelID)
+		},
 	})
 
 	c := telegram.NewClient(config.C.Account.ID, config.C.Account.Hash, telegram.Options{

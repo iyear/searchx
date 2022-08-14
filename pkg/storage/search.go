@@ -8,7 +8,8 @@ import (
 
 type Search interface {
 	Index(items []*search.Item) error
-	Search(query string, options *search.Options) []*search.Result
+	Search(query string, options search.Options) []*search.Result
+	Get(id string) (*search.Result, error)
 }
 
 func NewSearch(name string, options map[string]interface{}) (Search, error) {

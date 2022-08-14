@@ -17,11 +17,19 @@ keywords_too_long = "⚠ Keywords are too long, please shorten them"
 results = """
 👉 Search: <b>{{ .Keyword }}</b> 👈
 {{ range .Results }}
-<b>{{ .Seq }}.</b> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .Link }}">→</a>
+<a href="{{ .ViewLink }}">{{ .Seq }}</a> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .GoLink }}">→</a>
   | {{ .Content }}
 {{ end }}
 
 ⏳ Time: <code>{{ .Took }}ms</code>
+"""
+view = """
+Message ID: <code>{{ .MsgID }}</code>
+Chat: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
+Sender: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
+Time: <code>{{ .Date }}</code>
+
+{{ .Content }}
 """
 
 [text.settings]
