@@ -46,6 +46,9 @@ func mediaDocText(document *tg.MessageMediaDocument) string {
 			text = a.Title
 		case *tg.DocumentAttributeFilename:
 			text = a.FileName
+		case *tg.DocumentAttributeSticker:
+			// sticker will have filename with "sticker.webp" and usr don't index sticker
+			return ""
 		}
 		attrs = append(attrs, text)
 	}
