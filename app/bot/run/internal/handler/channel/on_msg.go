@@ -29,6 +29,6 @@ func Index(c tele.Context) error {
 
 	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
 		ID:   keygen.SearchMsgID(m.Chat.ID, m.ID),
-		Data: data},
-	})
+		Data: data,
+	}})
 }

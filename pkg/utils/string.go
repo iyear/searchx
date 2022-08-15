@@ -36,11 +36,19 @@ func (str str) Highlight(s string, start, end, before, after int, left, right st
 		count++
 	}
 
+	spacel, spacer := "...", "..."
+
 	if l-before < 0 {
 		l = before
+		spacel = ""
 	}
 
-	return exutf8.RuneSubString(s, l-before, (r+after)-(l-before))
+	if r+after >= len([]rune(s)) {
+		spacer = ""
+	}
+
+	return spacel + exutf8.RuneSubString(s, l-before, (r+after)-(l-before)) + spacer
+
 }
 
 func (str str) MustGetDate(unix string) time.Time {

@@ -7,7 +7,6 @@ import (
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
-	"strings"
 )
 
 func OnText(c tele.Context) error {
@@ -50,7 +49,7 @@ func index(c tele.Context, text string) error {
 		ID:         msg.ID,
 		Chat:       msg.Chat.ID,
 		ChatName:   msg.Chat.Title,
-		Text:       strings.ReplaceAll(text, "\n", " "),
+		Text:       text,
 		Sender:     msg.Sender.ID,
 		SenderName: utils.Telegram.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
 		Date:       date,

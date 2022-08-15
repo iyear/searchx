@@ -46,6 +46,5 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	bot.Handle(tele.OnChannelPost, channel.Index)
 	bot.Handle(tele.OnEditedChannelPost, channel.Index)
 
-	bot.Handle(tele.OnUserJoined, group.OnUserJoined)
 	bot.Handle(tele.OnAddedToGroup, group.OnAdded)
 }

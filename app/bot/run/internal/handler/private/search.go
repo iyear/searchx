@@ -80,7 +80,7 @@ func Search(c tele.Context) error {
 
 		maxHighlight := 3
 		count := 0
-		contents := []string{""} // 在两边也添加省略号
+		contents := make([]string, 0)
 
 		for _, loc := range result.Location["text"] {
 			contents = append(contents, utils.String.Highlight(msg.Text, int(loc.Start), int(loc.End),
@@ -106,7 +106,7 @@ func Search(c tele.Context) error {
 			SenderLink: "tg://user?id=" + strconv.FormatInt(msg.Sender, 10),
 			ChatName:   html.EscapeString(utils.String.RuneSubString(msg.ChatName, config.ChatNameMax)),
 			Date:       time.Unix(msg.Date, 0).Format("2006.01.02"),
-			Content:    html.EscapeString(strings.Join(append(contents, ""), "...")),
+			Content:    strings.ReplaceAll(html.EscapeString(strings.Join(contents, "...")), "\n", " "),
 			GoLink:     util.GetMsgLink(msg.Chat, msg.ID),
 		})
 	}

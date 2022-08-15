@@ -24,7 +24,7 @@ func index(sp *model.UsrScope, chatID int64, chatName string, msgID int, senderI
 		ID:         msgID,
 		Chat:       chatID,
 		ChatName:   chatName,
-		Text:       strings.ReplaceAll(text, "\n", " "),
+		Text:       text,
 		Sender:     senderID,
 		SenderName: senderName,
 		Date:       int64(date),
