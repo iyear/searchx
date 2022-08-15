@@ -7,10 +7,10 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/global"
 	"github.com/iyear/searchx/pkg/models"
-	"github.com/iyear/searchx/pkg/utils"
 	"github.com/mitchellh/mapstructure"
 	tele "gopkg.in/telebot.v3"
 	"html"
+	"time"
 )
 
 func Start(c tele.Context) error {
@@ -51,7 +51,7 @@ func messageView(c tele.Context) error {
 	}
 
 	msg := models.SearchMsg{}
-	if err = mapstructure.Decode(result.Fields, &msg); err != nil {
+	if err = mapstructure.WeakDecode(result.Fields, &msg); err != nil {
 		return err
 	}
 
@@ -61,7 +61,7 @@ func messageView(c tele.Context) error {
 		ChatName:   msg.ChatName,
 		SenderID:   msg.Sender,
 		SenderName: msg.SenderName,
-		Date:       utils.String.MustGetDate(msg.Date).Format("2006-01-02 15:04:05"),
+		Date:       time.Unix(msg.Date, 0).Format("2006-01-02 15:04:05"),
 		Content:    html.UnescapeString(msg.Text),
 	}))
 }

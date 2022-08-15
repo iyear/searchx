@@ -120,21 +120,35 @@ func index(src string, chatID int64, chatName string, _search storage.Search) er
 			continue
 		}
 
-		sender := strings.TrimPrefix(msg.FromID, "user")
-		sender = strings.TrimPrefix(sender, "channel")
+		senderStr := strings.TrimPrefix(msg.FromID, "user")
+		senderStr = strings.TrimPrefix(senderStr, "channel")
+		sender, err := strconv.ParseInt(senderStr, 10, 64)
+		if err != nil {
+			return err
+		}
+
+		_time, err := strconv.ParseInt(msg.Time, 10, 64)
+		if err != nil {
+			return err
+		}
 
 		if text != "" {
+			m := &models.SearchMsg{
+				ID:         msg.ID,
+				Chat:       chatID,
+				ChatName:   chatName,
+				Text:       strings.ReplaceAll(text, "\n", " "),
+				Sender:     sender,
+				SenderName: msg.From,
+				Date:       _time,
+			}
+			data, err := m.Encode()
+			if err != nil {
+				return err
+			}
 			items = append(items, &search.Item{
-				ID: keygen.SearchMsgID(chatID, msg.ID),
-				Data: &models.SearchMsg{
-					ID:         strconv.Itoa(msg.ID),
-					Chat:       strconv.FormatInt(chatID, 10),
-					ChatName:   chatName,
-					Text:       strings.ReplaceAll(text, "\n", " "),
-					Sender:     sender,
-					SenderName: msg.From,
-					Date:       msg.Time,
-				},
+				ID:   keygen.SearchMsgID(chatID, msg.ID),
+				Data: data,
 			})
 		}
 

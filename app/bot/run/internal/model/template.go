@@ -26,10 +26,10 @@ type TSearchResult struct {
 }
 
 type TSearchView struct {
-	MsgID      string
-	ChatID     string
+	MsgID      int
+	ChatID     int64
 	ChatName   string
-	SenderID   string
+	SenderID   int64
 	SenderName string
 	Date       string
 	Content    string

@@ -7,7 +7,6 @@ import (
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
-	"strconv"
 	"strings"
 )
 
@@ -21,17 +20,22 @@ func index(sp *model.UsrScope, chatID int64, chatName string, msgID int, senderI
 
 	sp.Log.Debugw("new message", "chatID", chatID, "chatName", chatName, "msgID", msgID, "senderID", senderID, "senderName", senderName, "text", text, "date", date)
 
+	msg := &models.SearchMsg{
+		ID:         msgID,
+		Chat:       chatID,
+		ChatName:   chatName,
+		Text:       strings.ReplaceAll(text, "\n", " "),
+		Sender:     senderID,
+		SenderName: senderName,
+		Date:       int64(date),
+	}
+	data, err := msg.Encode()
+	if err != nil {
+		return err
+	}
 	return sp.Storage.Search.Index([]*search.Item{{
-		ID: keygen.SearchMsgID(chatID, msgID),
-		Data: &models.SearchMsg{
-			ID:         strconv.Itoa(msgID),
-			Chat:       strconv.FormatInt(chatID, 10),
-			ChatName:   chatName,
-			Text:       strings.ReplaceAll(text, "\n", " "),
-			Sender:     strconv.FormatInt(senderID, 10),
-			SenderName: senderName,
-			Date:       strconv.Itoa(date),
-		},
+		ID:   keygen.SearchMsgID(chatID, msgID),
+		Data: data,
 	}})
 }
 

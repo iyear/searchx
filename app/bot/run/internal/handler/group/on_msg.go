@@ -7,7 +7,6 @@ import (
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
-	"strconv"
 	"strings"
 )
 
@@ -47,21 +46,23 @@ func index(c tele.Context, text string) error {
 		date = msg.Unixtime
 	}
 
-	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
-		ID: keygen.SearchMsgID(msg.Chat.ID, msg.ID),
-		Data: &models.SearchMsg{
-			ID:         strconv.Itoa(msg.ID),
-			Chat:       msg.Chat.Recipient(),
-			ChatName:   msg.Chat.Title,
-			Text:       strings.ReplaceAll(text, "\n", " "),
-			Sender:     msg.Sender.Recipient(),
-			SenderName: utils.Telegram.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
-			Date:       strconv.FormatInt(date, 10),
-		},
-	}})
-}
+	m := &models.SearchMsg{
+		ID:         msg.ID,
+		Chat:       msg.Chat.ID,
+		ChatName:   msg.Chat.Title,
+		Text:       strings.ReplaceAll(text, "\n", " "),
+		Sender:     msg.Sender.ID,
+		SenderName: utils.Telegram.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
+		Date:       date,
+	}
 
-func OnUserJoined(c tele.Context) error {
-	// u := c.ChatMember().NewChatMember.User
-	return nil
+	data, err := m.Encode()
+	if err != nil {
+		return err
+	}
+
+	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
+		ID:   keygen.SearchMsgID(msg.Chat.ID, msg.ID),
+		Data: data,
+	}})
 }

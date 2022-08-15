@@ -74,7 +74,7 @@ func Search(c tele.Context) error {
 	msg := models.SearchMsg{}
 	for i := 0; i < num; i++ {
 		result := searchResults[i]
-		if err := mapstructure.Decode(result.Fields, &msg); err != nil {
+		if err := mapstructure.WeakDecode(result.Fields, &msg); err != nil {
 			return err
 		}
 
@@ -96,16 +96,16 @@ func Search(c tele.Context) error {
 
 		sender := utils.String.RuneSubString(msg.SenderName, config.SenderNameMax)
 		if sender == "" {
-			sender = msg.Sender
+			sender = strconv.FormatInt(msg.Sender, 10)
 		}
 
 		results = append(results, &model.TSearchResult{
 			Seq:        pn*ps + i + 1,
-			ViewLink:   utils.Telegram.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.New(msg.Chat, msg.ID)))),
+			ViewLink:   utils.Telegram.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.SearchMsgID(msg.Chat, msg.ID)))),
 			SenderName: html.EscapeString(strings.TrimSpace(sender)),
-			SenderLink: "tg://user?id=" + msg.Sender,
+			SenderLink: "tg://user?id=" + strconv.FormatInt(msg.Sender, 10),
 			ChatName:   html.EscapeString(utils.String.RuneSubString(msg.ChatName, config.ChatNameMax)),
-			Date:       utils.String.MustGetDate(msg.Date).Format("2006.01.02"),
+			Date:       time.Unix(msg.Date, 0).Format("2006.01.02"),
 			Content:    html.EscapeString(strings.Join(append(contents, ""), "...")),
 			GoLink:     util.GetMsgLink(msg.Chat, msg.ID),
 		})

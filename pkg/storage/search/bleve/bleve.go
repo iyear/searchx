@@ -62,6 +62,7 @@ func New(options map[string]interface{}) (*Bleve, error) {
 	}
 
 	mapping.DefaultAnalyzer = jieba
+	mapping.DefaultMapping.StructTagKey = "index"
 
 	var index bleve.Index
 

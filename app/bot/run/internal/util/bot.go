@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	tele "gopkg.in/telebot.v3"
-	"strconv"
 )
 
 func appendBack(back tele.InlineButton, opts ...interface{}) []interface{} {
@@ -42,8 +41,6 @@ func EditOrSendWithBack(c tele.Context, what interface{}, opts ...interface{}) e
 	return doWithBack(c, c.EditOrSend, what, opts...)
 }
 
-func GetMsgLink(chat string, msg string) string {
-	// super group and channel
-	c, _ := strconv.ParseInt(chat, 10, 64)
-	return fmt.Sprintf("https://t.me/c/%d/%s", (-c)-1e12, msg)
+func GetMsgLink(chat int64, msg int) string {
+	return fmt.Sprintf("https://t.me/c/%d/%d", (-chat)-1e12, msg)
 }
