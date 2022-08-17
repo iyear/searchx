@@ -14,3 +14,19 @@ type Config struct {
 		Options map[string]interface{} `mapstructure:"options"`
 	} `mapstructure:"cache"`
 }
+
+func Init(conf Config) (s Search, k KV, c Cache, err error) {
+	if s, err = NewSearch(conf.Search.Driver, conf.Search.Options); err != nil {
+		return
+	}
+
+	if k, err = NewKV(conf.KV.Driver, conf.KV.Options); err != nil {
+		return
+	}
+
+	if c, err = NewCache(conf.Cache.Driver, conf.Cache.Options); err != nil {
+		return
+	}
+
+	return
+}

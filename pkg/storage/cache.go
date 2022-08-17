@@ -10,7 +10,7 @@ type Cache interface {
 	Set(key string, val interface{})
 }
 
-func New(name string, options map[string]interface{}) (Cache, error) {
+func NewCache(name string, options map[string]interface{}) (Cache, error) {
 	switch name {
 	case "gocache":
 		return gocache.New(options)

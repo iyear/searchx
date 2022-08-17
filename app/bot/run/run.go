@@ -32,23 +32,11 @@ func Run(cfg string) {
 	}
 	color.Blue("I18n templates loaded")
 
-	_kv, err := storage.NewKV(config.C.Storage.KV.Driver, config.C.Storage.KV.Options)
+	search, kv, cache, err := storage.Init(config.C.Storage)
 	if err != nil {
-		slog.Fatalw("init kv database failed", "err", err, "options", config.C.Storage.KV.Options)
+		slog.Fatalw("init storage failed", "err", err)
 	}
-	color.Blue("KV database initialized")
-
-	_search, err := storage.NewSearch(config.C.Storage.Search.Driver, config.C.Storage.Search.Options)
-	if err != nil {
-		slog.Fatalw("init search engine database failed", "err", err, "options", config.C.Storage.Search.Options)
-	}
-	color.Blue("Search engine initialized")
-
-	_cache, err := storage.New(config.C.Storage.Cache.Driver, config.C.Storage.Cache.Options)
-	if err != nil {
-		slog.Fatalw("init cache failed", "err", err, "options", config.C.Storage.Cache.Options)
-	}
-	color.Blue("Cache initialized")
+	color.Blue("Storage initialized")
 
 	dialer, err := utils.ProxyFromURL(config.C.Proxy)
 	if err != nil {
@@ -72,9 +60,9 @@ func Run(cfg string) {
 
 	scope := &model.Scope{
 		Storage: &model.Storage{
-			KV:     _kv,
-			Search: _search,
-			Cache:  _cache,
+			KV:     kv,
+			Search: search,
+			Cache:  cache,
 		},
 		Log: slog.Named("bot"),
 	}
