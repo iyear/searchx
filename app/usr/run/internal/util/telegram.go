@@ -20,15 +20,20 @@ func GetPeerID(peer tg.PeerClass) int64 {
 }
 
 func GetPeerName(peer tg.PeerClass, e tg.Entities) string {
-	switch p := peer.(type) {
-	case *tg.PeerUser:
-		u := e.Users[p.UserID]
-		return utils.Telegram.GetSenderName(u.FirstName, u.LastName)
-	case *tg.PeerChat:
-		return e.Chats[p.ChatID].Title
-	case *tg.PeerChannel:
-		return e.Channels[p.ChannelID].Title
+	id := GetPeerID(peer)
+
+	if n, ok := e.Users[id]; ok {
+		return utils.Telegram.GetSenderName(n.FirstName, n.LastName)
 	}
+
+	if n, ok := e.Channels[id]; ok {
+		return n.Title
+	}
+
+	if n, ok := e.Chats[id]; ok {
+		return n.Title
+	}
+
 	return ""
 }
 
