@@ -1,27 +1,36 @@
 [text]
 start = """
-✨ 你好！[{{ .Username }}](tg://user?id={{ .ID }}) ✨
 
-🤖 [SearchX](https://github.com/iyear/searchx) *是专注于强化搜索体验的 Bot*
+✨ 你好！<a href="tg://user?id={{ .ID }}">{{ .Username }}</a> ✨
 
-⚡ *发送关键字开始体验强化搜索！*
+🤖 <a href="https://github.com/iyear/searchx">SearchX</a> <b>是专注于强化搜索体验的 Bot</b>
 
-*公告：*
+⚡ <b>发送关键字开始体验强化搜索！</b>
+
+<b>公告：</b>
 {{ .Notice }}
 
-ver: `{{ .Version }}`
+ver: <code>{{ .Version }}</code>
 """
 
 [text.search]
 keywords_too_long = "⚠ 关键词过长，请适当缩短关键词"
 results = """
-👉 搜索: *{{ .Keyword }}* 👈
+👉 搜索: <b>{{ .Keyword }}</b> 👈
 {{ range .Results }}
-*{{ .Seq }}.* [{{ .Sender }}]({{ .SenderLink }}) - {{ .Date }} [→]({{ .Link }})
+<a href="{{ .ViewLink }}">{{ .Seq }}</a> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .GoLink }}">→</a>
   | {{ .Content }}
 {{ end }}
 
-⏳ 本次搜索花费时间: `{{ .Took }}ms`
+⏳ 本次搜索花费时间: <code>{{ .Took }}ms</code>
+"""
+view = """
+消息ID: <code>{{ .MsgID }}</code>
+会话: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
+发送者: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
+时间: <code>{{ .Date }}</code>
+
+{{ .Content }}
 """
 
 [button]

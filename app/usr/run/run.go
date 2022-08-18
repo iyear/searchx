@@ -66,20 +66,20 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		Poller:    &tele.LongPoller{Timeout: 5 * time.Second},
 		Client:    &http.Client{Transport: &http.Transport{DialContext: dialer.DialContext}},
 		OnError:   middleware.OnError(),
-		ParseMode: tele.ModeMarkdown,
+		ParseMode: tele.ModeHTML,
 	}
 
 	bot, err := tele.NewBot(settings)
 	if err != nil {
 		slog.Fatalw("create bot failed", "err", err)
 	}
-
 	color.Blue("Auth successfully! Bot: %s", bot.Me.Username)
 
 	template, ok := i18n.Templates[config.C.Ctrl.Language]
 	if !ok {
 		slog.Fatalw("language is not supported", "language", config.C.Ctrl.Language)
 	}
+
 	_storage := &model.Storage{
 		KV:     kv,
 		Search: search,
@@ -93,6 +93,8 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 	}
 
 	bot.Use(middleware.SetScope(botScope), middleware.AutoResponder())
+
+	handleBot(bot, template.Button)
 
 	go bot.Start()
 	defer bot.Stop()
