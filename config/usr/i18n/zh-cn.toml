@@ -26,6 +26,7 @@ results = """
 """
 view = """
 消息ID: <code>{{ .MsgID }}</code>
+会话类型: <code>{{ .ChatType }}</code>
 会话: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
 发送者: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
 时间: <code>{{ .Date }}</code>

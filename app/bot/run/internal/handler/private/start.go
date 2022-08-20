@@ -59,6 +59,7 @@ func messageView(c tele.Context) error {
 	return c.EditOrSend(sp.Template.Text.Search.View.T(&model.TSearchView{
 		MsgID:      msg.ID,
 		ChatID:     msg.Chat,
+		ChatType:   msg.ChatType,
 		ChatName:   msg.ChatName,
 		SenderID:   msg.Sender,
 		SenderName: msg.SenderName,

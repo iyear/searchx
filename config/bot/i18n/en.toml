@@ -25,6 +25,7 @@ results = """
 """
 view = """
 Message ID: <code>{{ .MsgID }}</code>
+ChatType: <code>{{ .ChatType }}</code>
 Chat: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
 Sender: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
 Time: <code>{{ .Date }}</code>
