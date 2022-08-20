@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/bcicen/jstream"
 	"github.com/fatih/color"
+	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage"
@@ -25,6 +26,11 @@ const (
 	channel     = "channel"
 	typeMessage = "message"
 )
+
+var chatTypes = map[string]string{
+	supergroup: consts.ChatGroup,
+	channel:    consts.ChatChannel,
+}
 
 type message struct {
 	ID     int         `mapstructure:"id"`
@@ -59,7 +65,7 @@ func Start(ctx context.Context, src, searchDriver string, searchOptions map[stri
 
 	color.Blue("Type: %s, ID: %d, Name: %s\n", chatType, chatID, chatName)
 
-	if err = index(ctx, src, chatID, chatName, _search); err != nil {
+	if err = index(ctx, src, chatID, chatType, chatName, _search); err != nil {
 		return err
 	}
 	color.Blue("Index Succ... Time: %v", time.Since(start))
@@ -68,7 +74,7 @@ func Start(ctx context.Context, src, searchDriver string, searchOptions map[stri
 
 }
 
-func index(ctx context.Context, src string, chatID int64, chatName string, _search storage.Search) error {
+func index(ctx context.Context, src string, chatID int64, chatType, chatName string, _search storage.Search) error {
 	f, err := os.Open(src)
 	if err != nil {
 		return err
@@ -141,6 +147,7 @@ func index(ctx context.Context, src string, chatID int64, chatName string, _sear
 				m := &models.SearchMsg{
 					ID:         msg.ID,
 					Chat:       chatID,
+					ChatType:   chatTypes[chatType],
 					ChatName:   chatName,
 					Text:       strings.ReplaceAll(text, "\n", " "),
 					Sender:     sender,
@@ -202,9 +209,15 @@ func getChatInfo(src string) (string, int64, string, error) {
 
 		if kv.Key == keyType {
 			chatType = kv.Value.(string)
-			if !strings.HasSuffix(chatType, supergroup) && !strings.HasSuffix(chatType, channel) {
-				return "", 0, "", errors.New("chat type should be supergroup or channel")
+			if strings.HasSuffix(chatType, supergroup) {
+				chatType = supergroup
+				continue
 			}
+			if strings.HasSuffix(chatType, channel) {
+				chatType = channel
+				continue
+			}
+			return "", 0, "", errors.New("chat type should be supergroup or channel")
 		}
 
 		if kv.Key == keyID {
