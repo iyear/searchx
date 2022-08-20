@@ -1,6 +1,7 @@
 package gocache
 
 import (
+	"context"
 	"github.com/patrickmn/go-cache"
 	"time"
 )
@@ -14,10 +15,10 @@ func New(options map[string]interface{}) (*Cache, error) {
 	return &Cache{cache: cache.New(10*time.Minute, 1*time.Minute)}, nil
 }
 
-func (c *Cache) Get(key string) (interface{}, bool) {
+func (c *Cache) Get(_ context.Context, key string) (interface{}, bool) {
 	return c.cache.Get(key)
 }
 
-func (c *Cache) Set(key string, val interface{}) {
+func (c *Cache) Set(_ context.Context, key string, val interface{}) {
 	c.cache.Set(key, val, cache.DefaultExpiration)
 }

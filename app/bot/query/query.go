@@ -1,6 +1,7 @@
 package query
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
 	"errors"
@@ -20,7 +21,7 @@ type tmplData struct {
 //go:embed query.tmpl
 var tmpl string
 
-func Query(driver string, searchOptions map[string]string, query string, pn, ps int, jsonFormat bool) error {
+func Query(ctx context.Context, driver string, searchOptions map[string]string, query string, pn, ps int, jsonFormat bool) error {
 	if driver == "" {
 		return errors.New("search driver can not be empty")
 	}
@@ -36,7 +37,7 @@ func Query(driver string, searchOptions map[string]string, query string, pn, ps 
 	}
 
 	// todo(iyear): add sortBy options
-	results := _search.Search(query, search.Options{
+	results := _search.Search(ctx, query, search.Options{
 		From: pn * ps,
 		Size: ps,
 		SortBy: []search.OptionSortByItem{{

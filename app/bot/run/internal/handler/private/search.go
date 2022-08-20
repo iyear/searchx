@@ -1,6 +1,7 @@
 package private
 
 import (
+	"context"
 	"encoding/base64"
 	"github.com/iyear/searchx/app/bot/run/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
@@ -48,7 +49,7 @@ func Search(c tele.Context) error {
 	prevBtn.Data = searchSetData(keyword, pn-1, order)
 
 	// 每次多查一个判断 total%ps==0 的情况
-	searchResults := sp.Storage.Search.Search(keyword, search.Options{
+	searchResults := sp.Storage.Search.Search(context.TODO(), keyword, search.Options{
 		From:   pn * ps,
 		Size:   ps + 1,
 		SortBy: config.SearchOrders[order].SortBy,

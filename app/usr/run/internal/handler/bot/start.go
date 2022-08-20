@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"context"
 	"encoding/base64"
 	"github.com/iyear/searchx/app/usr/run/internal/model"
 	"github.com/iyear/searchx/app/usr/run/internal/util"
@@ -39,7 +40,7 @@ func messageView(c tele.Context) error {
 		return err
 	}
 
-	result, err := sp.Storage.Search.Get(string(id))
+	result, err := sp.Storage.Search.Get(context.TODO(), string(id))
 	if err != nil {
 		return err
 	}

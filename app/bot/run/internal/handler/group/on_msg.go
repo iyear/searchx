@@ -1,6 +1,7 @@
 package group
 
 import (
+	"context"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/keygen"
@@ -62,7 +63,7 @@ func index(c tele.Context, text string) error {
 		return err
 	}
 
-	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
+	return util.GetScope(c).Storage.Search.Index(context.TODO(), []*search.Item{{
 		ID:   keygen.SearchMsgID(msg.Chat.ID, msg.ID),
 		Data: data,
 	}})

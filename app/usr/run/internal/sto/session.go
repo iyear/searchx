@@ -22,7 +22,7 @@ func (s *Session) LoadSession(_ context.Context) ([]byte, error) {
 		return nil, nil
 	}
 
-	b, err := s.kv.Get(key.Session())
+	b, err := s.kv.Get(context.TODO(), key.Session())
 	if err != nil {
 		if errors.Is(err, kv.ErrNotFound) {
 			return nil, nil
@@ -33,5 +33,5 @@ func (s *Session) LoadSession(_ context.Context) ([]byte, error) {
 }
 
 func (s *Session) StoreSession(_ context.Context, data []byte) error {
-	return s.kv.Set(key.Session(), string(data))
+	return s.kv.Set(context.TODO(), key.Session(), string(data))
 }

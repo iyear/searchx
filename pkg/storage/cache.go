@@ -1,13 +1,14 @@
 package storage
 
 import (
+	"context"
 	"fmt"
 	"github.com/iyear/searchx/pkg/storage/cache/gocache"
 )
 
 type Cache interface {
-	Get(key string) (interface{}, bool)
-	Set(key string, val interface{})
+	Get(ctx context.Context, key string) (interface{}, bool)
+	Set(ctx context.Context, key string, val interface{})
 }
 
 func NewCache(name string, options map[string]interface{}) (Cache, error) {

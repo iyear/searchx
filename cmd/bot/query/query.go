@@ -1,9 +1,12 @@
 package query
 
 import (
+	"context"
 	"github.com/fatih/color"
 	"github.com/iyear/searchx/app/bot/query"
 	"github.com/spf13/cobra"
+	"os"
+	"os/signal"
 )
 
 var (
@@ -19,7 +22,9 @@ var Cmd = &cobra.Command{
 	Use:   "query",
 	Short: "Query messages",
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := query.Query(searchDriver, searchOptions, _query, pn, ps, json); err != nil {
+		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
+		defer cancel()
+		if err := query.Query(ctx, searchDriver, searchOptions, _query, pn, ps, json); err != nil {
 			color.Red("error happens: %v", err)
 			return
 		}

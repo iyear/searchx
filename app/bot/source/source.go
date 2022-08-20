@@ -1,6 +1,7 @@
 package source
 
 import (
+	"context"
 	"errors"
 	"github.com/bcicen/jstream"
 	"github.com/fatih/color"
@@ -34,7 +35,7 @@ type message struct {
 	Text   interface{} `mapstructure:"text"`
 }
 
-func Start(src, searchDriver string, searchOptions map[string]string) error {
+func Start(ctx context.Context, src, searchDriver string, searchOptions map[string]string) error {
 	if searchDriver == "" {
 		return errors.New("search driver can not be empty")
 	}
@@ -58,7 +59,7 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 
 	color.Blue("Type: %s, ID: %d, Name: %s\n", chatType, chatID, chatName)
 
-	if err = index(src, chatID, chatName, _search); err != nil {
+	if err = index(ctx, src, chatID, chatName, _search); err != nil {
 		return err
 	}
 	color.Blue("Index Succ... Time: %v", time.Since(start))
@@ -67,7 +68,7 @@ func Start(src, searchDriver string, searchOptions map[string]string) error {
 
 }
 
-func index(src string, chatID int64, chatName string, _search storage.Search) error {
+func index(ctx context.Context, src string, chatID int64, chatName string, _search storage.Search) error {
 	f, err := os.Open(src)
 	if err != nil {
 		return err
@@ -85,83 +86,88 @@ func index(src string, chatID int64, chatName string, _search storage.Search) er
 	items := make([]*search.Item, 0, batchSize)
 
 	for mv := range d.Stream() {
-		msg := message{}
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+			msg := message{}
 
-		if mv.ValueType != jstream.Object {
-			continue
-		}
+			if mv.ValueType != jstream.Object {
+				continue
+			}
 
-		if err = mapstructure.WeakDecode(mv.Value, &msg); err != nil {
-			return err
-		}
+			if err = mapstructure.WeakDecode(mv.Value, &msg); err != nil {
+				return err
+			}
 
-		if msg.ID < 0 || msg.Type != typeMessage {
-			continue
-		}
+			if msg.ID < 0 || msg.Type != typeMessage {
+				continue
+			}
 
-		text := ""
+			text := ""
 
-		switch r := msg.Text.(type) {
-		case string:
-			text = r
-		case []interface{}:
-			for _, tt := range r {
-				switch t := tt.(type) {
-				case string:
-					text += t
-				case map[string]interface{}:
-					text += " " + t["text"].(string) + " "
+			switch r := msg.Text.(type) {
+			case string:
+				text = r
+			case []interface{}:
+				for _, tt := range r {
+					switch t := tt.(type) {
+					case string:
+						text += t
+					case map[string]interface{}:
+						text += " " + t["text"].(string) + " "
+					}
 				}
 			}
-		}
 
-		// user: real user, channel: anonymous user
-		if !strings.HasPrefix(msg.FromID, "user") && !strings.HasPrefix(msg.FromID, "channel") {
-			continue
-		}
-
-		senderStr := strings.TrimPrefix(msg.FromID, "user")
-		senderStr = strings.TrimPrefix(senderStr, "channel")
-		sender, err := strconv.ParseInt(senderStr, 10, 64)
-		if err != nil {
-			return err
-		}
-
-		_time, err := strconv.ParseInt(msg.Time, 10, 64)
-		if err != nil {
-			return err
-		}
-
-		if text != "" {
-			m := &models.SearchMsg{
-				ID:         msg.ID,
-				Chat:       chatID,
-				ChatName:   chatName,
-				Text:       strings.ReplaceAll(text, "\n", " "),
-				Sender:     sender,
-				SenderName: msg.From,
-				Date:       _time,
+			// user: real user, channel: anonymous user
+			if !strings.HasPrefix(msg.FromID, "user") && !strings.HasPrefix(msg.FromID, "channel") {
+				continue
 			}
-			data, err := m.Encode()
+
+			senderStr := strings.TrimPrefix(msg.FromID, "user")
+			senderStr = strings.TrimPrefix(senderStr, "channel")
+			sender, err := strconv.ParseInt(senderStr, 10, 64)
 			if err != nil {
 				return err
 			}
-			items = append(items, &search.Item{
-				ID:   keygen.SearchMsgID(chatID, msg.ID),
-				Data: data,
-			})
-		}
 
-		if len(items) == batchSize {
-			if err = _search.Index(items); err != nil {
+			_time, err := strconv.ParseInt(msg.Time, 10, 64)
+			if err != nil {
 				return err
 			}
-			items = make([]*search.Item, 0, batchSize)
+
+			if text != "" {
+				m := &models.SearchMsg{
+					ID:         msg.ID,
+					Chat:       chatID,
+					ChatName:   chatName,
+					Text:       strings.ReplaceAll(text, "\n", " "),
+					Sender:     sender,
+					SenderName: msg.From,
+					Date:       _time,
+				}
+				data, err := m.Encode()
+				if err != nil {
+					return err
+				}
+				items = append(items, &search.Item{
+					ID:   keygen.SearchMsgID(chatID, msg.ID),
+					Data: data,
+				})
+			}
+
+			if len(items) == batchSize {
+				if err = _search.Index(ctx, items); err != nil {
+					return err
+				}
+				items = make([]*search.Item, 0, batchSize)
+			}
 		}
 	}
 
 	if len(items) > 0 {
-		if err = _search.Index(items); err != nil {
+		if err = _search.Index(ctx, items); err != nil {
 			return err
 		}
 	}

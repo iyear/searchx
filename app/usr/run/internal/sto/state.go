@@ -1,6 +1,7 @@
 package sto
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"github.com/gotd/td/telegram/updates"
@@ -18,7 +19,7 @@ func NewState(kv storage.KV) *State {
 }
 
 func (s *State) Get(key string, v interface{}) error {
-	data, err := s.kv.Get(key)
+	data, err := s.kv.Get(context.TODO(), key)
 	if err != nil {
 		return err
 	}
@@ -32,7 +33,7 @@ func (s *State) Set(key string, v interface{}) error {
 		return err
 	}
 
-	return s.kv.Set(key, string(data))
+	return s.kv.Set(context.TODO(), key, string(data))
 }
 
 func (s *State) GetState(userID int64) (updates.State, bool, error) {

@@ -1,8 +1,8 @@
 package usr
 
 import (
+	"context"
 	"github.com/gotd/td/tg"
-	"github.com/iyear/searchx/app/usr/run/internal/model"
 	"github.com/iyear/searchx/app/usr/run/internal/util"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
@@ -10,7 +10,9 @@ import (
 	"strings"
 )
 
-func index(sp *model.UsrScope, chatID int64, chatType, chatName string, msgID int, senderID int64, senderName string, text string, date int) error {
+func index(ctx context.Context, chatID int64, chatType, chatName string, msgID int, senderID int64, senderName string, text string, date int) error {
+	sp := util.GetUsrScope(ctx)
+
 	// clean text
 	if strings.TrimFunc(text, func(r rune) bool {
 		return r == ' ' || r == '\n' || r == '\t' || r == '\r' || r == '\f' || r == '\v'
@@ -34,13 +36,13 @@ func index(sp *model.UsrScope, chatID int64, chatType, chatName string, msgID in
 	if err != nil {
 		return err
 	}
-	return sp.Storage.Search.Index([]*search.Item{{
+	return sp.Storage.Search.Index(ctx, []*search.Item{{
 		ID:   keygen.SearchMsgID(chatID, msgID),
 		Data: data,
 	}})
 }
 
-func indexMessage(sp *model.UsrScope, e tg.Entities, msg tg.MessageClass) error {
+func indexMessage(ctx context.Context, e tg.Entities, msg tg.MessageClass) error {
 	m, ok := msg.(*tg.Message)
 	if !ok {
 		return nil
@@ -64,5 +66,5 @@ func indexMessage(sp *model.UsrScope, e tg.Entities, msg tg.MessageClass) error 
 		date = m.Date
 	}
 
-	return index(sp, chatID, chatType, chatName, m.ID, senderID, senderName, messageText(m), date)
+	return index(ctx, chatID, chatType, chatName, m.ID, senderID, senderName, messageText(m), date)
 }

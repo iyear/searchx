@@ -1,6 +1,7 @@
 package bolt
 
 import (
+	"context"
 	"github.com/creasty/defaults"
 	"github.com/iyear/searchx/pkg/storage/kv"
 	"github.com/iyear/searchx/pkg/validator"
@@ -49,7 +50,7 @@ func New(options map[string]interface{}) (*Bolt, error) {
 	return &Bolt{db: db}, nil
 }
 
-func (b *Bolt) Get(key string) (string, error) {
+func (b *Bolt) Get(_ context.Context, key string) (string, error) {
 	var val []byte
 
 	if err := b.db.View(func(tx *bbolt.Tx) error {
@@ -66,7 +67,7 @@ func (b *Bolt) Get(key string) (string, error) {
 	return string(val), nil
 }
 
-func (b *Bolt) Set(key string, val string) error {
+func (b *Bolt) Set(_ context.Context, key string, val string) error {
 	return b.db.Update(func(tx *bbolt.Tx) error {
 		return tx.Bucket([]byte(bucket)).Put([]byte(key), []byte(val))
 	})

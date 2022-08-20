@@ -1,6 +1,7 @@
 package sto
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"github.com/iyear/searchx/app/usr/run/internal/key"
@@ -17,7 +18,7 @@ func NewAccessHasher(kv storage.KV) *AccessHasher {
 }
 
 func (h *AccessHasher) SetChannelAccessHash(userID, channelID, accessHash int64) error {
-	data, err := h.kv.Get(key.ChannelAccessHash(userID))
+	data, err := h.kv.Get(context.TODO(), key.ChannelAccessHash(userID))
 	if err != nil && !errors.Is(err, kv.ErrNotFound) {
 		return err
 	}
@@ -38,11 +39,11 @@ func (h *AccessHasher) SetChannelAccessHash(userID, channelID, accessHash int64)
 		return err
 	}
 
-	return h.kv.Set(key.ChannelAccessHash(userID), string(b))
+	return h.kv.Set(context.TODO(), key.ChannelAccessHash(userID), string(b))
 }
 
 func (h *AccessHasher) GetChannelAccessHash(userID, channelID int64) (int64, bool, error) {
-	data, err := h.kv.Get(key.ChannelAccessHash(userID))
+	data, err := h.kv.Get(context.TODO(), key.ChannelAccessHash(userID))
 	if err != nil {
 		if errors.Is(err, kv.ErrNotFound) {
 			return 0, false, nil

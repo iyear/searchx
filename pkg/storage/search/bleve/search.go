@@ -1,14 +1,15 @@
 package bleve
 
 import (
+	"context"
 	"fmt"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/iyear/searchx/pkg/storage/search"
 )
 
-func (b *Bleve) Get(id string) (*search.Result, error) {
+func (b *Bleve) Get(ctx context.Context, id string) (*search.Result, error) {
 	s := bleve.NewSearchRequest(bleve.NewDocIDQuery([]string{id}))
-	results := b.searchReq(s, search.Options{})
+	results := b.searchReq(ctx, s, search.Options{})
 
 	if len(results) != 1 {
 		return nil, fmt.Errorf("get doc failed, id: %s", id)
@@ -17,20 +18,20 @@ func (b *Bleve) Get(id string) (*search.Result, error) {
 	return results[0], nil
 }
 
-func (b *Bleve) Search(query string, options search.Options) []*search.Result {
+func (b *Bleve) Search(ctx context.Context, query string, options search.Options) []*search.Result {
 	// try query string query
 	// if not have results, try wildcard query
 	s := bleve.NewSearchRequestOptions(bleve.NewQueryStringQuery(query), options.Size, options.From, false)
-	results := b.searchReq(s, options)
+	results := b.searchReq(ctx, s, options)
 	if len(results) > 0 {
 		return results
 	}
 
 	s = bleve.NewSearchRequestOptions(bleve.NewWildcardQuery("*"+query+"*"), options.Size, options.Size, false)
-	return b.searchReq(s, options)
+	return b.searchReq(ctx, s, options)
 }
 
-func (b *Bleve) searchReq(req *bleve.SearchRequest, options search.Options) []*search.Result {
+func (b *Bleve) searchReq(ctx context.Context, req *bleve.SearchRequest, options search.Options) []*search.Result {
 	req.IncludeLocations = true
 	req.Fields = []string{"*"}
 
@@ -47,7 +48,7 @@ func (b *Bleve) searchReq(req *bleve.SearchRequest, options search.Options) []*s
 
 	results := make([]*search.Result, 0)
 
-	result, err := b.index.Search(req)
+	result, err := b.index.SearchInContext(ctx, req)
 	if err != nil {
 		return results
 	}
