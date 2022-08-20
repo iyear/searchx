@@ -7,6 +7,7 @@ import (
 type SearchMsg struct {
 	ID         int    `json:"id,string" mapstructure:"id" index:"id"`                     // message id
 	Chat       int64  `json:"chat,string" mapstructure:"chat" index:"chat"`               // chat id
+	ChatType   string `json:"chat_type" mapstructure:"chat_type" index:"chat_type"`       // chat type
 	ChatName   string `json:"chat_name" mapstructure:"chat_name" index:"chat_name"`       // chat name
 	Text       string `json:"text" mapstructure:"text" index:"text"`                      // text content
 	Sender     int64  `json:"sender,string" mapstructure:"sender" index:"sender"`         // sender id

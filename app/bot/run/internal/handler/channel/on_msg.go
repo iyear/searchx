@@ -2,6 +2,7 @@ package channel
 
 import (
 	"github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
@@ -16,6 +17,7 @@ func Index(c tele.Context) error {
 	msg := &models.SearchMsg{
 		ID:         m.ID,
 		Chat:       m.Chat.ID,
+		ChatType:   consts.ChatChannel,
 		ChatName:   m.Chat.Title,
 		Text:       c.Text(),
 		Sender:     m.SenderChat.ID,

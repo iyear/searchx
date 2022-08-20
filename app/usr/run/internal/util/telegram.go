@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"github.com/gotd/td/tg"
+	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
 )
@@ -35,6 +36,27 @@ func GetPeerName(peer tg.PeerClass, e tg.Entities) string {
 	}
 
 	return ""
+}
+
+func GetPeerType(peer tg.PeerClass, e tg.Entities) string {
+	id := GetPeerID(peer)
+
+	if _, ok := e.Users[id]; ok {
+		return consts.ChatPrivate
+	}
+
+	if n, ok := e.Channels[id]; ok {
+		if n.Megagroup || n.Gigagroup {
+			return consts.ChatGroup
+		}
+		return consts.ChatChannel
+	}
+
+	if _, ok := e.Chats[id]; ok {
+		return consts.ChatGroup
+	}
+
+	return consts.ChatUnknown
 }
 
 func appendBack(back tele.InlineButton, opts ...interface{}) []interface{} {

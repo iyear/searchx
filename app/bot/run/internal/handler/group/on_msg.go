@@ -2,6 +2,7 @@ package group
 
 import (
 	"github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
@@ -48,6 +49,7 @@ func index(c tele.Context, text string) error {
 	m := &models.SearchMsg{
 		ID:         msg.ID,
 		Chat:       msg.Chat.ID,
+		ChatType:   consts.ChatGroup,
 		ChatName:   msg.Chat.Title,
 		Text:       text,
 		Sender:     msg.Sender.ID,

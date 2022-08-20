@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func index(sp *model.UsrScope, chatID int64, chatName string, msgID int, senderID int64, senderName string, text string, date int) error {
+func index(sp *model.UsrScope, chatID int64, chatType, chatName string, msgID int, senderID int64, senderName string, text string, date int) error {
 	// clean text
 	if strings.TrimFunc(text, func(r rune) bool {
 		return r == ' ' || r == '\n' || r == '\t' || r == '\r' || r == '\f' || r == '\v'
@@ -18,11 +18,12 @@ func index(sp *model.UsrScope, chatID int64, chatName string, msgID int, senderI
 		return nil
 	}
 
-	sp.Log.Debugw("new message", "chatID", chatID, "chatName", chatName, "msgID", msgID, "senderID", senderID, "senderName", senderName, "text", text, "date", date)
+	sp.Log.Debugw("new message", "chatID", chatID, "chatType", chatType, "chatName", chatName, "msgID", msgID, "senderID", senderID, "senderName", senderName, "text", text, "date", date)
 
 	msg := &models.SearchMsg{
 		ID:         msgID,
 		Chat:       chatID,
+		ChatType:   chatType,
 		ChatName:   chatName,
 		Text:       text,
 		Sender:     senderID,
@@ -47,6 +48,7 @@ func indexMessage(sp *model.UsrScope, e tg.Entities, msg tg.MessageClass) error 
 
 	// get chat info
 	chatID := util.GetPeerID(m.PeerID)
+	chatType := util.GetPeerType(m.PeerID, e)
 	chatName := util.GetPeerName(m.PeerID, e)
 
 	// get from info
@@ -62,5 +64,5 @@ func indexMessage(sp *model.UsrScope, e tg.Entities, msg tg.MessageClass) error 
 		date = m.Date
 	}
 
-	return index(sp, chatID, chatName, m.ID, senderID, senderName, messageText(m), date)
+	return index(sp, chatID, chatType, chatName, m.ID, senderID, senderName, messageText(m), date)
 }
