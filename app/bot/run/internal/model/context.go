@@ -7,13 +7,7 @@ import (
 )
 
 type Scope struct {
-	Storage  *Storage
+	Storage  *storage.Storage
 	Template *i18n.Template
 	Log      *zap.SugaredLogger
-}
-
-type Storage struct {
-	KV     storage.KV
-	Search storage.Search
-	Cache  storage.Cache
 }

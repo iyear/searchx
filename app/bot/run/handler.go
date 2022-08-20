@@ -8,6 +8,7 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/handler/private"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
 	"github.com/iyear/searchx/app/bot/run/internal/middleware"
+	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -33,11 +34,11 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 
 		p.Handle(&button.Start.Settings, private.SettingsBtn)
 		p.Handle(&button.Back, private.Start)
-		p.Handle(&button.Search.Next, private.SearchNext)
-		p.Handle(&button.Search.Prev, private.SearchPrev)
+		p.Handle(&button.Search.Next, searchbot.SearchNext(config.C.Ctrl.Search.PageSize))
+		p.Handle(&button.Search.Prev, searchbot.SearchPrev(config.C.Ctrl.Search.PageSize))
 		p.Handle(&button.Settings.Language, private.SettingsLanguage)
 		p.Handle(&button.Settings.LanguagePlain, private.SettingsSwitchLanguage)
-		p.Handle(&button.Search.SwitchOrder, private.SearchSwitchOrder)
+		p.Handle(&button.Search.SwitchOrder, searchbot.SearchSwitchOrder(config.C.Ctrl.Search.PageSize))
 	}
 
 	bot.Handle(tele.OnText, handler.OnText)

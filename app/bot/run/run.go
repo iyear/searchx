@@ -59,7 +59,7 @@ func Run(cfg string) {
 	color.Blue("Bot: %s", bot.Me.Username)
 
 	scope := &model.Scope{
-		Storage: &model.Storage{
+		Storage: &storage.Storage{
 			KV:     kv,
 			Search: search,
 			Cache:  cache,

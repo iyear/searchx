@@ -1,7 +1,6 @@
 package util
 
 import (
-	"fmt"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -39,8 +38,4 @@ func doWithBack(c tele.Context, fn func(what interface{}, opts ...interface{}) e
 
 func EditOrSendWithBack(c tele.Context, what interface{}, opts ...interface{}) error {
 	return doWithBack(c, c.EditOrSend, what, opts...)
-}
-
-func GetMsgLink(chat int64, msg int) string {
-	return fmt.Sprintf("https://t.me/c/%d/%d", (-chat)-1e12, msg)
 }

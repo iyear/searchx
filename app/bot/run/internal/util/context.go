@@ -5,6 +5,7 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/key"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
+	"github.com/iyear/searchx/pkg/storage"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -12,7 +13,7 @@ func GetScope(c tele.Context) *model.Scope {
 	return c.Get(config.ContextScope).(*model.Scope)
 }
 
-func GetUserLanguage(storage *model.Storage, tid int64) string {
+func GetUserLanguage(storage *storage.Storage, tid int64) string {
 	v, found := storage.Cache.Get(context.Background(), key.Language(tid))
 	if found {
 		return v.(string)

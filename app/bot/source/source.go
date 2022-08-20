@@ -221,7 +221,7 @@ func getChatInfo(src string) (string, int64, string, error) {
 		}
 
 		if kv.Key == keyID {
-			chatID = -int64(kv.Value.(float64)) - 1e12
+			chatID = int64(kv.Value.(float64))
 		}
 
 		if kv.Key == keyName {

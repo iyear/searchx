@@ -1,5 +1,11 @@
 package storage
 
+type Storage struct {
+	KV     KV
+	Search Search
+	Cache  Cache
+}
+
 type Config struct {
 	KV struct {
 		Driver  string                 `mapstructure:"driver" validate:"oneof=bolt" default:"bolt"`

@@ -5,6 +5,8 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/pkg/consts"
+	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -21,6 +23,12 @@ func SetScope(sp *model.Scope) tele.MiddlewareFunc {
 				Storage:  sp.Storage,
 				Template: tmpl,
 				Log:      sp.Log,
+			})
+
+			c.Set(consts.ContextSearch, &searchbot.SearchScope{
+				Text:    &tmpl.Text.Search,
+				Button:  &tmpl.Button.Search,
+				Storage: sp.Storage,
 			})
 
 			c.Set(config.ContextLanguage, lang)

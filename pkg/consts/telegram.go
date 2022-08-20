@@ -6,3 +6,7 @@ const (
 	ChatChannel = "channel"
 	ChatUnknown = "unknown"
 )
+
+const (
+	ContextSearch = "search"
+)

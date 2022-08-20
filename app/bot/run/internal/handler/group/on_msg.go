@@ -49,7 +49,7 @@ func index(c tele.Context, text string) error {
 
 	m := &models.SearchMsg{
 		ID:         msg.ID,
-		Chat:       msg.Chat.ID,
+		Chat:       (-msg.Chat.ID) - 1e12,
 		ChatType:   consts.ChatGroup,
 		ChatName:   msg.Chat.Title,
 		Text:       text,
