@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"github.com/iyear/searchx/pkg/i18n"
+	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -11,19 +12,11 @@ type Template struct {
 }
 
 type TemplateText struct {
-	Search struct {
-		KeywordsTooLong i18n.Text `mapstructure:"keywords_too_long"`
-		Results         i18n.Text `mapstructure:"results"`
-		View            i18n.Text `mapstructure:"view"`
-	} `mapstructure:"search"`
-	Start i18n.Text `mapstructure:"start"`
+	Search searchbot.SearchContextTextTemplate `mapstructure:"search"`
+	Start  i18n.Text                           `mapstructure:"start"`
 }
 
 type TemplateButton struct {
-	Back   tele.InlineButton `mapstructure:"back"`
-	Search struct {
-		Next        tele.InlineButton `mapstructure:"next"`
-		Prev        tele.InlineButton `mapstructure:"prev"`
-		SwitchOrder tele.InlineButton `mapstructure:"switch_order"`
-	} `mapstructure:"search"`
+	Back   tele.InlineButton                     `mapstructure:"back"`
+	Search searchbot.SearchContextButtonTemplate `mapstructure:"search"`
 }

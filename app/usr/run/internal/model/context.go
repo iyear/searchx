@@ -8,19 +8,13 @@ import (
 )
 
 type BotScope struct {
-	Storage  *Storage
+	Storage  *storage.Storage
 	Template *i18n.Template
 	Log      *zap.SugaredLogger
 }
 
 type UsrScope struct {
-	Storage *Storage
+	Storage *storage.Storage
 	Log     *zap.SugaredLogger
 	Client  *telegram.Client
-}
-
-type Storage struct {
-	KV     storage.KV
-	Search storage.Search
-	Cache  storage.Cache
 }

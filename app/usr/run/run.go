@@ -80,7 +80,7 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		slog.Fatalw("language is not supported", "language", config.C.Ctrl.Language)
 	}
 
-	_storage := &model.Storage{
+	_storage := &storage.Storage{
 		KV:     kv,
 		Search: search,
 		Cache:  cache,
