@@ -8,7 +8,6 @@ import (
 	"github.com/spf13/viper"
 	"io/fs"
 	"path/filepath"
-	"reflect"
 )
 
 func Read(path string, tmpl interface{}, hook mapstructure.DecodeHookFunc) error {
@@ -17,19 +16,10 @@ func Read(path string, tmpl interface{}, hook mapstructure.DecodeHookFunc) error
 	if err := v.ReadInConfig(); err != nil {
 		return err
 	}
-	if err := v.Unmarshal(tmpl, viper.DecodeHook(mapstructure.ComposeDecodeHookFunc(textHook(), hook))); err != nil {
+	if err := v.Unmarshal(tmpl, viper.DecodeHook(mapstructure.ComposeDecodeHookFunc(TextHook(), hook))); err != nil {
 		return err
 	}
 	return nil
-}
-
-func textHook() mapstructure.DecodeHookFunc {
-	return func(f reflect.Value, t reflect.Value) (interface{}, error) {
-		if f.Kind() == reflect.String && t.Type() == reflect.TypeOf(Text{}) {
-			return NewText(f.String())
-		}
-		return f.Interface(), nil
-	}
 }
 
 func Walk(dir string) ([]string, error) {
