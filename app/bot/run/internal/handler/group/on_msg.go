@@ -40,11 +40,17 @@ func OnAnimation(c tele.Context) error {
 }
 
 func index(c tele.Context, text string) error {
+	sp := util.GetScope(c)
 	msg := c.Message()
 
 	date := msg.LastEdit
 	if date == 0 {
 		date = msg.Unixtime
+	}
+
+	if msg.Chat == nil {
+		sp.Log.Debugw("chat is nil", "msg", msg.ID, "sender", msg.Sender.ID)
+		return nil
 	}
 
 	m := &models.SearchMsg{
