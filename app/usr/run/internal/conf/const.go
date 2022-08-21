@@ -1,4 +1,4 @@
-package config
+package conf
 
 import (
 	"github.com/gotd/td/telegram"

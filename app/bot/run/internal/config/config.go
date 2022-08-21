@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/iyear/searchx/pkg/conf"
+	"github.com/iyear/searchx/pkg/configs"
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
 )
@@ -9,7 +9,7 @@ import (
 var C config
 
 func Init(path string) error {
-	return conf.Init(path, &C)
+	return configs.Init(path, &C)
 }
 
 type config struct {

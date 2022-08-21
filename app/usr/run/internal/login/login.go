@@ -6,7 +6,8 @@ import (
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/auth"
 	"github.com/gotd/td/telegram/dcs"
-	"github.com/iyear/searchx/app/usr/run/internal/config"
+	"github.com/iyear/searchx/app/usr/config"
+	"github.com/iyear/searchx/app/usr/run/internal/conf"
 	"github.com/iyear/searchx/app/usr/run/internal/sto"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/tcnksm/go-input"
@@ -36,7 +37,7 @@ func Start(kv storage.KV, dialer proxy.ContextDialer) error {
 		Resolver: dcs.Plain(dcs.PlainOptions{
 			Dial: dialer.DialContext,
 		}),
-		Device:         config.Device,
+		Device:         conf.Device,
 		SessionStorage: sto.NewSession(kv, true),
 		Logger:         zap.NewNop(),
 	})

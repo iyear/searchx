@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/iyear/searchx/app/usr/run/internal/config"
+	"github.com/iyear/searchx/app/usr/run/internal/conf"
 	"github.com/iyear/searchx/app/usr/run/internal/model"
 	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/searchbot"
@@ -11,7 +11,7 @@ import (
 func SetScope(sp *model.BotScope) tele.MiddlewareFunc {
 	return func(next tele.HandlerFunc) tele.HandlerFunc {
 		return func(c tele.Context) error {
-			c.Set(config.ContextScope, sp)
+			c.Set(conf.ContextScope, sp)
 			c.Set(consts.ContextSearch, &searchbot.SearchScope{
 				Text:    &sp.Template.Text.Search,
 				Button:  &sp.Template.Button.Search,

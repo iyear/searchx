@@ -2,7 +2,7 @@ package run
 
 import (
 	"github.com/gotd/td/tg"
-	"github.com/iyear/searchx/app/usr/run/internal/config"
+	"github.com/iyear/searchx/app/usr/config"
 	"github.com/iyear/searchx/app/usr/run/internal/handler/bot"
 	"github.com/iyear/searchx/app/usr/run/internal/handler/usr"
 	"github.com/iyear/searchx/app/usr/run/internal/i18n"

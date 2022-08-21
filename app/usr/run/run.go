@@ -8,7 +8,8 @@ import (
 	"github.com/gotd/td/telegram/dcs"
 	"github.com/gotd/td/telegram/updates"
 	"github.com/gotd/td/tg"
-	"github.com/iyear/searchx/app/usr/run/internal/config"
+	"github.com/iyear/searchx/app/usr/config"
+	"github.com/iyear/searchx/app/usr/run/internal/conf"
 	"github.com/iyear/searchx/app/usr/run/internal/i18n"
 	"github.com/iyear/searchx/app/usr/run/internal/login"
 	"github.com/iyear/searchx/app/usr/run/internal/middleware"
@@ -126,7 +127,7 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		Log:     slog.Named("usr"),
 		Client:  c,
 	}
-	return c.Run(context.WithValue(ctx, config.ContextScope, usrScope), func(ctx context.Context) error {
+	return c.Run(context.WithValue(ctx, conf.ContextScope, usrScope), func(ctx context.Context) error {
 		status, err := c.Auth().Status(ctx)
 		if err != nil {
 			return err
