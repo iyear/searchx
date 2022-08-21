@@ -135,7 +135,9 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 			return fmt.Errorf("not authorized. please login first")
 		}
 
-		// Notify update manager about authentication.
+		// notify update manager about authentication.
+		// isBot set to `true` to avoid too long updates diff and can't fetch old messages.
+		// forgot set to `false` to avoid replace local pts by remote pts.
 		if err := gaps.Auth(ctx, c.API(), status.User.ID, true, false); err != nil {
 			return err
 		}
