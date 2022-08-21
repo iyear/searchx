@@ -12,4 +12,6 @@ var Cmd = &cobra.Command{
 
 func init() {
 	Cmd.AddCommand(run.Cmd)
+
+	Cmd.PersistentFlags().StringP("config", "c", "config/usr/config.min.yaml", "the path to the config file")
 }

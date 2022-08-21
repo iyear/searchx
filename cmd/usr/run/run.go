@@ -10,7 +10,6 @@ import (
 )
 
 var (
-	cfg   string
 	login bool
 )
 
@@ -20,6 +19,12 @@ var Cmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
+
+		cfg, err := cmd.Flags().GetString("config")
+		if err != nil {
+			color.Red("value of config flag not found")
+			return
+		}
 		if err := run.Run(ctx, cfg, login); err != nil {
 			color.Red("run error: %v", err)
 		}
@@ -27,6 +32,5 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.PersistentFlags().StringVarP(&cfg, "config", "c", "config/usr/config.min.yaml", "the path to the config file")
-	Cmd.PersistentFlags().BoolVar(&login, "login", false, "explicitly login to Telegram")
+	Cmd.Flags().BoolVar(&login, "login", false, "explicitly login to Telegram")
 }
