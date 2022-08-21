@@ -7,7 +7,6 @@ import (
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/dcs"
 	"github.com/gotd/td/telegram/updates"
-	updhook "github.com/gotd/td/telegram/updates/hook"
 	"github.com/gotd/td/tg"
 	"github.com/iyear/searchx/app/usr/run/internal/config"
 	"github.com/iyear/searchx/app/usr/run/internal/i18n"
@@ -120,9 +119,6 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 		SessionStorage: sto.NewSession(kv, false),
 		Logger:         zap.NewNop(),
 		UpdateHandler:  gaps,
-		Middlewares: []telegram.Middleware{
-			updhook.UpdateHook(gaps.Handle),
-		},
 	})
 
 	usrScope := &model.UsrScope{
