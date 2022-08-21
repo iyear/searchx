@@ -3,7 +3,7 @@ package sto
 import (
 	"context"
 	"errors"
-	"github.com/iyear/searchx/app/usr/run/internal/key"
+	"github.com/iyear/searchx/app/usr/internal/key"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/storage/kv"
 )

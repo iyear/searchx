@@ -3,10 +3,21 @@ package login
 import (
 	"context"
 	"errors"
+	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/auth"
 	"github.com/gotd/td/tg"
+	"github.com/iyear/searchx/global"
 	"github.com/tcnksm/go-input"
+	"runtime"
 	"strings"
+)
+
+var (
+	Device = telegram.DeviceConfig{
+		DeviceModel:   "SearchX",
+		SystemVersion: runtime.GOOS,
+		AppVersion:    global.Version,
+	}
 )
 
 // noSignUp can be embedded to prevent signing up.

@@ -6,20 +6,30 @@ import (
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/auth"
 	"github.com/gotd/td/telegram/dcs"
-	"github.com/iyear/searchx/app/usr/config"
-	"github.com/iyear/searchx/app/usr/run/internal/conf"
-	"github.com/iyear/searchx/app/usr/run/internal/sto"
+	"github.com/iyear/searchx/app/usr/internal/config"
+	"github.com/iyear/searchx/app/usr/internal/sto"
 	"github.com/iyear/searchx/pkg/storage"
+	"github.com/iyear/searchx/pkg/utils"
 	"github.com/tcnksm/go-input"
 	"go.uber.org/zap"
-	"golang.org/x/net/proxy"
-	"os"
-	"os/signal"
 )
 
-func Start(kv storage.KV, dialer proxy.ContextDialer) error {
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
-	defer cancel()
+func Start(ctx context.Context, cfg string) error {
+	if err := config.Init(cfg); err != nil {
+		return err
+	}
+	color.Blue("Config loaded")
+
+	_, kv, _, err := storage.Init(config.C.Storage)
+	if err != nil {
+		return err
+	}
+	color.Blue("Storage initialized")
+
+	dialer, err := utils.ProxyFromURL(config.C.Proxy)
+	if err != nil {
+		return err
+	}
 
 	color.Blue("Login...")
 
@@ -37,7 +47,7 @@ func Start(kv storage.KV, dialer proxy.ContextDialer) error {
 		Resolver: dcs.Plain(dcs.PlainOptions{
 			Dial: dialer.DialContext,
 		}),
-		Device:         conf.Device,
+		Device:         Device,
 		SessionStorage: sto.NewSession(kv, true),
 		Logger:         zap.NewNop(),
 	})

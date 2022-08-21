@@ -8,13 +8,12 @@ import (
 	"github.com/gotd/td/telegram/dcs"
 	"github.com/gotd/td/telegram/updates"
 	"github.com/gotd/td/tg"
-	"github.com/iyear/searchx/app/usr/config"
+	"github.com/iyear/searchx/app/usr/internal/config"
+	"github.com/iyear/searchx/app/usr/internal/sto"
 	"github.com/iyear/searchx/app/usr/run/internal/conf"
 	"github.com/iyear/searchx/app/usr/run/internal/i18n"
-	"github.com/iyear/searchx/app/usr/run/internal/login"
 	"github.com/iyear/searchx/app/usr/run/internal/middleware"
 	"github.com/iyear/searchx/app/usr/run/internal/model"
-	"github.com/iyear/searchx/app/usr/run/internal/sto"
 	"github.com/iyear/searchx/global"
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
@@ -26,7 +25,7 @@ import (
 	"time"
 )
 
-func Run(ctx context.Context, cfg string, _login bool) error {
+func Run(ctx context.Context, cfg string) error {
 	color.Blue(global.Logo)
 	color.Blue("Initializing...")
 
@@ -51,13 +50,6 @@ func Run(ctx context.Context, cfg string, _login bool) error {
 	dialer, err := utils.ProxyFromURL(config.C.Proxy)
 	if err != nil {
 		slog.Fatalw("init proxy failed", "err", err, "proxy", config.C.Proxy)
-	}
-
-	if _login {
-		if err = login.Start(kv, dialer); err != nil {
-			return fmt.Errorf("login failed: %v", err)
-		}
-		return nil
 	}
 
 	// init bot
