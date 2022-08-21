@@ -1,35 +1,15 @@
 package config
 
 import (
-	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/conf"
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
-	"github.com/iyear/searchx/pkg/validator"
-	"github.com/spf13/viper"
 )
 
 var C config
 
 func Init(path string) error {
-	c := viper.New()
-	c.SetConfigFile(path)
-	if err := c.ReadInConfig(); err != nil {
-		return err
-	}
-
-	if err := c.Unmarshal(&C); err != nil {
-		return err
-	}
-
-	if err := defaults.Set(&C); err != nil {
-		return err
-	}
-
-	if err := validator.Struct(&C); err != nil {
-		return err
-	}
-
-	return nil
+	return conf.Init(path, &C)
 }
 
 type config struct {
