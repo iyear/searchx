@@ -18,7 +18,6 @@ import (
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/utils"
-	"go.uber.org/zap"
 	tele "gopkg.in/telebot.v3"
 	"log"
 	"net/http"
@@ -97,7 +96,7 @@ func Run(ctx context.Context, cfg string) error {
 
 	gaps := updates.New(updates.Config{
 		Handler:      dispatcher,
-		Logger:       zap.NewNop(),
+		Logger:       slog.Named("updates").Desugar(),
 		Storage:      sto.NewState(kv),
 		AccessHasher: sto.NewAccessHasher(kv),
 		OnChannelTooLong: func(channelID int64) {
@@ -110,8 +109,10 @@ func Run(ctx context.Context, cfg string) error {
 			Dial: dialer.DialContext,
 		}),
 		SessionStorage: sto.NewSession(kv, false),
-		Logger:         zap.NewNop(),
+		Logger:         slog.Named("telegram").Desugar(),
 		UpdateHandler:  gaps,
+		RetryInterval:  time.Second,
+		MaxRetries:     15,
 	})
 
 	usrScope := &model.UsrScope{
