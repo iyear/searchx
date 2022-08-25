@@ -6,21 +6,21 @@ import (
 )
 
 func OnNewMessage(ctx context.Context, e tg.Entities, update *tg.UpdateNewMessage) error {
-	return indexMessage(ctx, e, update.Message)
+	return Index(ctx, update.Message, e)
 }
 
 func OnEditMessage(ctx context.Context, e tg.Entities, update *tg.UpdateEditMessage) error {
-	return indexMessage(ctx, e, update.Message)
+	return Index(ctx, update.Message, e)
 }
 
 func OnNewScheduledMessage(ctx context.Context, e tg.Entities, update *tg.UpdateNewScheduledMessage) error {
-	return indexMessage(ctx, e, update.Message)
+	return Index(ctx, update.Message, e)
 }
 
 func OnNewChannelMessage(ctx context.Context, e tg.Entities, update *tg.UpdateNewChannelMessage) error {
-	return indexMessage(ctx, e, update.Message)
+	return Index(ctx, update.Message, e)
 }
 
 func OnEditChannelMessage(ctx context.Context, e tg.Entities, update *tg.UpdateEditChannelMessage) error {
-	return indexMessage(ctx, e, update.Message)
+	return Index(ctx, update.Message, e)
 }

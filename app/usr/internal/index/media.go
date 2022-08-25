@@ -1,22 +1,8 @@
-package usr
+package index
 
-import (
-	"github.com/gotd/td/tg"
-	"strings"
-)
+import "github.com/gotd/td/tg"
 
-func messageText(msg *tg.Message) string {
-	// TODO(iyear): index service messages?
-
-	media, ok := msg.GetMedia()
-	if ok {
-		return strings.Join(append(mediaText(media), msg.Message), " ")
-	}
-
-	return msg.Message
-}
-
-func mediaText(media tg.MessageMediaClass) []string {
+func MediaText(media tg.MessageMediaClass) []string {
 	switch m := media.(type) {
 	case *tg.MessageMediaDocument:
 		return mediaDocText(m)
