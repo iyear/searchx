@@ -7,12 +7,7 @@ import (
 	"strings"
 )
 
-func Message(msg tg.MessageClass, e tg.Entities) (*models.SearchMsg, bool) {
-	m, ok := msg.(*tg.Message)
-	if !ok {
-		return nil, false
-	}
-
+func Message(m *tg.Message, e tg.Entities) (*models.SearchMsg, bool) {
 	// get chat info
 	chatID := utils.Telegram.GetPeerID(m.PeerID)
 	chatType := utils.Telegram.GetPeerType(m.PeerID, e)

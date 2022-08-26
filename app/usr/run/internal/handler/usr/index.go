@@ -12,7 +12,12 @@ import (
 func Index(ctx context.Context, msg tg.MessageClass, e tg.Entities) error {
 	sp := util.GetUsrScope(ctx)
 
-	m, ok := index.Message(msg, e)
+	mm, ok := msg.(*tg.Message)
+	if !ok {
+		return nil
+	}
+
+	m, ok := index.Message(mm, e)
 	if !ok {
 		return nil
 	}
