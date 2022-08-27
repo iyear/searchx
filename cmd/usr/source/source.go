@@ -7,10 +7,12 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
+	"time"
 )
 
 var (
-	date int
+	from int
+	to   int
 )
 
 var Cmd = &cobra.Command{
@@ -25,12 +27,19 @@ var Cmd = &cobra.Command{
 			color.Red("value of config flag not found")
 			return
 		}
-		if err := source.Start(ctx, cfg, date); err != nil {
-			color.Red("run error: %v", err)
+
+		if from > to {
+			color.Red("`from` must be less than `to`")
+			return
+		}
+
+		if err := source.Start(ctx, cfg, from, to); err != nil {
+			color.Red("source error: %v", err)
 		}
 	},
 }
 
 func init() {
-	Cmd.Flags().IntVarP(&date, "date", "d", 0, "source all messages since the date")
+	Cmd.Flags().IntVar(&from, "from", 0, "source from this timestamp")
+	Cmd.Flags().IntVar(&to, "to", int(time.Now().Unix()), "source to this timestamp, default value is NOW")
 }

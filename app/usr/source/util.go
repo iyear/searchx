@@ -1,9 +1,24 @@
 package source
 
 import (
+	"context"
 	"github.com/gotd/td/telegram/message/peer"
+	"github.com/gotd/td/telegram/query"
 	"github.com/gotd/td/tg"
 )
+
+func getBlockedDialogs(ctx context.Context, client *tg.Client) (map[int64]struct{}, error) {
+	blocks, err := query.GetBlocked(client).BatchSize(100).Collect(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	blockids := make(map[int64]struct{})
+	for _, b := range blocks {
+		blockids[GetPeerID(b.Contact.PeerID)] = struct{}{}
+	}
+	return blockids, nil
+}
 
 func GetInputPeerID(peer tg.InputPeerClass) int64 {
 	switch p := peer.(type) {
