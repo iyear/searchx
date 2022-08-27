@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/gotd/td/telegram/message/peer"
 	"github.com/gotd/td/tg"
 	"github.com/iyear/searchx/pkg/consts"
 )
@@ -9,15 +10,11 @@ type telegram struct{}
 
 var Telegram = telegram{}
 
-func (t telegram) GetSenderName(first, last string) string {
-	if last == "" {
-		return first
+func (t telegram) GetName(first, last, username string) string {
+	if name := first + " " + last; name != " " {
+		return name
 	}
-	if first == "" {
-		return last
-	}
-
-	return first + " " + last
+	return username
 }
 
 func (t telegram) GetDeepLink(bot string, code string) string {
@@ -40,7 +37,7 @@ func (t telegram) GetPeerName(peer tg.PeerClass, e tg.Entities) string {
 	id := t.GetPeerID(peer)
 
 	if n, ok := e.Users[id]; ok {
-		return t.GetSenderName(n.FirstName, n.LastName)
+		return t.GetName(n.FirstName, n.LastName, n.Username)
 	}
 
 	if n, ok := e.Channels[id]; ok {
@@ -73,4 +70,35 @@ func (t telegram) GetPeerType(peer tg.PeerClass, e tg.Entities) string {
 	}
 
 	return consts.ChatUnknown
+}
+
+func (t telegram) GetInputPeerName(peer tg.InputPeerClass, e peer.Entities) string {
+	id := t.GetInputPeerID(peer)
+
+	if n, ok := e.Users()[id]; ok {
+		t.GetName(n.FirstName, n.LastName, n.Username)
+	}
+
+	if n, ok := e.Channels()[id]; ok {
+		return n.Title
+	}
+
+	if n, ok := e.Chats()[id]; ok {
+		return n.Title
+	}
+
+	return ""
+}
+
+func (t telegram) GetInputPeerID(peer tg.InputPeerClass) int64 {
+	switch p := peer.(type) {
+	case *tg.InputPeerUser:
+		return p.UserID
+	case *tg.InputPeerChat:
+		return p.ChatID
+	case *tg.InputPeerChannel:
+		return p.ChannelID
+	}
+
+	return 0
 }

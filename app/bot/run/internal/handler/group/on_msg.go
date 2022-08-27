@@ -60,7 +60,7 @@ func index(c tele.Context, text string) error {
 		ChatName:   msg.Chat.Title,
 		Text:       text,
 		Sender:     msg.Sender.ID,
-		SenderName: utils.Telegram.GetSenderName(msg.Sender.FirstName, msg.Sender.LastName),
+		SenderName: utils.Telegram.GetName(msg.Sender.FirstName, msg.Sender.LastName, msg.Sender.Username),
 		Date:       date,
 	}
 

@@ -89,7 +89,7 @@ func Start(ctx context.Context, cfg string, from int, to int) error {
 		defer pw.Stop()
 
 		for _, d := range dialogs {
-			if _, blocked := blockids[GetInputPeerID(d.Peer)]; blocked {
+			if _, blocked := blockids[utils.Telegram.GetInputPeerID(d.Peer)]; blocked {
 				continue
 			}
 
@@ -121,8 +121,8 @@ func Start(ctx context.Context, cfg string, from int, to int) error {
 func fetch(ctx context.Context, _search storage.Search, pw progress.Writer,
 	peer tg.InputPeerClass, e peer.Entities, builder *messages.GetHistoryQueryBuilder,
 	from int, to int) (int64, error) {
-	id := GetInputPeerID(peer)
-	name := GetInputPeerName(peer, e)
+	id := utils.Telegram.GetInputPeerID(peer)
+	name := utils.Telegram.GetInputPeerName(peer, e)
 
 	batchSize := 100
 	iter := builder.OffsetDate(to).BatchSize(batchSize).Iter()

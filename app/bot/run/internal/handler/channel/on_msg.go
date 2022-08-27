@@ -22,7 +22,7 @@ func Index(c tele.Context) error {
 		ChatName:   m.Chat.Title,
 		Text:       c.Text(),
 		Sender:     m.SenderChat.ID,
-		SenderName: utils.Telegram.GetSenderName(m.SenderChat.FirstName, m.SenderChat.LastName),
+		SenderName: utils.Telegram.GetName(m.SenderChat.FirstName, m.SenderChat.LastName, m.SenderChat.Username),
 		Date:       time.Now().Unix(),
 	}
 	data, err := msg.Encode()
