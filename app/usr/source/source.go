@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/gotd/contrib/middleware/floodwait"
+	"github.com/gotd/contrib/middleware/ratelimit"
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/dcs"
 	"github.com/gotd/td/telegram/message/peer"
@@ -22,7 +23,15 @@ import (
 	"go.uber.org/atomic"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/time/rate"
 	"time"
+)
+
+const (
+	rateInterval   = 475 * time.Millisecond
+	rateBucket     = 2
+	rateMax        = "10k/min"
+	waitGroupLimit = 2
 )
 
 func Start(ctx context.Context, cfg string, from int, to int) error {
@@ -50,6 +59,16 @@ func Start(ctx context.Context, cfg string, from int, to int) error {
 		Logger:         zap.NewNop(),
 		Middlewares: []telegram.Middleware{
 			floodwait.NewSimpleWaiter(),
+
+			// dur: 1min, wg limit:2, group: 1492447836,1354090939
+			// data1 data2 every b
+			// 5.9k  4.89k 475   2
+			// 5.7k  4.73k 500   2
+			// 5.9k  4.9k  400   2
+			// 5.9k  4.9k  450   2
+			// 5.9k  4.9k  400   3
+			// rate limit is about 10k/min
+			ratelimit.New(rate.Every(rateInterval), rateBucket),
 		},
 	})
 
@@ -77,9 +96,10 @@ func Start(ctx context.Context, cfg string, from int, to int) error {
 		}
 
 		color.Blue("Indexing... %s ~ %s", time.Unix(int64(from), 0).Format("2006-01-02 15:04:05"), time.Unix(int64(to), 0).Format("2006-01-02 15:04:05"))
+		color.Cyan("Fetch speed is about %s, determined by Telegram server", rateMax)
 
 		wg, errctx := errgroup.WithContext(ctx)
-		wg.SetLimit(2)
+		wg.SetLimit(waitGroupLimit)
 
 		total, start := atomic.NewUint64(0), time.Now()
 
@@ -92,8 +112,6 @@ func Start(ctx context.Context, cfg string, from int, to int) error {
 			if _, blocked := blockids[utils.Telegram.GetInputPeerID(d.Peer)]; blocked {
 				continue
 			}
-
-			time.Sleep(time.Second)
 
 			d := d
 			wg.Go(func() error {
@@ -166,7 +184,6 @@ func fetch(ctx context.Context, _search storage.Search, pw progress.Writer,
 				return 0, err
 			}
 			msgs = make([]*search.Item, 0, batchSize)
-			time.Sleep(700 * time.Millisecond)
 		}
 	}
 
