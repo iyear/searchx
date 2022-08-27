@@ -7,14 +7,14 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/handler/group"
 	"github.com/iyear/searchx/app/bot/run/internal/handler/private"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
-	"github.com/iyear/searchx/app/bot/run/internal/middleware"
+	"github.com/iyear/searchx/pkg/botmid"
 	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"
 )
 
 func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	g := bot.Group()
-	g.Use(middleware.SuperGroup())
+	g.Use(botmid.SuperGroup())
 	{
 		bot.Handle(config.CmdPing, group.Ping)
 
@@ -28,7 +28,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	}
 
 	p := bot.Group()
-	p.Use(middleware.Private())
+	p.Use(botmid.Private())
 	{
 		p.Handle(config.CmdStart, private.Start)
 

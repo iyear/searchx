@@ -16,6 +16,7 @@ import (
 	"github.com/iyear/searchx/app/usr/run/internal/middleware"
 	"github.com/iyear/searchx/app/usr/run/internal/model"
 	"github.com/iyear/searchx/global"
+	"github.com/iyear/searchx/pkg/botmid"
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/utils"
@@ -84,7 +85,7 @@ func Run(ctx context.Context, cfg string) error {
 		Log:      slog.Named("bot"),
 	}
 
-	bot.Use(middleware.SetScope(botScope), middleware.AutoResponder())
+	bot.Use(middleware.SetScope(botScope), botmid.AutoResponder())
 
 	handleBot(bot, template.Button)
 

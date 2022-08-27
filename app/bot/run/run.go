@@ -7,6 +7,7 @@ import (
 	"github.com/iyear/searchx/app/bot/run/internal/middleware"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/global"
+	"github.com/iyear/searchx/pkg/botmid"
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/utils"
@@ -67,7 +68,7 @@ func Run(cfg string) {
 		Log: slog.Named("bot"),
 	}
 
-	bot.Use(middleware.SetScope(scope), middleware.AutoResponder())
+	bot.Use(middleware.SetScope(scope), botmid.AutoResponder())
 
 	makeHandlers(bot, i18n.Templates[config.C.Ctrl.DefaultLanguage].Button)
 
