@@ -76,7 +76,7 @@ func (t telegram) GetInputPeerName(peer tg.InputPeerClass, e peer.Entities) stri
 	id := t.GetInputPeerID(peer)
 
 	if n, ok := e.Users()[id]; ok {
-		t.GetName(n.FirstName, n.LastName, n.Username)
+		return t.GetName(n.FirstName, n.LastName, n.Username)
 	}
 
 	if n, ok := e.Channels()[id]; ok {
