@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/gotd/contrib/middleware/floodwait"
-	"github.com/gotd/contrib/middleware/ratelimit"
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/dcs"
 	"github.com/gotd/td/telegram/updates"
@@ -20,7 +19,6 @@ import (
 	"github.com/iyear/searchx/pkg/logger"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/utils"
-	"golang.org/x/time/rate"
 	tele "gopkg.in/telebot.v3"
 	"log"
 	"net/http"
@@ -117,7 +115,6 @@ func Run(ctx context.Context, cfg string) error {
 		RetryInterval:  time.Second,
 		Middlewares: []telegram.Middleware{
 			floodwait.NewSimpleWaiter(),
-			ratelimit.New(rate.Every(conf.RateInterval), conf.RateBucket),
 		},
 		MaxRetries: conf.MaxRetries,
 	})
