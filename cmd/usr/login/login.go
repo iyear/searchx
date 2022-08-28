@@ -10,8 +10,9 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "login",
-	Short: "Login to Telegram",
+	Use:     "login",
+	Short:   "Login to Telegram",
+	Example: "searchx usr login -c config/usr/config.min.yaml",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()

@@ -10,8 +10,9 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "run",
-	Short: "Run the user and search bot",
+	Use:     "run",
+	Short:   "Run the user and search bot",
+	Example: "searchx usr run -c config/usr/config.min.yaml",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()

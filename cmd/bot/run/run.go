@@ -6,8 +6,9 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "run",
-	Short: "Run the bot",
+	Use:     "run",
+	Short:   "Run the bot",
+	Example: "searchx bot run -c config/bot/config.min.yaml",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := cmd.Flags().GetString("config")
 		if err != nil {

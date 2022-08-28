@@ -16,8 +16,9 @@ var (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "source",
-	Short: "Source history messages",
+	Use:     "source",
+	Short:   "Source history messages",
+	Example: "searchx usr source -c config/usr/config.min.yaml --from 1661681097 --to 1661691097",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()

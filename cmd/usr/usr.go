@@ -8,8 +8,9 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "usr",
-	Short: "Userbot for individual users",
+	Use:     "usr",
+	Short:   "Userbot for individual users",
+	Example: "searchx usr -h",
 }
 
 func init() {

@@ -14,8 +14,9 @@ var (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "source",
-	Short: "Import history messages",
+	Use:     "source",
+	Short:   "Import history messages",
+	Example: "searchx bot source -c config/bot/config.min.yaml -f result.json",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()

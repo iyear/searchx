@@ -17,8 +17,9 @@ var (
 )
 
 var Cmd = &cobra.Command{
-	Use:   "query",
-	Short: "Query messages",
+	Use:     "query",
+	Short:   "Query messages",
+	Example: "searchx bot query -q hello --pn 0 --ps 15 --json",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
