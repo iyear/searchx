@@ -112,6 +112,9 @@ func Start(ctx context.Context, cfg string, from int, to int) error {
 			if _, blocked := blockids[utils.Telegram.GetInputPeerID(d.Peer)]; blocked {
 				continue
 			}
+			if d.Deleted() {
+				continue
+			}
 
 			d := d
 			wg.Go(func() error {
@@ -158,12 +161,9 @@ func fetch(ctx context.Context, _search storage.Search, pw progress.Writer,
 		if !ok {
 			continue
 		}
-		data, ok := index.Message(m, tg.Entities{
-			Short:    false,
-			Users:    e.Users(),
-			Chats:    e.Chats(),
-			Channels: e.Channels(),
-		})
+		// TODO(iyear): support get name and other info in `source`
+		// peer.Entities is not available for message's peer
+		data, ok := index.Message(m, tg.Entities{})
 		if !ok {
 			continue
 		}
