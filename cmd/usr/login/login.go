@@ -11,7 +11,7 @@ import (
 
 var Cmd = &cobra.Command{
 	Use:   "login",
-	Short: "login to Telegram",
+	Short: "Login to Telegram",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()

@@ -9,7 +9,7 @@ import (
 
 var Cmd = &cobra.Command{
 	Use:   "usr",
-	Short: "'UserBot' for individual users",
+	Short: "Userbot for individual users",
 }
 
 func init() {

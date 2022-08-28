@@ -11,7 +11,7 @@ import (
 
 var Cmd = &cobra.Command{
 	Use:   "run",
-	Short: "run the (user)bot",
+	Short: "Run the user and search bot",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()

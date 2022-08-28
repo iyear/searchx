@@ -12,7 +12,7 @@ import (
 
 var cmd = &cobra.Command{
 	Use:           "searchx",
-	Short:         "Enhance Telegram Group/Channel Search In 5 Minutes",
+	Short:         "Enhance Telegram Search In 5 Minutes",
 	SilenceErrors: true,
 	SilenceUsage:  true,
 }
