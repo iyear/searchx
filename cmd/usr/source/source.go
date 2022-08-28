@@ -2,7 +2,7 @@ package source
 
 import (
 	"context"
-	"github.com/fatih/color"
+	"fmt"
 	"github.com/iyear/searchx/app/usr/source"
 	"github.com/spf13/cobra"
 	"os"
@@ -18,24 +18,23 @@ var (
 var Cmd = &cobra.Command{
 	Use:   "source",
 	Short: "source history messages",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
 
 		cfg, err := cmd.Flags().GetString("config")
 		if err != nil {
-			color.Red("value of config flag not found")
-			return
+			return fmt.Errorf("get config flag failed: %v", err)
 		}
 
 		if from > to {
-			color.Red("`from` must be less than `to`")
-			return
+			return fmt.Errorf("`from` must be less than `to`")
 		}
 
 		if err := source.Start(ctx, cfg, from, to); err != nil {
-			color.Red("source error: %v", err)
+			return fmt.Errorf("source failed: %v", err)
 		}
+		return nil
 	},
 }
 

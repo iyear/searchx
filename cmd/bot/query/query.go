@@ -2,7 +2,7 @@ package query
 
 import (
 	"context"
-	"github.com/fatih/color"
+	"fmt"
 	"github.com/iyear/searchx/app/bot/query"
 	"github.com/spf13/cobra"
 	"os"
@@ -19,20 +19,19 @@ var (
 var Cmd = &cobra.Command{
 	Use:   "query",
 	Short: "Query messages",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
 
 		cfg, err := cmd.Flags().GetString("config")
 		if err != nil {
-			color.Red("value of config flag not found")
-			return
+			return fmt.Errorf("get config flag failed: %v", err)
 		}
 
 		if err := query.Query(ctx, cfg, _query, pn, ps, json); err != nil {
-			color.Red("error happens: %v", err)
-			return
+			return fmt.Errorf("query failed: %v", err)
 		}
+		return nil
 	},
 }
 

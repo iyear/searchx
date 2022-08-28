@@ -21,7 +21,6 @@ import (
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
-	"log"
 	"net/http"
 	"time"
 )
@@ -31,20 +30,20 @@ func Run(ctx context.Context, cfg string) error {
 	color.Blue("Initializing...")
 
 	if err := config.Init(cfg); err != nil {
-		log.Fatalf("init config failed: %v", err)
+		return fmt.Errorf("init config failed: %v", err)
 	}
 	color.Blue("Config loaded")
 
 	slog := logger.New(config.C.Log.Enable, "log/usr/latest.log", config.C.Log.Level)
 
 	if err := i18n.Init(config.C.Ctrl.I18N); err != nil {
-		slog.Fatalw("init i18n templates failed", "err", err)
+		return fmt.Errorf("init i18n failed: %v", err)
 	}
 	color.Blue("I18n templates loaded")
 
 	search, kv, cache, err := storage.Init(config.C.Storage)
 	if err != nil {
-		slog.Fatalw("init storage failed", "err", err)
+		return fmt.Errorf("init storage failed: %v", err)
 	}
 	color.Blue("Storage initialized")
 	_storage := &storage.Storage{
@@ -55,7 +54,7 @@ func Run(ctx context.Context, cfg string) error {
 
 	dialer, err := utils.ProxyFromURL(config.C.Proxy)
 	if err != nil {
-		slog.Fatalw("init proxy failed", "err", err, "proxy", config.C.Proxy)
+		return fmt.Errorf("init proxy failed: %v", err)
 	}
 
 	// init bot
@@ -69,13 +68,13 @@ func Run(ctx context.Context, cfg string) error {
 
 	bot, err := tele.NewBot(settings)
 	if err != nil {
-		slog.Fatalw("create bot failed", "err", err)
+		return fmt.Errorf("init bot failed: %v", err)
 	}
 	color.Blue("Auth successfully! Bot: %s", bot.Me.Username)
 
 	template, ok := i18n.Templates[config.C.Ctrl.Language]
 	if !ok {
-		slog.Fatalw("language is not supported", "language", config.C.Ctrl.Language)
+		return fmt.Errorf("language [%s] is not supported", config.C.Ctrl.Language)
 	}
 
 	botScope := &model.BotScope{

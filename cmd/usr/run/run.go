@@ -2,7 +2,7 @@ package run
 
 import (
 	"context"
-	"github.com/fatih/color"
+	"fmt"
 	"github.com/iyear/searchx/app/usr/run"
 	"github.com/spf13/cobra"
 	"os"
@@ -12,17 +12,18 @@ import (
 var Cmd = &cobra.Command{
 	Use:   "run",
 	Short: "run the (user)bot",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
 
 		cfg, err := cmd.Flags().GetString("config")
 		if err != nil {
-			color.Red("value of config flag not found")
-			return
+			return fmt.Errorf("get config flag failed: %v", err)
 		}
+
 		if err := run.Run(ctx, cfg); err != nil {
-			color.Red("run error: %v", err)
+			return fmt.Errorf("run failed: %v", err)
 		}
+		return nil
 	},
 }
