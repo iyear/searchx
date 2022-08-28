@@ -47,6 +47,11 @@ func Run(ctx context.Context, cfg string) error {
 		slog.Fatalw("init storage failed", "err", err)
 	}
 	color.Blue("Storage initialized")
+	_storage := &storage.Storage{
+		KV:     kv,
+		Search: search,
+		Cache:  cache,
+	}
 
 	dialer, err := utils.ProxyFromURL(config.C.Proxy)
 	if err != nil {
@@ -73,24 +78,12 @@ func Run(ctx context.Context, cfg string) error {
 		slog.Fatalw("language is not supported", "language", config.C.Ctrl.Language)
 	}
 
-	_storage := &storage.Storage{
-		KV:     kv,
-		Search: search,
-		Cache:  cache,
-	}
-
 	botScope := &model.BotScope{
 		Storage:  _storage,
 		Template: template,
 		Log:      slog.Named("bot"),
 	}
-
 	bot.Use(middleware.SetScope(botScope), botmid.AutoResponder())
-
-	handleBot(bot, template.Button)
-
-	go bot.Start()
-	defer bot.Stop()
 
 	// init usr
 	dispatcher := tg.NewUpdateDispatcher()
@@ -133,6 +126,13 @@ func Run(ctx context.Context, cfg string) error {
 		if !status.Authorized {
 			return fmt.Errorf("not authorized. please login first")
 		}
+
+		// set handler and start bot
+		// only `self` can use the bot
+		bot.Use(botmid.WhiteList(status.User.ID))
+		handleBot(bot, template.Button)
+		go bot.Start()
+		defer bot.Stop()
 
 		// notify update manager about authentication.
 		// isBot set to `true` to avoid too long updates diff and can't fetch old messages.

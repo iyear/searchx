@@ -1,6 +1,9 @@
 package botmid
 
-import tele "gopkg.in/telebot.v3"
+import (
+	tele "gopkg.in/telebot.v3"
+	"gopkg.in/telebot.v3/middleware"
+)
 
 func AutoResponder() tele.MiddlewareFunc {
 	return func(next tele.HandlerFunc) tele.HandlerFunc {
@@ -35,4 +38,8 @@ func SuperGroup() tele.MiddlewareFunc {
 			return next(c)
 		}
 	}
+}
+
+func WhiteList(ids ...int64) tele.MiddlewareFunc {
+	return middleware.Whitelist(ids...)
 }
