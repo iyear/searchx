@@ -14,4 +14,6 @@ var Cmd = &cobra.Command{
 
 func init() {
 	Cmd.AddCommand(run.Cmd, query.Cmd, source.Cmd)
+
+	Cmd.PersistentFlags().StringP("config", "c", "config/bot/config.min.yaml", "the path to the config file")
 }

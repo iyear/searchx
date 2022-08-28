@@ -2,7 +2,7 @@ package run
 
 import (
 	"github.com/fatih/color"
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
 	"github.com/iyear/searchx/app/bot/run/internal/middleware"
 	"github.com/iyear/searchx/app/bot/run/internal/model"

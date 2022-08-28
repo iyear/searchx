@@ -10,12 +10,10 @@ import (
 )
 
 var (
-	_query        string
-	json          bool
-	pn            int
-	ps            int
-	searchDriver  string
-	searchOptions map[string]string
+	_query string
+	json   bool
+	pn     int
+	ps     int
 )
 
 var Cmd = &cobra.Command{
@@ -24,7 +22,14 @@ var Cmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
-		if err := query.Query(ctx, searchDriver, searchOptions, _query, pn, ps, json); err != nil {
+
+		cfg, err := cmd.Flags().GetString("config")
+		if err != nil {
+			color.Red("value of config flag not found")
+			return
+		}
+
+		if err := query.Query(ctx, cfg, _query, pn, ps, json); err != nil {
 			color.Red("error happens: %v", err)
 			return
 		}
@@ -32,8 +37,6 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.PersistentFlags().StringVarP(&searchDriver, "driver", "d", "", "used search engine driver")
-	Cmd.PersistentFlags().StringToStringVarP(&searchOptions, "options", "o", make(map[string]string), "search engine options")
 	Cmd.PersistentFlags().StringVarP(&_query, "query", "q", "", "query keyword or statement")
 	Cmd.PersistentFlags().IntVar(&pn, "pn", 0, "page number, starting from 0")
 	Cmd.PersistentFlags().IntVar(&ps, "ps", 10, "page size")

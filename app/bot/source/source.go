@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/bcicen/jstream"
 	"github.com/fatih/color"
+	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
@@ -41,19 +42,14 @@ type message struct {
 	Text   interface{} `mapstructure:"text"`
 }
 
-func Start(ctx context.Context, src, searchDriver string, searchOptions map[string]string) error {
-	if searchDriver == "" {
-		return errors.New("search driver can not be empty")
-	}
-
+func Start(ctx context.Context, src, cfg string) error {
 	start := time.Now()
 
-	options := make(map[string]interface{})
-	if err := mapstructure.WeakDecode(searchOptions, &options); err != nil {
+	if err := config.Init(cfg); err != nil {
 		return err
 	}
 
-	_search, err := storage.NewSearch(searchDriver, options)
+	_search, err := storage.NewSearch(config.C.Storage.Search.Driver, config.C.Storage.Search.Options)
 	if err != nil {
 		return err
 	}

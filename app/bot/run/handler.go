@@ -1,7 +1,8 @@
 package run
 
 import (
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/conf"
 	"github.com/iyear/searchx/app/bot/run/internal/handler"
 	"github.com/iyear/searchx/app/bot/run/internal/handler/channel"
 	"github.com/iyear/searchx/app/bot/run/internal/handler/group"
@@ -16,7 +17,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	g := bot.Group()
 	g.Use(botmid.SuperGroup())
 	{
-		bot.Handle(config.CmdPing, group.Ping)
+		bot.Handle(conf.CmdPing, group.Ping)
 
 		bot.Handle(tele.OnPhoto, group.OnPhoto)
 		bot.Handle(tele.OnVideo, group.OnVideo)
@@ -30,7 +31,7 @@ func makeHandlers(bot *tele.Bot, button *i18n.TemplateButton) {
 	p := bot.Group()
 	p.Use(botmid.Private())
 	{
-		p.Handle(config.CmdStart, private.Start)
+		p.Handle(conf.CmdStart, private.Start)
 
 		p.Handle(&button.Start.Settings, private.SettingsBtn)
 		p.Handle(&button.Back, private.Start)

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/handler/group"
 	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"

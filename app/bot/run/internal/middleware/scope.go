@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/conf"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
@@ -19,7 +19,7 @@ func SetScope(sp *model.Scope) tele.MiddlewareFunc {
 				return nil
 			}
 
-			c.Set(config.ContextScope, &model.Scope{
+			c.Set(conf.ContextScope, &model.Scope{
 				Storage:  sp.Storage,
 				Template: tmpl,
 				Log:      sp.Log,
@@ -31,7 +31,7 @@ func SetScope(sp *model.Scope) tele.MiddlewareFunc {
 				Storage: sp.Storage,
 			})
 
-			c.Set(config.ContextLanguage, lang)
+			c.Set(conf.ContextLanguage, lang)
 			return next(c)
 		}
 	}

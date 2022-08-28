@@ -10,9 +10,7 @@ import (
 )
 
 var (
-	src           string
-	searchDriver  string
-	searchOptions map[string]string
+	src string
 )
 
 var Cmd = &cobra.Command{
@@ -21,7 +19,14 @@ var Cmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 		defer cancel()
-		if err := source.Start(ctx, src, searchDriver, searchOptions); err != nil {
+
+		cfg, err := cmd.Flags().GetString("config")
+		if err != nil {
+			color.Red("value of config flag not found")
+			return
+		}
+
+		if err := source.Start(ctx, src, cfg); err != nil {
 			color.Red("error happens: %v", err)
 			return
 		}
@@ -30,6 +35,4 @@ var Cmd = &cobra.Command{
 
 func init() {
 	Cmd.PersistentFlags().StringVarP(&src, "file", "f", "result.json", "the path to the JSON file exported by Telegram")
-	Cmd.PersistentFlags().StringVarP(&searchDriver, "driver", "d", "", "used search engine driver")
-	Cmd.PersistentFlags().StringToStringVarP(&searchOptions, "options", "o", make(map[string]string), "search engine options")
 }

@@ -2,7 +2,8 @@ package util
 
 import (
 	"context"
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/conf"
 	"github.com/iyear/searchx/app/bot/run/internal/key"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/pkg/storage"
@@ -10,7 +11,7 @@ import (
 )
 
 func GetScope(c tele.Context) *model.Scope {
-	return c.Get(config.ContextScope).(*model.Scope)
+	return c.Get(conf.ContextScope).(*model.Scope)
 }
 
 func GetUserLanguage(storage *storage.Storage, tid int64) string {
