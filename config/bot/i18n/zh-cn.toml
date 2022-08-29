@@ -1,6 +1,5 @@
 [text]
 start = """
-
 ✨ 你好！<a href="tg://user?id={{ .ID }}">{{ .Username }}</a> ✨
 
 🤖 <a href="https://github.com/iyear/searchx">SearchX</a> <b>是专注于强化搜索体验的 Bot</b>

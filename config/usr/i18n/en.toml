@@ -1,0 +1,47 @@
+[text]
+start = """
+✨ Hello! <a href="tg://user?id={{ .ID }}">{{ .Username }}</a> ✨
+
+🤖 <a href="https://github.com/iyear/searchx">SearchX</a> <b>is the bot that focuses on enhancing search</b>
+
+⚡ <b>Send the keyword to start search! </b>
+
+ver: <b>{{ .Version }}</b>
+"""
+
+[text.search]
+keywords_too_long = "⚠ Keywords are too long, please shorten them"
+results = """
+👉 Search: <b>{{ .Keyword }}</b> 👈
+{{ range .Results }}
+<a href="{{ .ViewLink }}">{{ .Seq }}</a> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .GoLink }}">→</a>
+  | {{ .Content }}
+{{ end }}
+
+⏳ Time: <code>{{ .Took }}ms</code>
+"""
+view = """
+Message ID: <code>{{ .MsgID }}</code>
+ChatType: <code>{{ .ChatType }}</code>
+Chat: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
+Sender: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
+Time: <code>{{ .Date }}</code>
+
+{{ .Content }}
+"""
+
+go_private = """
+😥 Private messages cannot be jumped in the client, please visit as follows:
+
+Copy <code>appImManager.setPeer({peerId:{{ .PeerID }},lastMsgId: {{ .MsgID }}},true)</code>
+
+Visit <a href="https://web.telegram.org/k">Telegram Web</a> after copying and execute in the console
+"""
+
+[button]
+back = "⬅ Back"
+
+[button.search]
+next = "👉 Next"
+prev = "👈 Prev"
+switch_order = "🔀"
