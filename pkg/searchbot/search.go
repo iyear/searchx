@@ -2,8 +2,8 @@ package searchbot
 
 import (
 	"context"
-	"encoding/base64"
-	"github.com/iyear/searchx/pkg/keygen"
+	"github.com/iyear/searchx/pkg/consts"
+	"github.com/iyear/searchx/pkg/hashids"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
 	"github.com/iyear/searchx/pkg/utils"
@@ -98,15 +98,31 @@ func Search(pageSize int) tele.HandlerFunc {
 				sender = strconv.FormatInt(msg.Sender, 10)
 			}
 
+			// set link
+			golink := utils.Telegram.GetMsgLink(msg.Chat, msg.ID)
+			if msg.ChatType == consts.ChatPrivate {
+				deep, err := hashids.Encode64(TypeGoPrivate, msg.Chat, int64(msg.ID))
+				if err != nil {
+					return err
+				}
+				golink = utils.Telegram.GetDeepLink(c.Bot().Me.Username, deep)
+			}
+
+			deep, err := hashids.Encode64(TypeView, msg.Chat, int64(msg.ID))
+			if err != nil {
+				return err
+			}
+			viewlink := utils.Telegram.GetDeepLink(c.Bot().Me.Username, deep)
+
 			results = append(results, &TSearchResult{
 				Seq:        pn*ps + i + 1,
-				ViewLink:   utils.Telegram.GetDeepLink(c.Bot().Me.Username, base64.URLEncoding.EncodeToString([]byte(keygen.SearchMsgID(msg.Chat, msg.ID)))),
+				ViewLink:   viewlink,
 				SenderName: html.EscapeString(strings.TrimSpace(sender)),
 				SenderLink: "tg://user?id=" + strconv.FormatInt(msg.Sender, 10),
 				ChatName:   html.EscapeString(utils.String.RuneSubString(msg.ChatName, ChatNameMax)),
 				Date:       time.Unix(msg.Date, 0).Format("2006.01.02"),
 				Content:    strings.ReplaceAll(html.EscapeString(strings.Join(contents, "...")), "\n", " "),
-				GoLink:     utils.Telegram.GetMsgLink(msg.Chat, msg.ID),
+				GoLink:     golink,
 			})
 		}
 

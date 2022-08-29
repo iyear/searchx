@@ -34,6 +34,14 @@ view = """
 {{ .Content }}
 """
 
+go_private = """
+😥 私信无法在客户端中实现跳转，请按以下方式访问:
+
+复制 <code>appImManager.setPeer({peerId:{{ .PeerID }},lastMsgId: {{ .MsgID }}},true)</code>
+
+访问 <a href="https://web.telegram.org/k">网页版Telegram</a> 后在控制台中复制并执行
+"""
+
 [button]
 back = "⬅ 返回"
 

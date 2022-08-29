@@ -22,17 +22,6 @@ func searchSetData(keywords string, pn int, order int) string {
 	return keywords + "|" + strconv.Itoa(pn) + "|" + strconv.Itoa(order)
 }
 
-// const MESSAGE_ID_INCREMENT = 0x10000;
-// const MESSAGE_ID_OFFSET = 0xFFFFFFFF;
-// function gen(messageId) {
-//    const q = MESSAGE_ID_OFFSET;
-//    if (messageId >= q) {
-//        return messageId;
-//    }
-//
-//    return q + (messageId * MESSAGE_ID_INCREMENT);
-// }
-
 const MessageIDIncrement = 0x10000
 const MessageIDOffset = 0xFFFFFFFF
 

@@ -16,6 +16,7 @@ type SearchContextTextTemplate struct {
 	KeywordsTooLong i18n.Text `mapstructure:"keywords_too_long"`
 	View            i18n.Text `mapstructure:"view"`
 	Results         i18n.Text `mapstructure:"results"`
+	GoPrivate       i18n.Text `mapstructure:"go_private"`
 }
 
 type SearchContextButtonTemplate struct {

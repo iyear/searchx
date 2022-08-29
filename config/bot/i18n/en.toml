@@ -33,6 +33,14 @@ Time: <code>{{ .Date }}</code>
 {{ .Content }}
 """
 
+go_private = """
+😥 Private messages cannot be jumped in the client, please visit as follows:
+
+Copy <code>appImManager.setPeer({peerId:{{ .PeerID }},lastMsgId: {{ .MsgID }}},true)</code>
+
+Visit <a href="https://web.telegram.org/k">Telegram Web</a> after copying and execute in the console
+"""
+
 [text.settings]
 desc = "👇 Select your settings item"
 language = """

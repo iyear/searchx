@@ -29,4 +29,6 @@ type TSearchView struct {
 }
 
 type TSearchGoPrivate struct {
+	PeerID int64
+	MsgID  int64
 }

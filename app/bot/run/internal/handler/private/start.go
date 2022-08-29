@@ -30,5 +30,5 @@ func Start(c tele.Context) error {
 		})
 	}
 
-	return searchbot.View()(c)
+	return searchbot.OnText()(c)
 }

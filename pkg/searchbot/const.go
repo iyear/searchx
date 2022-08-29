@@ -8,6 +8,11 @@ const (
 	ChatNameMax    = 8
 )
 
+const (
+	TypeView = iota + 1
+	TypeGoPrivate
+)
+
 type SearchOrder struct {
 	SortBy []search.OptionSortByItem
 	Text   string
