@@ -43,7 +43,7 @@ func Start(ctx context.Context, cfg string) error {
 	}
 	color.Blue("Send code...")
 
-	c := telegram.NewClient(config.C.Account.ID, config.C.Account.Hash, telegram.Options{
+	c := telegram.NewClient(config.C.App.ID, config.C.App.Hash, telegram.Options{
 		Resolver: dcs.Plain(dcs.PlainOptions{
 			Dial: dialer.DialContext,
 		}),

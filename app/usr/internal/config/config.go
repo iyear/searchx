@@ -13,10 +13,10 @@ func Init(path string) error {
 }
 
 type config struct {
-	Account struct {
+	App struct {
 		ID   int    `mapstructure:"id" validate:"required" default:"15055931"`
 		Hash string `mapstructure:"hash" validate:"required" default:"021d433426cbb920eeb95164498fe3d3"`
-	} `mapstructure:"account"`
+	} `mapstructure:"app"`
 	Bot struct {
 		Token string `mapstructure:"token" validate:"required"`
 	} `mapstructure:"bot"`
