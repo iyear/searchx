@@ -12,7 +12,7 @@ import (
 
 func View() tele.HandlerFunc {
 	return func(c tele.Context) error {
-		sp := GetScope(c)
+		sp := getScope(c)
 
 		id, err := base64.URLEncoding.DecodeString(c.Message().Payload)
 		if err != nil {

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/gotd/td/telegram/message/peer"
 	"github.com/gotd/td/tg"
 	"github.com/iyear/searchx/pkg/consts"
@@ -19,6 +20,10 @@ func (t telegram) GetName(first, last, username string) string {
 
 func (t telegram) GetDeepLink(bot string, code string) string {
 	return "https://t.me/" + bot + "?start=" + code
+}
+
+func (t telegram) GetMsgLink(chat int64, msg int) string {
+	return fmt.Sprintf("https://t.me/c/%d/%d", chat, msg)
 }
 
 func (t telegram) GetPeerID(peer tg.PeerClass) int64 {

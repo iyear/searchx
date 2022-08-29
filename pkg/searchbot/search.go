@@ -21,7 +21,7 @@ func Search(pageSize int) tele.HandlerFunc {
 		var btns [][]tele.InlineButton
 		pn, order, keyword, ps := 0, 0, "", pageSize
 
-		sp := GetScope(c)
+		sp := getScope(c)
 
 		start := time.Now()
 
@@ -106,7 +106,7 @@ func Search(pageSize int) tele.HandlerFunc {
 				ChatName:   html.EscapeString(utils.String.RuneSubString(msg.ChatName, ChatNameMax)),
 				Date:       time.Unix(msg.Date, 0).Format("2006.01.02"),
 				Content:    strings.ReplaceAll(html.EscapeString(strings.Join(contents, "...")), "\n", " "),
-				GoLink:     GetMsgLink(msg.Chat, msg.ID),
+				GoLink:     utils.Telegram.GetMsgLink(msg.Chat, msg.ID),
 			})
 		}
 

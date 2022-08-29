@@ -1,19 +1,14 @@
 package searchbot
 
 import (
-	"fmt"
 	"github.com/iyear/searchx/pkg/consts"
 	tele "gopkg.in/telebot.v3"
 	"strconv"
 	"strings"
 )
 
-func GetScope(c tele.Context) *SearchScope {
+func getScope(c tele.Context) *SearchScope {
 	return c.Get(consts.ContextSearch).(*SearchScope)
-}
-
-func GetMsgLink(chat int64, msg int) string {
-	return fmt.Sprintf("https://t.me/c/%d/%d", chat, msg)
 }
 
 func searchGetData(data string) (string, int, int) {
@@ -25,4 +20,25 @@ func searchGetData(data string) (string, int, int) {
 
 func searchSetData(keywords string, pn int, order int) string {
 	return keywords + "|" + strconv.Itoa(pn) + "|" + strconv.Itoa(order)
+}
+
+// const MESSAGE_ID_INCREMENT = 0x10000;
+// const MESSAGE_ID_OFFSET = 0xFFFFFFFF;
+// function gen(messageId) {
+//    const q = MESSAGE_ID_OFFSET;
+//    if (messageId >= q) {
+//        return messageId;
+//    }
+//
+//    return q + (messageId * MESSAGE_ID_INCREMENT);
+// }
+
+const MessageIDIncrement = 0x10000
+const MessageIDOffset = 0xFFFFFFFF
+
+func GetWebKMessageID(origin int) int64 {
+	if origin >= MessageIDOffset {
+		return int64(origin)
+	}
+	return int64(MessageIDOffset + (origin * MessageIDIncrement))
 }

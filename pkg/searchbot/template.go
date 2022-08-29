@@ -27,3 +27,6 @@ type TSearchView struct {
 	Date       string
 	Content    string
 }
+
+type TSearchGoPrivate struct {
+}
