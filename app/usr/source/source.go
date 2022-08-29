@@ -161,9 +161,13 @@ func fetch(ctx context.Context, _search storage.Search, pw progress.Writer,
 		if !ok {
 			continue
 		}
-		// TODO(iyear): support get name and other info in `source`
-		// peer.Entities is not available for message's peer
-		data, ok := index.Message(m, tg.Entities{})
+		// TODO(iyear): `e` don't have full entities, need to fetch them from telegram
+		data, ok := index.Message(m, tg.Entities{
+			Short:    false,
+			Users:    e.Users(),
+			Chats:    e.Chats(),
+			Channels: e.Channels(),
+		})
 		if !ok {
 			continue
 		}
