@@ -14,11 +14,12 @@ import (
 )
 
 var cmd = &cobra.Command{
-	Use:           "searchx",
-	Short:         "Enhance Telegram Search In 5 Minutes",
-	Example:       "searchx -h",
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:               "searchx",
+	Short:             "Enhance Telegram Search In 5 Minutes",
+	Example:           "searchx -h",
+	DisableAutoGenTag: true,
+	SilenceErrors:     true,
+	SilenceUsage:      true,
 }
 
 func init() {

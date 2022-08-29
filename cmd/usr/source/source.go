@@ -32,6 +32,11 @@ var Cmd = &cobra.Command{
 			return fmt.Errorf("`from` must be less than `to`")
 		}
 
+		// set default `to` value
+		if to == 0 {
+			to = int(time.Now().Unix())
+		}
+
 		if err := source.Start(ctx, cfg, from, to); err != nil {
 			return fmt.Errorf("source failed: %v", err)
 		}
@@ -41,5 +46,5 @@ var Cmd = &cobra.Command{
 
 func init() {
 	Cmd.Flags().IntVar(&from, "from", 0, "source from this timestamp")
-	Cmd.Flags().IntVar(&to, "to", int(time.Now().Unix()), "source to this timestamp, default value is NOW")
+	Cmd.Flags().IntVar(&to, "to", 0, "source to this timestamp, default value is NOW")
 }
