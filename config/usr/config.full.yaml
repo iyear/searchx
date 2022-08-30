@@ -1,0 +1,34 @@
+app:
+  # using the default APP_ID and APP_HASH will not cause security problems,
+  # but you can also change it to a custom value. Link: https://my.telegram.org/apps
+  id: 15055931 # Telegram APP_ID, default is 15055931
+  hash: 021d433426cbb920eeb95164498fe3d3 # Telegram APP_HASH, default is 021d433426cbb920eeb95164498fe3d3
+bot:
+  token: YOUR_BOT_TOKEN # telegram search bot token
+# if set empty, it means no proxy
+# examples: socks5://127.0.0.1:1080
+# protocol://username:password@host:port, now only support socks5
+proxy: socks5://127.0.0.1:1080
+log:
+  enable: true # enable log, default: true
+  # log level
+  # one of: debug, info, warn, error, fatal
+  # default: info
+  level: info
+ctrl:
+  i18n: config/bot/i18n # i18n files directory, default: config/bot/i18n
+  language: zh-cn # bot language, default: zh-cn
+  search:
+    page_size: 10 # number of results per page(1-20), default: 10
+storage:
+  cache:
+    driver: gocache # support: gocache, default: gocache
+  kv:
+    driver: bolt # support: bolt, default: bolt
+    options:
+      path: data/data.kv # bolt db path, default: data/data.kv
+  search:
+    driver: bleve # support: bleve, default: bleve
+    options:
+      path: data/index # bleve index dir path, default: data/index
+      dict: data/dict.txt # dictionary file path, default: data/dict.txt

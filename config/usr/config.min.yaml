@@ -1,0 +1,6 @@
+bot:
+  token: YOUR_BOT_TOKEN # telegram search bot token
+# if set empty, it means no proxy
+# examples: socks5://127.0.0.1:1080
+# protocol://username:password@host:port, now only support socks5
+proxy: socks5://127.0.0.1:1080
