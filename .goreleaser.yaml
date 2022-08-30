@@ -40,10 +40,11 @@ archives:
       - goos: windows
         format: zip
     files:
-      - README.md
+      - README*.md
       - LICENSE
       - config/**/*
       - data/**/*
+      - docs/**/*
 changelog:
   use: github
   sort: asc
