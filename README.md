@@ -29,11 +29,30 @@ In versions after `v0.2.0`, `searchx` combines `bot` and `usr`.
 
 `usr` is used by individual users to provide enhanced search functionality for themselves.
 
-[usr document](docs/usr/README.md) | [bot document](docs/bot/README.md)
+[bot document](docs/bot/README.md) | [usr document](docs/usr/README.md)
 
 ## Commands
 
 Go to [command documentation](docs/command/searchx.md) for full command docs.
+
+## FAQ
+
+**Q: Why don't I use the search that comes with Telegram?**
+
+A: As we all know, the search function that comes with Telegram is not very useful. The purpose of this project is to
+solve these problems.
+
+**Q: I'm having problems using it?**
+
+A: If you still can't solve the problem after searching, give feedback
+by [SUBMIT ISSUE](https://github.com/iyear/searchx/issues/new).
+
+When submit an `ISSUE`, we recommend describing the problem in English and providing relevant screenshots and steps to
+reproduce it.
+
+**Q: I want to add a feature?**
+
+A: Same as above
 
 ## LICENSE
 

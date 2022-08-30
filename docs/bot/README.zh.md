@@ -24,8 +24,8 @@
 启动 Bot
 
 ```shell
-# 使用最小化配置启动
-./searchx bot run -c config/bot/config.min.yaml
+./searchx bot run # 使用最小化配置
+./searchx bot run -c my/config.yaml # 使用自定义配置
 ```
 
 ### `source`
@@ -37,36 +37,25 @@
 - `-f`: 导出的历史消息`JSON`
 
 ```shell
-./searchx bot source -c config/bot/config.min.yaml -f YOUR_PATH/result.json
+./searchx bot source # 使用最小化配置，使用默认文件
+./searchx bot source -c my/config.yaml -f my/result.json # 使用自定义配置和文件
 ```
 
 ### `query`
 
 命令行查询
 
-- `-q`: 关键字
+- `-q`: 关键词
 - `--pn`: 页码,从 0 开始,默认为 0
 - `--ps`: 每页条数,默认为 10
 - `--json`: 输出为 `JSON` 格式
 
 ```shell
-./searchx bot query -c  -q KEYWORD --pn 0 --ps 10 --json
+./searchx bot query -q KEYWORD # 使用最小化配置
+./searchx bot query -c my/config.yaml -q KEYWORD --pn 1 --ps 7 --json # 使用自定义配置
 ```
 
 ## FAQ
-
-**Q: 为什么我不使用 Telegram 自带的搜索？**
-
-A: 众所周知，Telegram 自带的搜索功能并不好用，尤其是对中文的支持很差。本项目的目的就是解决这些搜索痛点。
-
-**Q: 我在使用过程中遇到了问题？**
-A: 在确认搜索后依旧无法解决，通过 [发起 ISSUE](https://github.com/iyear/searchx/issues/new) 的方式反馈。
-
-在发起 `ISSUE` 的过程中，我们提倡使用英文描述问题，并在 `ISSUE` 中提供相关的截图和复现步骤。
-
-**Q: 我想要增加一个功能？**
-
-A: 同上
 
 **Q: 为什么需要禁用 `Group Privacy`？它会造成安全问题吗？**
 

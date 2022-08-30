@@ -27,13 +27,28 @@
 
 `bot` 的目标群体为频道主/群主，为成员提供该会话的强化搜索功能；
 
-`usr` 的目标群体为个人用户，用于为自己提供强化搜索功能。
+`usr` 的目标群体为个人用户，为自己提供强化搜索功能。
 
-[usr 文档](docs/usr/README.zh.md) | [bot 文档](docs/bot/README.zh.md)
+[bot 文档](docs/bot/README.zh.md) | [usr 文档](docs/usr/README.zh.md)
 
 ## 命令
 
 前往 [命令文档](docs/command/searchx.md) 查看完整命令文档
+
+## FAQ
+
+**Q: 为什么我不使用 Telegram 自带的搜索？**
+
+A: 众所周知，Telegram 自带的搜索功能并不好用，尤其是对中文的支持很差。本项目的目的就是解决这些搜索痛点。
+
+**Q: 我在使用过程中遇到了问题？**
+A: 在确认搜索后依旧无法解决，通过 [发起 ISSUE](https://github.com/iyear/searchx/issues/new) 的方式反馈。
+
+在发起 `ISSUE` 的过程中，我们提倡使用英文描述问题，并在 `ISSUE` 中提供相关的截图和复现步骤。
+
+**Q: 我想要增加一个功能？**
+
+A: 同上
 
 ## LICENSE
 

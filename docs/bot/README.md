@@ -15,63 +15,48 @@ Using `searchx`
 
 Use the `run` command to start and invite `Bot` to the group/channel
 
-## Command
+## Commands
 
-- `-c`: path to configuration file
+- `-c`: path to configuration file, default is `config/bot/config.min.yaml`
 
 ### `run`
 
 Start Bot
 
 ```shell
-## start with a minimal config
-./searchx bot run -c config/bot/config.min.yaml
+./searchx bot run # use the min configuration
+./searchx bot run -c my/config.yaml # use the specified configuration
 ```
 
-### source
-
+### `source`
 Bot only indexes messages during the join period, use this command if you want to index history messages.
 
 Support groups/channels, support very large `JSON` file.
 
 Use **official client** to export history messages. Export options: **Uncheck all, format as `JSON`**.
 
-- `-f`: exported history messages in `JSON` file
+- `-f`: exported history messages in `JSON` file, default: `result.json`
 
 ```shell
-./searchx source -c config/bot/config.min.yaml -f YOUR_PATH/result.json
+./searchx bot source # use the min config, and the default file
+./searchx bot source -c my/config.yaml -f my/result.json # use the specified config and file
 ```
 
-### query
+### `query`
 
 Command line query
 
+- `-q`: keyword
 - `--pn`: page number, start from 0, default is 0
 - `--ps`: number of result per page, default is 10
-- `--json`: output as `JSON` format
+- `--json`: output as `JSON` format, default is `false`
 
 ```shell
-./searchx query -c config/bot/config.min.yaml -q KEYWORD --pn 0 --ps 10 --json
+./searchx bot query -q KEYWORD # use the min config, and the default value
+./searchx bot query -c my/config.yaml -q KEYWORD --pn 1 --ps 7 --json # use the specified config and value
 ```
 
 ## FAQ
-
-**Q: Why don't I use the search that comes with Telegram?**
-
-A: As we all know, the search function that comes with Telegram is not very useful. The purpose of this project is to
-solve these problems.
-
-**Q: I'm having problems using it?**
-
-A: If you still can't solve the problem after searching, give feedback
-by [SUBMIT ISSUE](https://github.com/iyear/searchx/issues/new).
-
-When submit an `ISSUE`, we recommend describing the problem in English and providing relevant screenshots and steps to
-reproduce it.
-
-**Q: I want to add a feature?**
-
-A: Same as above
 
 **Q: Why do I need to disable `Group Privacy`? Does it cause security issues?**
 
