@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"context"
-	"errors"
 	"github.com/fatih/color"
 	"github.com/iyear/searchx/cmd/bot"
 	"github.com/iyear/searchx/cmd/usr"
@@ -32,7 +30,7 @@ func init() {
 }
 
 func Execute() {
-	if err := cmd.Execute(); err != nil && !errors.As(err, &context.Canceled) {
-		color.Red("Error happens: %v", err)
+	if err := cmd.Execute(); err != nil {
+		color.Red("%v", err)
 	}
 }
