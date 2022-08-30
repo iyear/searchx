@@ -1,12 +1,13 @@
 ## Introduction
+
 ![](https://img.shields.io/github/go-mod/go-version/iyear/searchx?style=flat-square)
 ![](https://img.shields.io/github/license/iyear/searchx?style=flat-square)
 ![](https://img.shields.io/github/v/release/iyear/searchx?color=red&style=flat-square)
 ![](https://img.shields.io/github/last-commit/iyear/searchx?style=flat-square)
 
-English | [简体中文](README_zh.md)
+English | [简体中文](README.zh.md)
 
-🔍 Enhance Telegram Group/Channel Search In 5 Minutes 🚀
+🔍 Enhance Telegram Search In 5 Minutes 🚀
 
 [DEMO](https://t.me/e5subs_bot) (Join [E5SubBot Group](https://t.me/e5subbot) in advance)
 
@@ -20,103 +21,20 @@ English | [简体中文](README_zh.md)
 - Customizable i18n message templates
 - ......
 
-## Deployment
+## Usage
 
-1. **Prepare `Telegram Bot`**
-    1. Get `Bot Token`: [How to create a Bot](https://core.telegram.org/bots#6-botfather)
-    2. **Disable** `Group Privacy`: send `/setprivacy` to [@BotFather](https://t.me/BotFather)
-2. **Get `Telegram User ID`: [@userinfobot](https://t.me/userinfobot)**
-3. **Prepare `searchx`**
-    1. Download `searchx`: go to [GitHub Releases](https://github.com/iyear/searchx/releases) and uncompress it.
-    2. Change `YOUR_BOT_TOKEN` `YOUR_ADMIN_ID` in `config/config.min.yaml` to `Bot Token` `Telegram User ID`
-4. **Start: `./searchx run -c config/config.min.yaml`**
-5. **Invite `Bot` to groups/channels**
+In versions after `v0.2.0`, `searchx` combines `bot` and `usr`.
 
-## Customization
-For the vast majority of users, the default minimal configuration is sufficient. 
+`bot` is used by channel owners/group owners to provide members with an enhanced search function.
 
-If you have more customization needs, please refer to [config.full.yaml](config/config.full.yaml) and its comments.
+`usr` is used by individual users to provide enhanced search functionality for themselves.
 
-## Command
-### version
-View version information
+[usr document](docs/usr/README.md) | [bot document](docs/bot/README.md)
 
-```shell
-./searchx version
-```
+## Commands
 
-```
-Version: 0.0.0
-Commit: 5cae8dc
-Date: 2022-07-30T07:58:05Z
-
-go1.17.3 windows/amd64
-```
-
-### run
-Start Bot
-
-- `-c`: path to config file
-
-```shell
-# start with the minimal config
-./searchx run -c config/config.min.yaml
-```
-
-### source
-Bot only indexes messages during the join period, use this command if you want to index history messages. 
-
-Support groups/channels, support very large `JSON` file.
-
-Use **official client** to export history messages. Export options: **Uncheck all, format as `JSON`**.
-
-- `-f`: exported history messages in `JSON` file
-- `-d`: search engine driver
-- `-o`: search engine options
-
-```shell
-# Using bleve to import messages
-./searchx source -f YOUR_PATH/result.json -d bleve -o path="index" -o dict="config/dict.txt"
-```
-
-### query
-Command line query
-
-- `-d`: search engine driver
-- `-o`: search engine options
-- `-q`: keyword
-- `--pn`: page number, start from 0, default is 0
-- `--ps`: number of result per page, default is 10
-- `--json`: output as `JSON` format
-
-```shell
-# Using bleve to query
-./searchx query -d bleve -o path="index" -o dict="config/dict.txt" -q KEYWORD --pn 0 --ps 10 --json
-```
-
-## FAQ
-**Q: Why don't I use the search that comes with Telegram?**
-
-A: As we all know, the search function that comes with Telegram is not very useful. The purpose of this project is to solve these problems.
-
-**Q: I'm having problems using it?**
-
-A: If you still can't solve the problem after searching, give feedback by [SUBMIT ISSUE](https://github.com/iyear/searchx/issues/new).
-
-When submit an `ISSUE`, we recommend describing the problem in English and providing relevant screenshots and steps to reproduce it.
-
-**Q: I want to add a feature?**
-
-A: Same as above
-
-**Q: Why do I need to disable `Group Privacy`? Does it cause security issues?**
-
-A: When `Group Privacy` is enabled, it will cause `Bot` to not receive all messages in the group, resulting in missing indexes. Please refer to: https://core.telegram.org/bots#privacy-mode
-At the same time, it does not create security issues. The project is self-deployed and the data is stored locally, so it will not lead to data leakage.
-
-**Q: Can I use it for my personal account? Will it be supported in the future?**
-
-A: Not currently, it may be supported in the future, but the use of `userbot` has the risk of blocking. The current target group of this project is group/channel owners, self-built to provide convenience to members.
+Go to [command documentation](docs/command/searchx.md) for full command docs.
 
 ## LICENSE
+
 Apache License 2.0
