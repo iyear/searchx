@@ -8,6 +8,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"go.etcd.io/bbolt"
 	"os"
+	"time"
 )
 
 type Options struct {
@@ -35,7 +36,11 @@ func New(options map[string]interface{}) (*Bolt, error) {
 		return nil, err
 	}
 
-	db, err := bbolt.Open(ops.Path, os.ModePerm, bbolt.DefaultOptions)
+	db, err := bbolt.Open(ops.Path, os.ModePerm, &bbolt.Options{
+		Timeout:      time.Second,
+		NoGrowSync:   false,
+		FreelistType: bbolt.FreelistArrayType,
+	})
 	if err != nil {
 		return nil, err
 	}
