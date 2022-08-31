@@ -2,6 +2,7 @@
 
 ![](https://img.shields.io/github/go-mod/go-version/iyear/searchx?style=flat-square)
 ![](https://img.shields.io/github/license/iyear/searchx?style=flat-square)
+![](https://img.shields.io/github/workflow/status/iyear/searchx/master%20builder?style=flat-square)
 ![](https://img.shields.io/github/v/release/iyear/searchx?color=red&style=flat-square)
 ![](https://img.shields.io/github/last-commit/iyear/searchx?style=flat-square)
 
