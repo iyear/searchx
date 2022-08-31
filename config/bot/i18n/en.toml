@@ -1,0 +1,76 @@
+[text]
+start = """
+✨ Hello! <a href="tg://user?id={{ .ID }}">{{ .Username }}</a> ✨
+
+🤖 <a href="https://github.com/iyear/searchx">SearchX</a> <b>is the bot that focuses on enhancing search</b>
+
+⚡ <b>Send the keyword to start search! </b>
+
+<b>Notice:</b>
+{{ .Notice }}
+
+ver: <b>{{ .Version }}</b>
+"""
+
+[text.search]
+keywords_too_long = "⚠ Keywords are too long, please shorten them"
+results = """
+👉 Search: <b>{{ .Keyword }}</b> 👈
+{{ range .Results }}
+<a href="{{ .ViewLink }}">{{ .Seq }}</a> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .GoLink }}">→</a>
+  | {{ .Content }}
+{{ end }}
+
+⏳ Time: <code>{{ .Took }}ms</code>
+"""
+view = """
+Message ID: <code>{{ .MsgID }}</code>
+ChatType: <code>{{ .ChatType }}</code>
+Chat: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
+Sender: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
+Time: <code>{{ .Date }}</code>
+
+{{ .Content }}
+"""
+
+go_private = """
+😥 Private messages cannot be jumped in the client, please visit as follows:
+
+Copy <code>appImManager.setPeer({peerId:{{ .PeerID }},lastMsgId: {{ .MsgID }}},true)</code>
+
+Visit <a href="https://web.telegram.org/k">Telegram Web</a> after copying and execute in the console
+"""
+
+[text.settings]
+desc = "👇 Select your settings item"
+language = """
+🌏 Current: <b>{{ . }}</b>
+
+👇 Select the language you want to set
+"""
+
+[text.added_to_group]
+fail = """
+⚠ Please upgrade the group to <code>Supergroup</code> | <a herf="https://teleme.io/articles/turn_a_telegram_group_into_a_supergroup">Tutorial</a>
+
+⚠ Please invite <a href="https://github.com/iyear/searchx">SearchX</a> again after upgrading
+"""
+
+success = """
+✅ <a href="https://github.com/iyear/searchx">SearchX</a> is enabled and will index the text messages of the conversation. To index historical messages, use the <code>source</code> command.
+"""
+
+[button]
+back = "⬅ Back"
+
+[button.start]
+settings = "⚙ Settings"
+
+[button.search]
+next = "👉 Next"
+prev = "👈 Prev"
+switch_order = "🔀"
+
+[button.settings]
+language = "🌏 Language"
+language_plain = "📊"

@@ -7,18 +7,3 @@ type TStart struct {
 	Chats    []string
 	Version  string
 }
-
-type TSearchResults struct {
-	Keyword string
-	Results []*TSearchResult
-	Took    int64
-}
-
-type TSearchResult struct {
-	Seq        int
-	Sender     string
-	SenderLink string
-	Date       string
-	Content    string
-	Link       string
-}

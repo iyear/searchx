@@ -1,14 +1,14 @@
 package query
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/pkg/i18n"
 	"github.com/iyear/searchx/pkg/storage"
 	"github.com/iyear/searchx/pkg/storage/search"
-	"github.com/mitchellh/mapstructure"
 )
 
 type tmplData struct {
@@ -20,23 +20,18 @@ type tmplData struct {
 //go:embed query.tmpl
 var tmpl string
 
-func Query(driver string, searchOptions map[string]string, query string, pn, ps int, jsonFormat bool) error {
-	if driver == "" {
-		return errors.New("search driver can not be empty")
-	}
-
-	options := make(map[string]interface{})
-	if err := mapstructure.WeakDecode(searchOptions, &options); err != nil {
+func Query(ctx context.Context, cfg string, query string, pn, ps int, jsonFormat bool) error {
+	if err := config.Init(cfg); err != nil {
 		return err
 	}
 
-	_search, err := storage.NewSearch(driver, options)
+	_search, err := storage.NewSearch(config.C.Storage.Search.Driver, config.C.Storage.Search.Options)
 	if err != nil {
 		return err
 	}
 
 	// todo(iyear): add sortBy options
-	results := _search.Search(query, &search.Options{
+	results := _search.Search(ctx, query, search.Options{
 		From: pn * ps,
 		Size: ps,
 		SortBy: []search.OptionSortByItem{{

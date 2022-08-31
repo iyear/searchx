@@ -1,0 +1,39 @@
+bot:
+  token: YOUR_BOT_TOKEN # telegram bot token
+  admin: # telegram id of the admins
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+# if set empty, it means no proxy
+# examples: socks5://127.0.0.1:1080
+# protocol://username:password@host:port, now only support socks5
+proxy: socks5://127.0.0.1:1080
+log:
+  enable: true # enable log, default: true
+  # log level
+  # one of: debug, info, warn, error, fatal
+  # default: info
+  level: info
+ctrl:
+  # support html style: https://core.telegram.org/bots/api#html-style, default: NO NOTICE
+  notice: |
+    <b>YOUR_NOTICE_MESSAGE</b>
+    <i>YOUR_NOTICE_MESSAGE</i>
+    <code>YOUR_NOTICE_MESSAGE</code>
+    <a href="https://google.com">YOUR_NOTICE_MESSAGE</a>
+  i18n: config/bot/i18n # i18n files directory, default: config/bot/i18n
+  default_language: zh-cn # default language, default: zh-cn
+  search:
+    page_size: 10 # number of results per page(1-20), default: 10
+storage:
+  cache:
+    driver: gocache # support: gocache, default: gocache
+  kv:
+    driver: bolt # support: bolt, default: bolt
+    options:
+      path: data/data.kv # bolt db path, default: data/data.kv
+  search:
+    driver: bleve # support: bleve, default: bleve
+    options:
+      path: data/index # bleve index dir path, default: data/index
+      dict: data/dict.txt # dictionary file path, default: data/dict.txt

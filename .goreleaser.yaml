@@ -40,12 +40,11 @@ archives:
       - goos: windows
         format: zip
     files:
-      - README.md
+      - README*.md
       - LICENSE
-      - config/i18n/*
-      - config/dict.txt
-      - config/config.full.yaml
-      - config/config.min.yaml
+      - config/**/*
+      - data/**/*
+      - docs/**/*
 changelog:
   use: github
   sort: asc

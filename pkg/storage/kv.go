@@ -1,13 +1,15 @@
 package storage
 
 import (
+	"context"
 	"fmt"
 	"github.com/iyear/searchx/pkg/storage/kv/bolt"
 )
 
 type KV interface {
-	Get(key string) (string, error)
-	Set(key string, val string) error
+	// Get returns kv.ErrNotFound if the key does not exist
+	Get(ctx context.Context, key string) (string, error)
+	Set(ctx context.Context, key string, val string) error
 }
 
 func NewKV(name string, options map[string]interface{}) (KV, error) {

@@ -1,16 +1,18 @@
 package bolt
 
 import (
-	"fmt"
+	"context"
 	"github.com/creasty/defaults"
+	"github.com/iyear/searchx/pkg/storage/kv"
 	"github.com/iyear/searchx/pkg/validator"
 	"github.com/mitchellh/mapstructure"
 	"go.etcd.io/bbolt"
 	"os"
+	"time"
 )
 
 type Options struct {
-	Path string `mapstructure:"path" default:"data.kv"`
+	Path string `mapstructure:"path" default:"data/data.kv"`
 }
 
 type Bolt struct {
@@ -34,7 +36,11 @@ func New(options map[string]interface{}) (*Bolt, error) {
 		return nil, err
 	}
 
-	db, err := bbolt.Open(ops.Path, os.ModePerm, bbolt.DefaultOptions)
+	db, err := bbolt.Open(ops.Path, os.ModePerm, &bbolt.Options{
+		Timeout:      time.Second,
+		NoGrowSync:   false,
+		FreelistType: bbolt.FreelistArrayType,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +55,7 @@ func New(options map[string]interface{}) (*Bolt, error) {
 	return &Bolt{db: db}, nil
 }
 
-func (b *Bolt) Get(key string) (string, error) {
+func (b *Bolt) Get(_ context.Context, key string) (string, error) {
 	var val []byte
 
 	if err := b.db.View(func(tx *bbolt.Tx) error {
@@ -60,13 +66,13 @@ func (b *Bolt) Get(key string) (string, error) {
 	}
 
 	if val == nil {
-		return "", fmt.Errorf("%s is not found", key)
+		return "", kv.ErrNotFound
 	}
 
 	return string(val), nil
 }
 
-func (b *Bolt) Set(key string, val string) error {
+func (b *Bolt) Set(_ context.Context, key string, val string) error {
 	return b.db.Update(func(tx *bbolt.Tx) error {
 		return tx.Bucket([]byte(bucket)).Put([]byte(key), []byte(val))
 	})

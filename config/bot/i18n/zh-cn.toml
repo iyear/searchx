@@ -1,0 +1,76 @@
+[text]
+start = """
+✨ 你好！<a href="tg://user?id={{ .ID }}">{{ .Username }}</a> ✨
+
+🤖 <a href="https://github.com/iyear/searchx">SearchX</a> <b>是专注于强化搜索体验的 Bot</b>
+
+⚡ <b>发送关键字开始体验强化搜索！</b>
+
+<b>公告：</b>
+{{ .Notice }}
+
+ver: <code>{{ .Version }}</code>
+"""
+
+[text.search]
+keywords_too_long = "⚠ 关键词过长，请适当缩短关键词"
+results = """
+👉 搜索: <b>{{ .Keyword }}</b> 👈
+{{ range .Results }}
+<a href="{{ .ViewLink }}">{{ .Seq }}</a> <code>{{ .ChatName }}</code> @<code>{{ .SenderName }}</code> - <code>{{ .Date }}</code> <a href="{{ .GoLink }}">→</a>
+  | {{ .Content }}
+{{ end }}
+
+⏳ 本次搜索花费时间: <code>{{ .Took }}ms</code>
+"""
+view = """
+消息ID: <code>{{ .MsgID }}</code>
+会话类型: <code>{{ .ChatType }}</code>
+会话: <code>{{ .ChatName }}</code> | <code>{{ .ChatID }}</code>
+发送者: <code>{{ .SenderName }}</code> | <code>{{ .SenderID }}</code>
+时间: <code>{{ .Date }}</code>
+
+{{ .Content }}
+"""
+
+go_private = """
+😥 私信无法在客户端中实现跳转，请按以下方式访问:
+
+复制 <code>appImManager.setPeer({peerId:{{ .PeerID }},lastMsgId: {{ .MsgID }}},true)</code>
+
+访问 <a href="https://web.telegram.org/k">网页版Telegram</a> 后在控制台中复制并执行
+"""
+
+[text.settings]
+desc = "👇 请选择你的设置项"
+language = """
+🌏 当前语言: <b>{{ . }}</b>
+
+👇 请选择需要设置的语言
+"""
+
+[text.added_to_group]
+fail = """
+⚠ 请将群组升级至 <code>超级群组</code> | <a herf="https://teleme.io/articles/turn_a_telegram_group_into_a_supergroup">教程</a>
+
+⚠ 请升级后再次邀请 <a href="https://github.com/iyear/searchx">SearchX</a>
+"""
+
+success = """
+✅ <a href="https://github.com/iyear/searchx">SearchX</a> 已启用，将索引对话的文本信息。如需索引历史信息，请使用 <code>source<code> 命令。
+"""
+
+[button]
+back = "⬅ 返回"
+
+[button.start]
+settings = "⚙ 设置"
+
+[button.search]
+next = "👉 下一页"
+prev = "👈 上一页"
+switch_order = "🔀"
+
+[button.settings]
+language = "🌏 语言"
+language_plain = "📊"

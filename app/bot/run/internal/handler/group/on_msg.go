@@ -1,14 +1,14 @@
 package group
 
 import (
+	"context"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/pkg/consts"
 	"github.com/iyear/searchx/pkg/keygen"
 	"github.com/iyear/searchx/pkg/models"
 	"github.com/iyear/searchx/pkg/storage/search"
+	"github.com/iyear/searchx/pkg/utils"
 	tele "gopkg.in/telebot.v3"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func OnText(c tele.Context) error {
@@ -40,20 +40,37 @@ func OnAnimation(c tele.Context) error {
 }
 
 func index(c tele.Context, text string) error {
+	sp := util.GetScope(c)
 	msg := c.Message()
-	return util.GetScope(c).Storage.Search.Index([]*search.Item{{
-		ID: keygen.SearchMsgID(msg.Chat.ID, msg.ID),
-		Data: &models.SearchMsg{
-			ID:     strconv.Itoa(msg.ID),
-			Chat:   msg.Chat.Recipient(),
-			Text:   strings.ReplaceAll(text, "\n", " "),
-			Sender: msg.Sender.Recipient(),
-			Date:   strconv.FormatInt(time.Now().Unix(), 10),
-		},
-	}})
-}
 
-func OnUserJoined(c tele.Context) error {
-	// u := c.ChatMember().NewChatMember.User
-	return nil
+	date := msg.LastEdit
+	if date == 0 {
+		date = msg.Unixtime
+	}
+
+	if msg.Chat == nil {
+		sp.Log.Debugw("chat is nil", "msg", msg.ID, "sender", msg.Sender.ID)
+		return nil
+	}
+
+	m := &models.SearchMsg{
+		ID:         msg.ID,
+		Chat:       (-msg.Chat.ID) - 1e12,
+		ChatType:   consts.ChatGroup,
+		ChatName:   msg.Chat.Title,
+		Text:       text,
+		Sender:     msg.Sender.ID,
+		SenderName: utils.Telegram.GetName(msg.Sender.FirstName, msg.Sender.LastName, msg.Sender.Username),
+		Date:       date,
+	}
+
+	data, err := m.Encode()
+	if err != nil {
+		return err
+	}
+
+	return util.GetScope(c).Storage.Search.Index(context.TODO(), []*search.Item{{
+		ID:   keygen.SearchMsgID(msg.Chat.ID, msg.ID),
+		Data: data,
+	}})
 }

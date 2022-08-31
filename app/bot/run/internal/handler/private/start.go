@@ -1,10 +1,11 @@
 package private
 
 import (
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/internal/config"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
 	"github.com/iyear/searchx/global"
+	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -29,5 +30,5 @@ func Start(c tele.Context) error {
 		})
 	}
 
-	return nil
+	return searchbot.OnText()(c)
 }

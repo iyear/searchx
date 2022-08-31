@@ -1,6 +1,7 @@
 package private
 
 import (
+	"context"
 	"fmt"
 	iso6391 "github.com/iyear/iso-639-1"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
@@ -46,11 +47,11 @@ func SettingsSwitchLanguage(c tele.Context) error {
 		return nil
 	}
 
-	if err := sp.Storage.KV.Set(key.Language(c.Chat().ID), c.Data()); err != nil {
+	if err := sp.Storage.KV.Set(context.TODO(), key.Language(c.Chat().ID), c.Data()); err != nil {
 		return err
 	}
 
-	sp.Storage.Cache.Set(key.Language(c.Chat().ID), c.Data())
+	sp.Storage.Cache.Set(context.Background(), key.Language(c.Chat().ID), c.Data())
 
 	// 手动走一遍中间件刷新当前页面的语言
 	return middleware.SetScope(sp)(SettingsLanguage)(c)

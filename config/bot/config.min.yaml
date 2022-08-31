@@ -1,0 +1,11 @@
+bot:
+  token: YOUR_BOT_TOKEN # telegram bot token
+  admin: # telegram id of the admins
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+    - YOUR_ADMIN_ID
+# if set empty, it means no proxy
+# examples: socks5://127.0.0.1:1080
+# protocol://username:password@host:port, now only support socks5
+proxy:
+

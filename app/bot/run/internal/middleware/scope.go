@@ -1,10 +1,12 @@
 package middleware
 
 import (
-	"github.com/iyear/searchx/app/bot/run/internal/config"
+	"github.com/iyear/searchx/app/bot/run/internal/conf"
 	"github.com/iyear/searchx/app/bot/run/internal/i18n"
 	"github.com/iyear/searchx/app/bot/run/internal/model"
 	"github.com/iyear/searchx/app/bot/run/internal/util"
+	"github.com/iyear/searchx/pkg/consts"
+	"github.com/iyear/searchx/pkg/searchbot"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -17,13 +19,19 @@ func SetScope(sp *model.Scope) tele.MiddlewareFunc {
 				return nil
 			}
 
-			c.Set(config.ContextScope, &model.Scope{
+			c.Set(conf.ContextScope, &model.Scope{
 				Storage:  sp.Storage,
 				Template: tmpl,
 				Log:      sp.Log,
 			})
 
-			c.Set(config.ContextLanguage, lang)
+			c.Set(consts.ContextSearch, &searchbot.SearchScope{
+				Text:    &tmpl.Text.Search,
+				Button:  &tmpl.Button.Search,
+				Storage: sp.Storage,
+			})
+
+			c.Set(conf.ContextLanguage, lang)
 			return next(c)
 		}
 	}

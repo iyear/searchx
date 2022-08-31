@@ -5,18 +5,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	cfg string
-)
-
 var Cmd = &cobra.Command{
-	Use:   "run",
-	Short: "Run the bot",
-	Run: func(cmd *cobra.Command, args []string) {
-		run.Run(cfg)
-	},
-}
+	Use:     "run",
+	Short:   "Run the bot",
+	Example: "searchx bot run -c config/bot/config.min.yaml",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cfg, err := cmd.Flags().GetString("config")
+		if err != nil {
+			return err
+		}
 
-func init() {
-	Cmd.PersistentFlags().StringVarP(&cfg, "config", "c", "config/config.yaml", "the path to the config file")
+		return run.Run(cfg)
+	},
 }
