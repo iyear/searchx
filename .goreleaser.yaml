@@ -43,7 +43,7 @@ archives:
       - README*.md
       - LICENSE
       - config/**/*
-      - data/**/*
+      - data/*
       - docs/**/*
 changelog:
   use: github
