@@ -22,12 +22,12 @@ func searchSetData(keywords string, pn int, order int) string {
 	return keywords + "|" + strconv.Itoa(pn) + "|" + strconv.Itoa(order)
 }
 
-const MessageIDIncrement = 0x10000
-const MessageIDOffset = 0xFFFFFFFF
+const MessageIDIncrement int64 = 0x10000
+const MessageIDOffset int64 = 0xFFFFFFFF
 
 func GetWebKMessageID(origin int) int64 {
-	if origin >= MessageIDOffset {
+	if int64(origin) >= MessageIDOffset {
 		return int64(origin)
 	}
-	return int64(MessageIDOffset + (origin * MessageIDIncrement))
+	return MessageIDOffset + (int64(origin) * MessageIDIncrement)
 }
