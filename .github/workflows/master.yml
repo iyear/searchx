@@ -22,4 +22,4 @@ jobs:
       - name: Test
         run: go test -v ./...
       - name: Build
-        run: make build -j8
+        run: go build
