@@ -27,7 +27,7 @@ func (b *Bleve) Search(ctx context.Context, query string, options search.Options
 		return results
 	}
 
-	s = bleve.NewSearchRequestOptions(bleve.NewWildcardQuery("*"+query+"*"), options.Size, options.Size, false)
+	s = bleve.NewSearchRequestOptions(bleve.NewWildcardQuery("*"+query+"*"), options.Size, options.From, false)
 	return b.searchReq(ctx, s, options)
 }
 
