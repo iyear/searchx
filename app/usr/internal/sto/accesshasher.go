@@ -17,8 +17,8 @@ func NewAccessHasher(kv storage.KV) *AccessHasher {
 	return &AccessHasher{kv: kv}
 }
 
-func (h *AccessHasher) SetChannelAccessHash(userID, channelID, accessHash int64) error {
-	data, err := h.kv.Get(context.TODO(), key.ChannelAccessHash(userID))
+func (h *AccessHasher) SetChannelAccessHash(ctx context.Context, userID, channelID, accessHash int64) error {
+	data, err := h.kv.Get(ctx, key.ChannelAccessHash(userID))
 	if err != nil && !errors.Is(err, kv.ErrNotFound) {
 		return err
 	}
@@ -39,11 +39,11 @@ func (h *AccessHasher) SetChannelAccessHash(userID, channelID, accessHash int64)
 		return err
 	}
 
-	return h.kv.Set(context.TODO(), key.ChannelAccessHash(userID), string(b))
+	return h.kv.Set(ctx, key.ChannelAccessHash(userID), string(b))
 }
 
-func (h *AccessHasher) GetChannelAccessHash(userID, channelID int64) (int64, bool, error) {
-	data, err := h.kv.Get(context.TODO(), key.ChannelAccessHash(userID))
+func (h *AccessHasher) GetChannelAccessHash(ctx context.Context, userID, channelID int64) (int64, bool, error) {
+	data, err := h.kv.Get(ctx, key.ChannelAccessHash(userID))
 	if err != nil {
 		if errors.Is(err, kv.ErrNotFound) {
 			return 0, false, nil

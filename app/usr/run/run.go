@@ -88,11 +88,14 @@ func Run(ctx context.Context, cfg string) error {
 	dispatcher := tg.NewUpdateDispatcher()
 	handleUsr(&dispatcher)
 
+	state := sto.NewState(kv)
+	hasher := sto.NewAccessHasher(kv)
+
 	gaps := updates.New(updates.Config{
 		Handler:      dispatcher,
 		Logger:       slog.Named("updates").Desugar(),
-		Storage:      sto.NewState(kv),
-		AccessHasher: sto.NewAccessHasher(kv),
+		Storage:      state,
+		AccessHasher: hasher,
 		OnChannelTooLong: func(channelID int64) {
 			slog.Errorw("channel is too long", "channelID", channelID)
 		},
@@ -133,16 +136,7 @@ func Run(ctx context.Context, cfg string) error {
 		go bot.Start()
 		defer bot.Stop()
 
-		// notify update manager about authentication.
-		// isBot set to `true` to avoid too long updates diff and can't fetch old messages.
-		// forgot set to `false` to avoid replace local pts by remote pts.
-		if err := gaps.Auth(ctx, c.API(), status.User.ID, true, false); err != nil {
-			return err
-		}
-		defer func() { _ = gaps.Logout() }()
-
-		color.Blue("Auth successfully! User: %s", status.User.Username)
-
+		// gaps will automatically handle authentication and state management
 		<-ctx.Done()
 		return ctx.Err()
 	})

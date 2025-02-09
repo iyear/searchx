@@ -36,7 +36,7 @@ func (s *State) Set(key string, v interface{}) error {
 	return s.kv.Set(context.TODO(), key, string(data))
 }
 
-func (s *State) GetState(userID int64) (updates.State, bool, error) {
+func (s *State) GetState(ctx context.Context, userID int64) (updates.State, bool, error) {
 	state := updates.State{}
 
 	if err := s.Get(key.State(userID), &state); err != nil {
@@ -49,7 +49,7 @@ func (s *State) GetState(userID int64) (updates.State, bool, error) {
 	return state, true, nil
 }
 
-func (s *State) SetState(userID int64, state updates.State) error {
+func (s *State) SetState(ctx context.Context, userID int64, state updates.State) error {
 	if err := s.Set(key.State(userID), state); err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (s *State) SetState(userID int64, state updates.State) error {
 	return s.Set(key.StateChannel(userID), struct{}{})
 }
 
-func (s *State) SetPts(userID int64, pts int) error {
+func (s *State) SetPts(ctx context.Context, userID int64, pts int) error {
 	state, k := updates.State{}, key.State(userID)
 
 	if err := s.Get(k, &state); err != nil {
@@ -67,7 +67,7 @@ func (s *State) SetPts(userID int64, pts int) error {
 	return s.Set(k, state)
 }
 
-func (s *State) SetQts(userID int64, qts int) error {
+func (s *State) SetQts(ctx context.Context, userID int64, qts int) error {
 	state, k := updates.State{}, key.State(userID)
 
 	if err := s.Get(k, &state); err != nil {
@@ -77,7 +77,7 @@ func (s *State) SetQts(userID int64, qts int) error {
 	return s.Set(k, state)
 }
 
-func (s *State) SetDate(userID int64, date int) error {
+func (s *State) SetDate(ctx context.Context, userID int64, date int) error {
 	state, k := updates.State{}, key.State(userID)
 
 	if err := s.Get(k, &state); err != nil {
@@ -87,7 +87,7 @@ func (s *State) SetDate(userID int64, date int) error {
 	return s.Set(k, state)
 }
 
-func (s *State) SetSeq(userID int64, seq int) error {
+func (s *State) SetSeq(ctx context.Context, userID int64, seq int) error {
 	state, k := updates.State{}, key.State(userID)
 
 	if err := s.Get(k, &state); err != nil {
@@ -97,7 +97,7 @@ func (s *State) SetSeq(userID int64, seq int) error {
 	return s.Set(k, state)
 }
 
-func (s *State) SetDateSeq(userID int64, date, seq int) error {
+func (s *State) SetDateSeq(ctx context.Context, userID int64, date, seq int) error {
 	state, k := updates.State{}, key.State(userID)
 
 	if err := s.Get(k, &state); err != nil {
@@ -108,7 +108,7 @@ func (s *State) SetDateSeq(userID int64, date, seq int) error {
 	return s.Set(k, state)
 }
 
-func (s *State) GetChannelPts(userID, channelID int64) (int, bool, error) {
+func (s *State) GetChannelPts(ctx context.Context, userID, channelID int64) (int, bool, error) {
 	c := make(map[int64]int)
 
 	if err := s.Get(key.StateChannel(userID), &c); err != nil {
@@ -126,7 +126,7 @@ func (s *State) GetChannelPts(userID, channelID int64) (int, bool, error) {
 	return pts, true, nil
 }
 
-func (s *State) SetChannelPts(userID, channelID int64, pts int) error {
+func (s *State) SetChannelPts(ctx context.Context, userID, channelID int64, pts int) error {
 	c, k := make(map[int64]int), key.StateChannel(userID)
 
 	if err := s.Get(k, &c); err != nil {
@@ -136,7 +136,7 @@ func (s *State) SetChannelPts(userID, channelID int64, pts int) error {
 	return s.Set(k, c)
 }
 
-func (s *State) ForEachChannels(userID int64, f func(channelID int64, pts int) error) error {
+func (s *State) ForEachChannels(ctx context.Context, userID int64, f func(context.Context, int64, int) error) error {
 	c := make(map[int64]int)
 
 	if err := s.Get(key.StateChannel(userID), &c); err != nil {
@@ -144,7 +144,7 @@ func (s *State) ForEachChannels(userID int64, f func(channelID int64, pts int) e
 	}
 
 	for channelID, pts := range c {
-		if err := f(channelID, pts); err != nil {
+		if err := f(ctx, channelID, pts); err != nil {
 			return err
 		}
 	}
